@@ -1,0 +1,150 @@
+import type { Metadata } from "next";
+import { notFound } from "next/navigation";
+import Link from "next/link";
+import { MDXRemote } from "next-mdx-remote/rsc";
+import { getAllPosts, getPostBySlug } from "@/lib/posts";
+import { Navbar } from "@/components/navbar";
+import { Footer } from "@/components/footer";
+import { Clock, ArrowLeft } from "lucide-react";
+
+interface Props {
+  params: Promise<{ slug: string }>;
+}
+
+export async function generateStaticParams() {
+  const posts = await getAllPosts();
+  return posts.map((p) => ({ slug: p.slug }));
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params;
+  const post = await getPostBySlug(slug);
+  if (!post) return {};
+
+  return {
+    title: post.title,
+    description: post.excerpt,
+    alternates: { canonical: `https://grupov3x.com.br/blog/${slug}` },
+    openGraph: {
+      title: post.title,
+      description: post.excerpt,
+      url: `https://grupov3x.com.br/blog/${slug}`,
+      type: "article",
+    },
+  };
+}
+
+export default async function BlogPost({ params }: Props) {
+  const { slug } = await params;
+  const post = await getPostBySlug(slug);
+  if (!post) notFound();
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: post.title,
+    description: post.excerpt,
+    datePublished: post.date,
+    author: { "@type": "Organization", name: "V3X" },
+    publisher: { "@type": "Organization", name: "V3X" },
+    url: `https://grupov3x.com.br/blog/${slug}`,
+    keywords: post.tags.join(", "),
+  };
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <Navbar />
+      <main className="min-h-screen bg-[#0B0B0B] pt-24">
+        <article className="max-w-3xl mx-auto px-6 py-12">
+          {/* Breadcrumb */}
+          <nav className="flex items-center gap-2 text-xs text-[#F3F3F3]/40 font-[family-name:var(--font-inter)] mb-8">
+            <Link href="/" className="hover:text-[#F5C242] transition-colors">V3X</Link>
+            <span>/</span>
+            <Link href="/blog" className="hover:text-[#F5C242] transition-colors">Blog</Link>
+            <span>/</span>
+            <span className="text-[#F3F3F3]/70 truncate max-w-[200px]">{post.title}</span>
+          </nav>
+
+          {/* Meta */}
+          <div className="mb-4 flex items-center gap-4">
+            {post.category && (
+              <span className="text-xs font-[family-name:var(--font-montserrat)] font-semibold tracking-[0.15em] uppercase text-[#F5C242]">
+                {post.category}
+              </span>
+            )}
+            <span className="flex items-center gap-1 text-xs text-[#F3F3F3]/40 font-[family-name:var(--font-inter)]">
+              <Clock size={12} />
+              {post.readingTime}
+            </span>
+          </div>
+
+          {/* Title */}
+          <h1 className="font-[family-name:var(--font-anton)] text-4xl md:text-5xl text-white tracking-wide leading-tight mb-6">
+            {post.title}
+          </h1>
+
+          <p className="text-lg text-[#F3F3F3]/60 font-[family-name:var(--font-inter)] leading-relaxed mb-10 pb-10 border-b border-[#2A2A2A]">
+            {post.excerpt}
+          </p>
+
+          {/* Content */}
+          <div className="prose-v3x">
+            <MDXRemote source={post.content} />
+          </div>
+
+          {/* Tags */}
+          {post.tags.length > 0 && (
+            <div className="mt-12 pt-8 border-t border-[#2A2A2A] flex flex-wrap gap-2">
+              {post.tags.map((tag) => (
+                <span
+                  key={tag}
+                  className="border border-[#2A2A2A] px-3 py-1 text-xs font-[family-name:var(--font-montserrat)] font-semibold tracking-wide text-[#F3F3F3]/40"
+                >
+                  #{tag}
+                </span>
+              ))}
+            </div>
+          )}
+
+          {/* Back */}
+          <div className="mt-8">
+            <Link
+              href="/blog"
+              className="flex items-center gap-2 text-sm font-[family-name:var(--font-montserrat)] font-semibold text-[#F3F3F3]/40 hover:text-[#F5C242] transition-colors"
+            >
+              <ArrowLeft size={14} />
+              Voltar para o Blog
+            </Link>
+          </div>
+        </article>
+
+        {/* CTA strip */}
+        <div className="border-t border-[#2A2A2A] bg-[#111111]">
+          <div className="max-w-3xl mx-auto px-6 py-12 text-center">
+            <p className="text-xs font-[family-name:var(--font-montserrat)] font-semibold tracking-[0.2em] uppercase text-[#F5C242] mb-3">
+              V3X Diagnóstico
+            </p>
+            <h2 className="font-[family-name:var(--font-anton)] text-3xl text-white tracking-wide mb-3">
+              COLOQUE EM PRÁTICA O QUE VOCÊ APRENDEU
+            </h2>
+            <p className="text-sm text-[#F3F3F3]/50 font-[family-name:var(--font-inter)] mb-6">
+              Diagnóstico empresarial completo em 8 dimensões. 7 dias grátis.
+            </p>
+            <Link
+              href="https://app.grupov3x.com.br"
+              target="_blank"
+              className="inline-flex items-center gap-2 bg-[#F5C242] text-[#0B0B0B] font-[family-name:var(--font-montserrat)] font-semibold text-sm px-8 py-4 hover:bg-white transition-colors"
+            >
+              Começar Diagnóstico Grátis →
+            </Link>
+          </div>
+        </div>
+      </main>
+      <Footer />
+    </>
+  );
+}

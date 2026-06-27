@@ -1,0 +1,245 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-inter);
+  --font-mono: var(--font-bebas);
+  --font-heading: var(--font-anton);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+
+  --color-v3x-bg: #0B0B0B;
+  --color-v3x-card: #1A1A1A;
+  --color-v3x-border: #2A2A2A;
+  --color-v3x-gold: #F5C242;
+  --color-v3x-success: #22C55E;
+  --color-v3x-error: #FF4444;
+
+  --radius: 0rem;
+}
+
+:root {
+  --background: #0B0B0B;
+  --foreground: #FFFFFF;
+  --card: #1A1A1A;
+  --card-foreground: #FFFFFF;
+  --popover: #1A1A1A;
+  --popover-foreground: #FFFFFF;
+  --primary: #F5C242;
+  --primary-foreground: #0B0B0B;
+  --secondary: #1A1A1A;
+  --secondary-foreground: #FFFFFF;
+  --muted: #1A1A1A;
+  --muted-foreground: #F3F3F3;
+  --accent: #F5C242;
+  --accent-foreground: #0B0B0B;
+  --destructive: #FF4444;
+  --border: #2A2A2A;
+  --input: #2A2A2A;
+  --ring: #F5C242;
+  --sidebar: #111111;
+  --sidebar-foreground: #FFFFFF;
+  --sidebar-primary: #F5C242;
+  --sidebar-primary-foreground: #0B0B0B;
+  --sidebar-accent: #1A1A1A;
+  --sidebar-accent-foreground: #FFFFFF;
+  --sidebar-border: #2A2A2A;
+  --sidebar-ring: #F5C242;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+    border-radius: 0 !important;
+  }
+  body {
+    @apply bg-[#0B0B0B] text-white;
+    font-family: "Inter", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+::selection {
+  background: #F5C242;
+  color: #0B0B0B;
+}
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #0B0B0B; }
+::-webkit-scrollbar-thumb { background: #2A2A2A; }
+::-webkit-scrollbar-thumb:hover { background: #F5C242; }
+
+/* MDX Article Styles */
+.prose-v3x h2 {
+  font-family: var(--font-anton);
+  font-size: 1.75rem;
+  color: #FFFFFF;
+  letter-spacing: 0.05em;
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+  line-height: 1.2;
+}
+
+.prose-v3x h3 {
+  font-family: var(--font-montserrat);
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #F5C242;
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.prose-v3x p {
+  font-family: var(--font-inter);
+  font-size: 1rem;
+  color: rgba(243, 243, 243, 0.75);
+  line-height: 1.8;
+  margin-bottom: 1.25rem;
+}
+
+.prose-v3x ul {
+  margin: 1rem 0 1.25rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.prose-v3x ul li {
+  font-family: var(--font-inter);
+  font-size: 0.9375rem;
+  color: rgba(243, 243, 243, 0.75);
+  padding-left: 1rem;
+  position: relative;
+  line-height: 1.7;
+}
+
+.prose-v3x ul li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.65em;
+  width: 4px;
+  height: 4px;
+  background: #F5C242;
+}
+
+.prose-v3x ol {
+  margin: 1rem 0 1.25rem 0;
+  padding-left: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  list-style: decimal;
+}
+
+.prose-v3x ol li {
+  font-family: var(--font-inter);
+  font-size: 0.9375rem;
+  color: rgba(243, 243, 243, 0.75);
+  line-height: 1.7;
+}
+
+.prose-v3x strong {
+  color: #FFFFFF;
+  font-weight: 600;
+}
+
+.prose-v3x a {
+  color: #F5C242;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.prose-v3x a:hover {
+  color: #FFFFFF;
+}
+
+.prose-v3x blockquote {
+  border-left: 2px solid #F5C242;
+  padding-left: 1.25rem;
+  margin: 1.5rem 0;
+}
+
+.prose-v3x blockquote p {
+  color: rgba(243, 243, 243, 0.6);
+  font-style: italic;
+}
+
+.prose-v3x table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  font-family: var(--font-inter);
+  font-size: 0.875rem;
+}
+
+.prose-v3x th {
+  background: #1A1A1A;
+  color: #F5C242;
+  padding: 0.75rem 1rem;
+  text-align: left;
+  font-family: var(--font-montserrat);
+  font-weight: 600;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  border: 1px solid #2A2A2A;
+}
+
+.prose-v3x td {
+  padding: 0.75rem 1rem;
+  border: 1px solid #2A2A2A;
+  color: rgba(243, 243, 243, 0.7);
+}
+
+.prose-v3x tr:nth-child(even) td {
+  background: #111111;
+}
+
+.prose-v3x hr {
+  border: none;
+  border-top: 1px solid #2A2A2A;
+  margin: 2.5rem 0;
+}
+
+.prose-v3x code {
+  font-family: var(--font-bebas);
+  background: #1A1A1A;
+  border: 1px solid #2A2A2A;
+  padding: 0.1em 0.4em;
+  font-size: 0.875em;
+  color: #F5C242;
+}
