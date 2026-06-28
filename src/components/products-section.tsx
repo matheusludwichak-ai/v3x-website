@@ -72,12 +72,12 @@ export function ProductsSection() {
                   className={`relative border p-6 md:p-8 flex flex-col gap-5 md:gap-6 h-full transition-all duration-300 hover:translate-y-[-4px] ${
                     p.accent
                       ? "border-[#F5C242]/40 bg-[rgba(26,26,26,0.8)] hover:border-[#F5C242]/70"
-                      : "border-[#2A2A2A] bg-[#1A1A1A] hover:border-[#F3F3F3]/20"
+                      : "border-[#F5C242]/20 bg-[#1A1A1A] hover:border-[#F5C242]/50"
                   }`}
                 >
-                  {p.accent && (
-                    <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#F5C242] to-transparent" />
-                  )}
+                  <div className={`absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent to-transparent ${
+                    p.accent ? "via-[#F5C242]" : "via-[#F5C242]/40"
+                  }`} />
 
                   {/* Top row */}
                   <div className="flex items-start justify-between">
@@ -86,23 +86,23 @@ export function ProductsSection() {
                         className={`p-2 border transition-colors duration-200 ${
                           p.accent
                             ? "border-[#F5C242]/40 bg-[#F5C242]/10"
-                            : "border-[#2A2A2A] bg-[#0B0B0B]"
+                            : "border-[#F5C242]/20 bg-[#F5C242]/5"
                         }`}
                       >
                         <Icon
                           size={18}
-                          className={p.accent ? "text-[#F5C242]" : "text-[#F3F3F3]/40"}
+                          className={p.accent ? "text-[#F5C242]" : "text-[#F5C242]/70"}
                         />
                       </div>
                       <span
                         className={`text-xs font-[family-name:var(--font-montserrat)] font-semibold tracking-[0.2em] ${
-                          p.accent ? "text-[#F5C242]" : "text-[#F3F3F3]/40"
+                          p.accent ? "text-[#F5C242]" : "text-[#F5C242]/70"
                         }`}
                       >
                         {p.tag}
                       </span>
                     </div>
-                    <span className="text-xs font-[family-name:var(--font-montserrat)] font-semibold text-[#F3F3F3]/30 border border-[#2A2A2A] px-2 py-1 whitespace-nowrap">
+                    <span className="text-xs font-[family-name:var(--font-montserrat)] font-semibold text-[#F3F3F3]/50 border border-[#F5C242]/20 px-2 py-1 whitespace-nowrap">
                       {p.badge}
                     </span>
                   </div>
@@ -112,7 +112,7 @@ export function ProductsSection() {
                     <h3 className="font-[family-name:var(--font-anton)] text-xl md:text-2xl text-white tracking-wide leading-tight mb-3">
                       {p.headline}
                     </h3>
-                    <p className="text-sm text-[#F3F3F3]/50 font-[family-name:var(--font-inter)] leading-relaxed">
+                    <p className="text-sm text-[#F3F3F3]/60 font-[family-name:var(--font-inter)] leading-relaxed">
                       {p.description}
                     </p>
                   </div>
@@ -120,8 +120,8 @@ export function ProductsSection() {
                   {/* Features */}
                   <ul className="flex flex-col gap-2">
                     {p.features.map((f) => (
-                      <li key={f} className="flex items-center gap-2 text-sm font-[family-name:var(--font-inter)] text-[#F3F3F3]/70">
-                        <span className={`w-1 h-1 flex-shrink-0 ${p.accent ? "bg-[#F5C242]" : "bg-[#F3F3F3]/30"}`} />
+                      <li key={f} className="flex items-center gap-2 text-sm font-[family-name:var(--font-inter)] text-[#F3F3F3]/80">
+                        <span className={`w-1 h-1 flex-shrink-0 ${p.accent ? "bg-[#F5C242]" : "bg-[#F5C242]/60"}`} />
                         {f}
                       </li>
                     ))}
@@ -134,7 +134,7 @@ export function ProductsSection() {
                     className={`mt-auto flex items-center justify-center gap-2 py-3 text-sm font-[family-name:var(--font-montserrat)] font-semibold transition-all duration-200 group ${
                       p.accent
                         ? "bg-[#F5C242] text-[#0B0B0B] hover:bg-white"
-                        : "border border-[#2A2A2A] text-[#F3F3F3] hover:border-[#F5C242] hover:text-white"
+                        : "bg-[#F5C242]/10 border border-[#F5C242]/40 text-white hover:bg-[#F5C242]/20 hover:border-[#F5C242]"
                     }`}
                   >
                     {p.cta}
