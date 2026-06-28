@@ -6,8 +6,8 @@ import { ScrollReveal } from "@/components/scroll-reveal";
 import { ArrowRight, TrendingUp, TrendingDown } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Estudos de Caso — Resultados Reais com a V3X",
-  description: "Veja como empresas reais identificaram gargalos e aceleraram resultados usando o diagnóstico V3X. Cases com métricas antes e depois.",
+  title: "Como Funciona o Método V3X — Cenários e Resultados",
+  description: "Veja como o método V3X identifica gargalos e estrutura o plano de ação em diferentes segmentos e cenários empresariais.",
   alternates: { canonical: "https://grupov3x.com.br/estudos-de-caso" },
 };
 
@@ -136,13 +136,13 @@ export default function EstudosDeCasoPage() {
                 <span className="text-[#F3F3F3]/70">Estudos de Caso</span>
               </nav>
               <p className="text-xs font-[family-name:var(--font-montserrat)] font-semibold tracking-[0.2em] uppercase text-[#F5C242] mb-3">
-                Resultados Reais
+                O Método em Prática
               </p>
               <h1 className="font-[family-name:var(--font-anton)] text-4xl sm:text-5xl text-white tracking-wide">
-                EMPRESAS QUE TRANSFORMARAM<br className="hidden sm:block" /> SEUS NÚMEROS
+                O QUE O MÉTODO V3X<br className="hidden sm:block" /> ENTREGA NA PRÁTICA
               </h1>
               <p className="text-[#F3F3F3]/60 font-[family-name:var(--font-inter)] mt-3 max-w-2xl text-sm">
-                Histórias reais de empresários que encontraram seus gargalos, tomaram decisões com dados e aceleraram resultados com a V3X.
+                Cenários reais de problemas que empresas enfrentam — e como o diagnóstico V3X identifica os gargalos e estrutura o plano de ação para cada um.
               </p>
             </ScrollReveal>
           </div>
@@ -219,14 +219,14 @@ export default function EstudosDeCasoPage() {
                       </div>
                     ))}
                   </div>
-                  <blockquote className="border-l-2 border-[#F5C242]/30 pl-5">
+                  <div className="border-l-2 border-[#F5C242]/30 pl-5">
                     <p className="text-sm text-[#F3F3F3]/50 font-[family-name:var(--font-inter)] italic leading-relaxed">
-                      &ldquo;{c.quote}&rdquo;
+                      {c.quote}
                     </p>
                     <p className="text-xs text-[#F3F3F3]/20 font-[family-name:var(--font-montserrat)] font-semibold mt-2 tracking-wider uppercase">
-                      — {c.company}
+                      Insight do cenário · {c.segment}
                     </p>
-                  </blockquote>
+                  </div>
                 </div>
               </div>
             </ScrollReveal>

@@ -38,10 +38,10 @@ export function Navbar() {
             <Image
               src="/logo.png"
               alt="V3X — Estratégia · Escala · Performance"
-              width={130}
-              height={52}
-              className="h-14 w-auto object-contain"
-              style={{ mixBlendMode: "screen" }}
+              width={160}
+              height={160}
+              className="object-contain"
+              style={{ mixBlendMode: "screen", width: "120px", height: "120px" }}
               priority
             />
           </Link>
