@@ -96,7 +96,29 @@ export default async function GuiaPage({ params }: Props) {
 
           {/* Content */}
           <div className="prose-v3x">
-            <MDXRemote source={guia.content} />
+            <MDXRemote
+              source={guia.content}
+              components={{
+                h2: ({ children }) => {
+                  const id = String(children)
+                    .toLowerCase()
+                    .normalize("NFD").replace(/[̀-ͯ]/g, "")
+                    .replace(/[^a-z0-9\s-]/g, "")
+                    .trim()
+                    .replace(/\s+/g, "-");
+                  return <h2 id={id}>{children}</h2>;
+                },
+                h3: ({ children }) => {
+                  const id = String(children)
+                    .toLowerCase()
+                    .normalize("NFD").replace(/[̀-ͯ]/g, "")
+                    .replace(/[^a-z0-9\s-]/g, "")
+                    .trim()
+                    .replace(/\s+/g, "-");
+                  return <h3 id={id}>{children}</h3>;
+                },
+              }}
+            />
           </div>
 
           {/* Tags */}
