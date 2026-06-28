@@ -3,39 +3,18 @@ import Link from "next/link";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import { ScrollReveal } from "@/components/scroll-reveal";
-import { ArrowRight } from "lucide-react";
+import { getAllGuias } from "@/lib/guias";
+import { ArrowRight, BookOpen, Clock } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Guias — Conteúdo Completo sobre Gestão e Estratégia Empresarial",
-  description: "Guias completos sobre diagnóstico empresarial, pipeline de vendas, escalabilidade, gestão financeira e muito mais.",
+  title: "Guias — Conteúdo Aprofundado sobre Gestão e Estratégia Empresarial",
+  description: "Guias completos e definitivos sobre diagnóstico empresarial, pipeline de vendas, escalabilidade, gestão financeira e muito mais. Conteúdo de referência para empresários.",
   alternates: { canonical: "https://grupov3x.com.br/guias" },
 };
 
-const guias = [
-  {
-    title: "Guia Completo: Diagnóstico Empresarial em 5 Dimensões",
-    excerpt: "Tudo que você precisa saber para fazer um diagnóstico estratégico da sua empresa — do comercial à gestão, do financeiro ao marketing.",
-    readingTime: "15 min de leitura",
-    category: "Gestão",
-    href: "/blog/como-fazer-diagnostico-empresarial",
-  },
-  {
-    title: "Guia Definitivo: Pipeline Comercial do Zero",
-    excerpt: "Como estruturar, implementar e gerenciar um pipeline de vendas que realmente converte — para times de 1 a 50 pessoas.",
-    readingTime: "12 min de leitura",
-    category: "Comercial",
-    href: "/blog/como-montar-pipeline-de-vendas",
-  },
-  {
-    title: "O Guia da Escalabilidade: Como Crescer Sem Travar",
-    excerpt: "Os 5 pilares para escalar uma empresa sem aumentar o caos, a dependência do dono ou os custos na mesma proporção.",
-    readingTime: "18 min de leitura",
-    category: "Escalabilidade",
-    href: "/blog/como-escalar-empresa",
-  },
-];
+export default async function GuiasPage() {
+  const guias = await getAllGuias();
 
-export default function GuiasPage() {
   return (
     <>
       <Navbar />
@@ -52,44 +31,60 @@ export default function GuiasPage() {
                 Guias V3X
               </p>
               <h1 className="font-[family-name:var(--font-anton)] text-4xl sm:text-5xl text-white tracking-wide">
-                CONTEÚDO COMPLETO
+                REFERÊNCIA EM GESTÃO EMPRESARIAL
               </h1>
-              <p className="text-[#F3F3F3]/60 font-[family-name:var(--font-inter)] mt-3 max-w-xl">
-                Guias aprofundados sobre gestão, estratégia e escalabilidade. Tudo que você precisa para tomar decisões melhores.
+              <p className="text-[#F3F3F3]/60 font-[family-name:var(--font-inter)] mt-3 max-w-xl text-sm">
+                Guias definitivos — cada material tem entre 5.000 e 10.000 palavras, índice clicável e tudo que você precisa para dominar o tema. Diferente do blog: aqui não tem atalhos.
               </p>
             </ScrollReveal>
           </div>
         </div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-16">
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
-            {guias.map((g, i) => (
-              <ScrollReveal key={g.title} delay={i * 100}>
-                <Link
-                  href={g.href}
-                  className="group border border-[#2A2A2A] bg-[#1A1A1A] hover:border-[#F5C242]/40 transition-all duration-200 flex flex-col p-6 gap-4 hover:translate-y-[-4px]"
-                >
-                  <span className="text-xs font-[family-name:var(--font-montserrat)] font-semibold tracking-[0.15em] uppercase text-[#F5C242]">
-                    {g.category}
-                  </span>
-                  <h2 className="font-[family-name:var(--font-anton)] text-xl text-white tracking-wide leading-snug group-hover:text-[#F5C242] transition-colors duration-200">
-                    {g.title}
-                  </h2>
-                  <p className="text-sm text-[#F3F3F3]/50 font-[family-name:var(--font-inter)] leading-relaxed flex-1">
-                    {g.excerpt}
-                  </p>
-                  <div className="flex items-center justify-between pt-4 border-t border-[#2A2A2A]">
-                    <span className="text-xs text-[#F3F3F3]/30 font-[family-name:var(--font-inter)]">{g.readingTime}</span>
-                    <span className="text-xs text-[#F5C242] font-[family-name:var(--font-montserrat)] font-semibold flex items-center gap-1 group-hover:gap-2 transition-all duration-200">
-                      Ler <ArrowRight size={11} />
-                    </span>
-                  </div>
-                </Link>
-              </ScrollReveal>
-            ))}
-          </div>
+          {guias.length === 0 ? (
+            <p className="text-[#F3F3F3]/40 font-[family-name:var(--font-inter)]">Guias em produção.</p>
+          ) : (
+            <div className="grid md:grid-cols-2 gap-6">
+              {guias.map((g, i) => (
+                <ScrollReveal key={g.slug} delay={i * 80}>
+                  <Link
+                    href={`/guias/${g.slug}`}
+                    className="group border border-[#2A2A2A] bg-[#1A1A1A] hover:border-[#F5C242]/40 transition-all duration-200 flex flex-col p-6 md:p-7 gap-4 hover:translate-y-[-4px]"
+                  >
+                    <div className="flex items-start justify-between gap-4">
+                      <span className="text-xs font-[family-name:var(--font-montserrat)] font-semibold tracking-[0.15em] uppercase text-[#F5C242]">
+                        {g.difficulty ?? "Guia Completo"}
+                      </span>
+                      <div className="flex items-center gap-1 text-[#F3F3F3]/30 text-xs font-[family-name:var(--font-inter)]">
+                        <BookOpen size={10} />
+                        {g.readingTime}
+                      </div>
+                    </div>
+                    <h2 className="font-[family-name:var(--font-anton)] text-xl md:text-2xl text-white tracking-wide leading-snug group-hover:text-[#F5C242] transition-colors duration-200">
+                      {g.title}
+                    </h2>
+                    <p className="text-sm text-[#F3F3F3]/50 font-[family-name:var(--font-inter)] leading-relaxed flex-1">
+                      {g.excerpt}
+                    </p>
+                    <div className="flex items-center justify-between pt-4 border-t border-[#2A2A2A]">
+                      <div className="flex items-center gap-3">
+                        {g.tags.slice(0, 2).map((tag) => (
+                          <span key={tag} className="text-[10px] font-[family-name:var(--font-montserrat)] font-semibold tracking-wider uppercase text-[#F3F3F3]/20 border border-[#2A2A2A] px-2 py-0.5">
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                      <span className="text-xs text-[#F5C242] font-[family-name:var(--font-montserrat)] font-semibold flex items-center gap-1 group-hover:gap-2 transition-all duration-200">
+                        Ler guia <ArrowRight size={11} />
+                      </span>
+                    </div>
+                  </Link>
+                </ScrollReveal>
+              ))}
+            </div>
+          )}
 
-          <ScrollReveal>
+          <ScrollReveal className="mt-16">
             <div className="border border-[#F5C242]/20 bg-[#1A1A1A] p-8 text-center">
               <p className="text-xs font-[family-name:var(--font-montserrat)] font-semibold tracking-[0.2em] uppercase text-[#F5C242] mb-3">
                 Coloque em prática
@@ -98,7 +93,7 @@ export default function GuiasPage() {
                 DIAGNÓSTICO GRATUITO
               </h2>
               <p className="text-sm text-[#F3F3F3]/50 font-[family-name:var(--font-inter)] mb-6">
-                Aplique o que aprendeu nos guias. Diagnóstico completo em 8 dimensões.
+                Aplique o que aprendeu. Diagnóstico completo em 5 dimensões, 15 minutos.
               </p>
               <Link
                 href="https://app.grupov3x.com.br"

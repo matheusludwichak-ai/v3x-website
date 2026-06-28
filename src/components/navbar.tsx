@@ -26,78 +26,83 @@ export function Navbar() {
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
-          ? "bg-[rgba(11,11,11,0.95)] backdrop-blur-md border-b border-[#2A2A2A]"
+          ? "bg-[rgba(11,11,11,0.97)] backdrop-blur-md border-b border-[#2A2A2A] shadow-[0_1px_40px_rgba(0,0,0,0.6)]"
           : "bg-transparent"
       }`}
     >
-      <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-        {/* Logo */}
-        <Link href="/" className="flex items-center">
-          <Image
-            src="/logo.png"
-            alt="V3X — Estratégia · Escala · Performance"
-            width={100}
-            height={40}
-            className="h-9 w-auto object-contain"
-            priority
-          />
-        </Link>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        <div className="h-[68px] flex items-center justify-between relative">
 
-        {/* Desktop Nav */}
-        <nav className="hidden md:flex items-center gap-8">
-          {links.map((l) => (
+          {/* Logo — bigger, black bg removed via mix-blend-mode */}
+          <Link href="/" className="flex items-center flex-shrink-0">
+            <Image
+              src="/logo.png"
+              alt="V3X — Estratégia · Escala · Performance"
+              width={130}
+              height={52}
+              className="h-10 w-auto object-contain"
+              style={{ mixBlendMode: "screen" }}
+              priority
+            />
+          </Link>
+
+          {/* Desktop Nav — absolutely centered */}
+          <nav className="hidden md:flex items-center gap-9 absolute left-1/2 -translate-x-1/2">
+            {links.map((l) => (
+              <Link
+                key={l.href}
+                href={l.href}
+                className="relative text-[13px] font-[family-name:var(--font-montserrat)] font-semibold text-[#F3F3F3]/60 hover:text-white transition-colors duration-200 tracking-wider uppercase group py-1"
+              >
+                {l.label}
+                <span className="absolute -bottom-0.5 left-0 h-px w-0 bg-[#F5C242] transition-all duration-300 group-hover:w-full" />
+              </Link>
+            ))}
+          </nav>
+
+          {/* Premium CTAs */}
+          <div className="hidden md:flex items-center gap-3 flex-shrink-0">
             <Link
-              key={l.href}
-              href={l.href}
-              className="text-sm font-[family-name:var(--font-montserrat)] font-semibold text-[#F3F3F3] hover:text-[#F5C242] transition-colors tracking-wide uppercase"
+              href="https://pipeline.grupov3x.com.br"
+              target="_blank"
+              className="btn-border-glow text-[13px] font-[family-name:var(--font-montserrat)] font-semibold text-[#F3F3F3]/70 hover:text-white transition-all duration-200 px-4 py-2 border border-[#2A2A2A] hover:border-[#F5C242]/50 hover:bg-[#1A1A1A]"
             >
-              {l.label}
+              Pipeline
             </Link>
-          ))}
-        </nav>
+            <Link
+              href="https://app.grupov3x.com.br"
+              target="_blank"
+              className="btn-glow-gold text-[13px] font-[family-name:var(--font-montserrat)] font-semibold bg-[#F5C242] text-[#0B0B0B] px-5 py-[9px] hover:bg-white transition-all duration-200 tracking-wide"
+            >
+              Diagnóstico Grátis
+            </Link>
+          </div>
 
-        {/* CTAs */}
-        <div className="hidden md:flex items-center gap-3">
-          <Link
-            href="https://pipeline.grupov3x.com.br"
-            target="_blank"
-            className="text-sm font-[family-name:var(--font-montserrat)] font-semibold text-[#F3F3F3] hover:text-white transition-colors px-4 py-2 border border-[#2A2A2A] hover:border-[#F5C242]"
+          {/* Mobile toggle */}
+          <button
+            className="md:hidden text-white p-2"
+            onClick={() => setOpen(!open)}
+            aria-label="Menu"
           >
-            Pipeline
-          </Link>
-          <Link
-            href="https://app.grupov3x.com.br"
-            target="_blank"
-            className="text-sm font-[family-name:var(--font-montserrat)] font-semibold bg-[#F5C242] text-[#0B0B0B] px-4 py-2 hover:bg-white transition-colors"
-          >
-            Diagnóstico Grátis
-          </Link>
+            {open ? <X size={22} /> : <Menu size={22} />}
+          </button>
         </div>
-
-        {/* Mobile toggle */}
-        <button
-          className="md:hidden text-white p-2"
-          onClick={() => setOpen(!open)}
-          aria-label="Menu"
-        >
-          {open ? <X size={22} /> : <Menu size={22} />}
-        </button>
       </div>
 
       {/* Mobile menu */}
       {open && (
-        <div className="md:hidden bg-[#0B0B0B] border-t border-[#2A2A2A] px-6 py-6 flex flex-col gap-4">
+        <div className="md:hidden bg-[rgba(11,11,11,0.98)] backdrop-blur-md border-t border-[#2A2A2A] px-4 sm:px-6 py-5 flex flex-col">
           {links.map((l) => (
             <Link
               key={l.href}
               href={l.href}
               onClick={() => setOpen(false)}
-              className="text-sm font-[family-name:var(--font-montserrat)] font-semibold text-[#F3F3F3] hover:text-[#F5C242] transition-colors tracking-wide uppercase"
+              className="text-[13px] font-[family-name:var(--font-montserrat)] font-semibold text-[#F3F3F3]/70 hover:text-white transition-colors py-3 border-b border-[#1A1A1A] tracking-wider uppercase"
             >
               {l.label}
             </Link>
           ))}
-          <div className="flex flex-col gap-3 mt-2 pt-4 border-t border-[#2A2A2A]">
+          <div className="flex flex-col gap-3 mt-5 pt-4 border-t border-[#2A2A2A]">
             <Link
               href="https://pipeline.grupov3x.com.br"
               target="_blank"
