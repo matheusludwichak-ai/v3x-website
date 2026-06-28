@@ -142,7 +142,7 @@ export default function EstudosDeCasoPage() {
                 O QUE O MÉTODO V3X<br className="hidden sm:block" /> ENTREGA NA PRÁTICA
               </h1>
               <p className="text-[#F3F3F3]/60 font-[family-name:var(--font-inter)] mt-3 max-w-2xl text-sm">
-                Cenários reais de problemas que empresas enfrentam — e como o diagnóstico V3X identifica os gargalos e estrutura o plano de ação para cada um.
+                Problemas comuns que empresas enfrentam — e como o diagnóstico V3X identifica os gargalos e estrutura o plano de ação para cada um.
               </p>
             </ScrollReveal>
           </div>
