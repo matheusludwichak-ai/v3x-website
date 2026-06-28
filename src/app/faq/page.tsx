@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
+import { ScrollReveal } from "@/components/scroll-reveal";
 import { ChevronDown } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -98,66 +99,68 @@ export default function FAQPage() {
       />
       <Navbar />
       <main className="min-h-screen bg-[#0B0B0B] pt-24">
-        {/* Header */}
         <div className="border-b border-[#2A2A2A] pb-12 pt-8">
           <div className="max-w-4xl mx-auto px-6">
-            <nav className="flex items-center gap-2 text-xs text-[#F3F3F3]/40 font-[family-name:var(--font-inter)] mb-6">
-              <Link href="/" className="hover:text-[#F5C242] transition-colors">V3X</Link>
-              <span>/</span>
-              <span className="text-[#F3F3F3]/70">FAQ</span>
-            </nav>
-            <p className="text-xs font-[family-name:var(--font-montserrat)] font-semibold tracking-[0.2em] uppercase text-[#F5C242] mb-3">
-              Central de Ajuda
-            </p>
-            <h1 className="font-[family-name:var(--font-anton)] text-5xl text-white tracking-wide">
-              PERGUNTAS FREQUENTES
-            </h1>
-            <p className="text-[#F3F3F3]/60 font-[family-name:var(--font-inter)] mt-3">
-              Não encontrou o que procura?{" "}
-              <Link href="/contato" className="text-[#F5C242] hover:text-white transition-colors">
-                Entre em contato
-              </Link>
-            </p>
+            <ScrollReveal>
+              <nav className="flex items-center gap-2 text-xs text-[#F3F3F3]/40 font-[family-name:var(--font-inter)] mb-6">
+                <Link href="/" className="hover:text-[#F5C242] transition-colors">V3X</Link>
+                <span>/</span>
+                <span className="text-[#F3F3F3]/70">FAQ</span>
+              </nav>
+              <p className="text-xs font-[family-name:var(--font-montserrat)] font-semibold tracking-[0.2em] uppercase text-[#F5C242] mb-3">
+                Central de Ajuda
+              </p>
+              <h1 className="font-[family-name:var(--font-anton)] text-5xl text-white tracking-wide">
+                PERGUNTAS FREQUENTES
+              </h1>
+              <p className="text-[#F3F3F3]/60 font-[family-name:var(--font-inter)] mt-3">
+                Não encontrou o que procura?{" "}
+                <Link href="/contato" className="text-[#F5C242] hover:text-white transition-colors">
+                  Entre em contato
+                </Link>
+              </p>
+            </ScrollReveal>
           </div>
         </div>
 
-        {/* FAQ content */}
         <div className="max-w-4xl mx-auto px-6 py-16 flex flex-col gap-16">
-          {faqs.map((cat) => (
-            <div key={cat.category}>
-              <p className="text-xs font-[family-name:var(--font-montserrat)] font-semibold tracking-[0.2em] uppercase text-[#F5C242] mb-6">
-                {cat.category}
-              </p>
-              <div className="flex flex-col gap-px bg-[#2A2A2A]">
-                {cat.questions.map((faq) => (
-                  <details key={faq.q} className="group bg-[#0B0B0B]">
-                    <summary className="flex items-center justify-between p-6 cursor-pointer list-none hover:bg-[#111111] transition-colors">
-                      <span className="font-[family-name:var(--font-montserrat)] font-semibold text-white text-sm pr-4">
-                        {faq.q}
-                      </span>
-                      <ChevronDown
-                        size={16}
-                        className="text-[#F5C242] flex-shrink-0 group-open:rotate-180 transition-transform"
-                      />
-                    </summary>
-                    <div className="px-6 pb-6 border-t border-[#2A2A2A]">
-                      <p className="text-sm text-[#F3F3F3]/60 font-[family-name:var(--font-inter)] leading-relaxed mt-4">
-                        {faq.a}
-                      </p>
-                      {faq.cta && (
-                        <Link
-                          href={faq.cta.href}
-                          target={faq.cta.href.startsWith("http") ? "_blank" : undefined}
-                          className="inline-flex items-center gap-1 mt-4 text-xs font-[family-name:var(--font-montserrat)] font-semibold text-[#F5C242] hover:text-white transition-colors"
-                        >
-                          {faq.cta.label} →
-                        </Link>
-                      )}
-                    </div>
-                  </details>
-                ))}
+          {faqs.map((cat, ci) => (
+            <ScrollReveal key={cat.category} delay={ci * 100}>
+              <div>
+                <p className="text-xs font-[family-name:var(--font-montserrat)] font-semibold tracking-[0.2em] uppercase text-[#F5C242] mb-6">
+                  {cat.category}
+                </p>
+                <div className="flex flex-col gap-px bg-[#2A2A2A]">
+                  {cat.questions.map((faq) => (
+                    <details key={faq.q} className="group bg-[#0B0B0B]">
+                      <summary className="flex items-center justify-between p-6 cursor-pointer list-none hover:bg-[#111111] transition-colors">
+                        <span className="font-[family-name:var(--font-montserrat)] font-semibold text-white text-sm pr-4">
+                          {faq.q}
+                        </span>
+                        <ChevronDown
+                          size={16}
+                          className="text-[#F5C242] flex-shrink-0 group-open:rotate-180 transition-transform"
+                        />
+                      </summary>
+                      <div className="px-6 pb-6 border-t border-[#2A2A2A]">
+                        <p className="text-sm text-[#F3F3F3]/60 font-[family-name:var(--font-inter)] leading-relaxed mt-4">
+                          {faq.a}
+                        </p>
+                        {faq.cta && (
+                          <Link
+                            href={faq.cta.href}
+                            target={faq.cta.href.startsWith("http") ? "_blank" : undefined}
+                            className="inline-flex items-center gap-1 mt-4 text-xs font-[family-name:var(--font-montserrat)] font-semibold text-[#F5C242] hover:text-white transition-colors"
+                          >
+                            {faq.cta.label} →
+                          </Link>
+                        )}
+                      </div>
+                    </details>
+                  ))}
+                </div>
               </div>
-            </div>
+            </ScrollReveal>
           ))}
         </div>
       </main>

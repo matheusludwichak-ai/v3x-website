@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 const products = [
-  { href: "#diagnostico", label: "V3X Diagnóstico" },
+  { href: "https://app.grupov3x.com.br", label: "V3X Diagnóstico", external: true },
   { href: "https://pipeline.grupov3x.com.br", label: "V3X Pipeline", external: true },
 ];
 
@@ -34,10 +34,12 @@ export function Footer() {
             </p>
           </div>
           <Link
-            href="#diagnostico"
-            className="bg-[#0B0B0B] text-white font-[family-name:var(--font-montserrat)] font-semibold text-sm px-8 py-3 hover:bg-[#1A1A1A] transition-colors whitespace-nowrap"
+            href="https://app.grupov3x.com.br"
+            target="_blank"
+            className="group bg-[#0B0B0B] text-white font-[family-name:var(--font-montserrat)] font-semibold text-sm px-8 py-3 hover:bg-[#1A1A1A] transition-all duration-200 whitespace-nowrap hover:scale-[1.02] inline-flex items-center gap-2"
           >
-            Começar Agora →
+            Começar Agora
+            <span className="group-hover:translate-x-1 transition-transform duration-200">→</span>
           </Link>
         </div>
       </div>
