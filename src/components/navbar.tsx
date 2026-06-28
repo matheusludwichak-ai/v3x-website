@@ -41,7 +41,7 @@ export function Navbar() {
               width={160}
               height={160}
               className="object-contain"
-              style={{ mixBlendMode: "screen", width: "120px", height: "120px" }}
+              style={{ width: "120px", height: "120px" }}
               priority
             />
           </Link>
