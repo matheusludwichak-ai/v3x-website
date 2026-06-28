@@ -2,7 +2,10 @@ import type { Metadata } from "next";
 import { Anton, Montserrat, Inter, Bebas_Neue } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import Script from "next/script";
 import "./globals.css";
+
+const GA_ID = "G-H3NVMRK99E";
 
 const anton = Anton({
   weight: "400",
@@ -106,6 +109,18 @@ export default function RootLayout({
       className={`${anton.variable} ${montserrat.variable} ${inter.variable} ${bebasNeue.variable}`}
     >
       <body>
+        <Script
+          src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
+          strategy="afterInteractive"
+        />
+        <Script id="ga4-init" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${GA_ID}', { page_path: window.location.pathname });
+          `}
+        </Script>
         {children}
         <Analytics />
         <SpeedInsights />
