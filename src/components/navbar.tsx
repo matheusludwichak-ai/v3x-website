@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Menu, X } from "lucide-react";
 
 const links = [
@@ -31,13 +32,15 @@ export function Navbar() {
     >
       <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2">
-          <span className="font-[family-name:var(--font-anton)] text-2xl text-white tracking-wider">
-            V3X
-          </span>
-          <span className="hidden sm:block text-xs text-[#F5C242] font-[family-name:var(--font-montserrat)] font-semibold tracking-[0.2em] uppercase">
-            Estratégia · Escala · Performance
-          </span>
+        <Link href="/" className="flex items-center">
+          <Image
+            src="/logo.png"
+            alt="V3X — Estratégia · Escala · Performance"
+            width={100}
+            height={40}
+            className="h-9 w-auto object-contain"
+            priority
+          />
         </Link>
 
         {/* Desktop Nav */}
