@@ -70,7 +70,7 @@ export default function SobrePage() {
             <div className="grid grid-cols-3 gap-px bg-[#2A2A2A]">
               {[
                 { value: "R$ 4M+", label: "Gerados pelo método" },
-                { value: "8", label: "Dimensões de análise" },
+                { value: "5", label: "Dimensões estratégicas" },
                 { value: "2", label: "Produtos no ecossistema" },
               ].map((s) => (
                 <div key={s.label} className="bg-[#0B0B0B] p-8 text-center hover:bg-[#0F0F0F] transition-colors duration-200">

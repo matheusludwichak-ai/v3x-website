@@ -23,13 +23,10 @@ const pillars = [
 
 const dimensions = [
   "Comercial",
-  "Financeiro",
-  "Operacional",
   "Marketing",
-  "Pessoas",
-  "Processos",
-  "Tecnologia",
-  "Liderança",
+  "Financeiro",
+  "Operação",
+  "Gestão",
 ];
 
 export function MethodologySection() {
@@ -73,7 +70,7 @@ export function MethodologySection() {
         {/* Dimensions */}
         <ScrollReveal>
           <p className="text-xs font-[family-name:var(--font-montserrat)] font-semibold tracking-[0.2em] uppercase text-[#F3F3F3]/30 mb-6">
-            8 dimensões analisadas
+            5 dimensões estratégicas analisadas
           </p>
           <div className="flex flex-wrap gap-3">
             {dimensions.map((d, i) => (

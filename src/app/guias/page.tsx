@@ -13,8 +13,8 @@ export const metadata: Metadata = {
 
 const guias = [
   {
-    title: "Guia Completo: Diagnóstico Empresarial em 8 Dimensões",
-    excerpt: "Tudo que você precisa saber para fazer um diagnóstico profundo da sua empresa — do comercial ao financeiro, dos processos à liderança.",
+    title: "Guia Completo: Diagnóstico Empresarial em 5 Dimensões",
+    excerpt: "Tudo que você precisa saber para fazer um diagnóstico estratégico da sua empresa — do comercial à gestão, do financeiro ao marketing.",
     readingTime: "15 min de leitura",
     category: "Gestão",
     href: "/blog/como-fazer-diagnostico-empresarial",

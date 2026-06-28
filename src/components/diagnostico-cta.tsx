@@ -3,11 +3,11 @@ import { CheckCircle } from "lucide-react";
 import { ScrollReveal } from "./scroll-reveal";
 
 const benefits = [
-  "Diagnóstico em 8 dimensões do negócio",
-  "Relatório executivo completo",
-  "Plano de ação priorizado",
+  "Diagnóstico em 5 dimensões estratégicas",
+  "Relatório executivo com score 0–100",
+  "Plano de ação com 5 tarefas priorizadas",
   "Benchmarking do seu segmento",
-  "7 dias grátis, sem cartão de crédito",
+  "Sem cartão de crédito · Cancele quando quiser",
 ];
 
 export function DiagnosticoCTA() {
@@ -31,7 +31,7 @@ export function DiagnosticoCTA() {
                   RESULTADOS REAIS.
                 </h2>
                 <p className="text-sm text-[#F3F3F3]/50 font-[family-name:var(--font-inter)] leading-relaxed mb-6">
-                  Em menos de 30 minutos você terá um diagnóstico completo da sua empresa, um plano de ação e benchmarks do mercado.
+                  Em 15 minutos você terá um diagnóstico completo da sua empresa, um plano de ação e benchmarks do seu segmento.
                 </p>
                 <ul className="flex flex-col gap-2 mb-8">
                   {benefits.map((b, i) => (
@@ -58,9 +58,9 @@ export function DiagnosticoCTA() {
               {/* Right — pricing */}
               <div className="w-full md:w-72 flex flex-col gap-3">
                 {[
-                  { plan: "Starter", price: "R$ 97", period: "/mês", desc: "1 diagnóstico por ciclo", featured: false },
-                  { plan: "Growth", price: "R$ 297", period: "/mês", desc: "3 diagnósticos por ciclo", featured: true },
-                  { plan: "Scale", price: "R$ 697", period: "/mês", desc: "Diagnósticos ilimitados", featured: false },
+                  { plan: "Starter", price: "R$ 147", period: "/mês", desc: "1 diagnóstico por mês", featured: false },
+                  { plan: "Growth", price: "R$ 497", period: "/mês", desc: "2 diagnósticos por mês", featured: true },
+                  { plan: "Scale", price: "R$ 797", period: "/mês", desc: "Diagnósticos ilimitados", featured: false },
                 ].map((p) => (
                   <div
                     key={p.plan}
@@ -84,7 +84,7 @@ export function DiagnosticoCTA() {
                   </div>
                 ))}
                 <p className="text-xs text-[#F3F3F3]/20 font-[family-name:var(--font-inter)] text-center mt-1">
-                  7 dias grátis em todos os planos
+                  Cota mensal · Cancele quando quiser
                 </p>
               </div>
             </div>

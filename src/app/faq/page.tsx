@@ -18,22 +18,22 @@ const faqs = [
     questions: [
       {
         q: "O que é o V3X Diagnóstico?",
-        a: "O V3X Diagnóstico é uma plataforma que analisa sua empresa em 8 dimensões — comercial, financeiro, operacional, marketing, pessoas, processos, tecnologia e liderança — e entrega um relatório executivo completo com score, pontos críticos e plano de ação priorizado.",
+        a: "O V3X Diagnóstico é uma plataforma que analisa sua empresa em 5 dimensões estratégicas — comercial, marketing, financeiro, operação e gestão — e entrega um relatório executivo com score de 0 a 100, benchmarking do seu segmento e plano de ação com 5 tarefas priorizadas.",
         cta: { label: "Fazer diagnóstico grátis", href: "https://app.grupov3x.com.br" },
       },
       {
         q: "Quanto tempo leva para fazer o diagnóstico?",
-        a: "O questionário leva entre 20 e 30 minutos para ser respondido. O relatório é gerado instantaneamente após a conclusão.",
+        a: "O questionário leva cerca de 15 minutos para ser respondido. O relatório é gerado automaticamente após a conclusão — sem espera.",
         cta: null,
       },
       {
         q: "Quais são os planos disponíveis?",
-        a: "Starter (R$ 97/mês — 1 diagnóstico por ciclo), Growth (R$ 297/mês — 3 diagnósticos por ciclo, mais popular) e Scale (R$ 697/mês — diagnósticos ilimitados). Todos os planos têm 7 dias grátis.",
+        a: "Starter (R$ 147/mês — 1 diagnóstico por mês), Growth (R$ 497/mês — 2 diagnósticos por mês, mais popular) e Scale (R$ 797/mês — diagnósticos ilimitados + usuários ilimitados). Sem fidelidade — cancele quando quiser.",
         cta: { label: "Ver planos completos", href: "https://app.grupov3x.com.br" },
       },
       {
         q: "Precisa de cartão de crédito para o trial?",
-        a: "Não. O período de 7 dias gratuitos não exige cartão de crédito. Você só precisa informar um meio de pagamento se decidir continuar após o trial.",
+        a: "Não. O diagnóstico gratuito não exige cartão de crédito. Você só precisa informar um meio de pagamento ao assinar um dos planos.",
         cta: null,
       },
     ],
@@ -58,7 +58,7 @@ const faqs = [
     questions: [
       {
         q: "Como identificar os gargalos da minha empresa?",
-        a: "Os gargalos aparecem em dimensões com score abaixo de 60 no diagnóstico. As causas mais comuns são: funil comercial mal estruturado, processos dependentes de pessoas-chave, falta de métricas e margem apertada com fluxo imprevisível.",
+        a: "Os gargalos aparecem nas dimensões com score abaixo de 60 no diagnóstico. As causas mais comuns: funil comercial mal estruturado, marketing sem posicionamento claro, fluxo financeiro imprevisível, operação dependente do dono e falta de clareza estratégica na gestão.",
         cta: { label: "Identificar meus gargalos", href: "https://app.grupov3x.com.br" },
       },
       {
@@ -68,7 +68,7 @@ const faqs = [
       },
       {
         q: "Com que frequência devo fazer um diagnóstico empresarial?",
-        a: "A recomendação é: diagnóstico completo das 8 dimensões a cada trimestre, com acompanhamento mensal de métricas. Empresas em fase de reestruturação podem se beneficiar de diagnósticos mensais.",
+        a: "A recomendação é: diagnóstico completo das 5 dimensões a cada 1 a 2 meses, com acompanhamento das métricas no período. Empresas em fase de reestruturação podem se beneficiar de diagnósticos mensais — o histórico comparativo do plano Growth facilita acompanhar a evolução.",
         cta: null,
       },
     ],

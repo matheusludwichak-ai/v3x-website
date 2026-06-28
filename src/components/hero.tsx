@@ -98,8 +98,8 @@ export function Hero() {
         >
           {[
             { value: "R$ 4M+", label: "Gerados pelo método" },
-            { value: "8", label: "Dimensões analisadas" },
-            { value: "7 dias", label: "Grátis para testar" },
+            { value: "5", label: "Dimensões analisadas" },
+            { value: "15 min", label: "Para fazer o diagnóstico" },
           ].map((s) => (
             <div key={s.label} className="text-center group cursor-default">
               <p className="font-[family-name:var(--font-bebas)] text-3xl text-[#F5C242] tracking-wide group-hover:scale-110 transition-transform duration-200">
