@@ -132,14 +132,15 @@ export default async function BlogPost({ params }: Props) {
               COLOQUE EM PRÁTICA O QUE VOCÊ APRENDEU
             </h2>
             <p className="text-sm text-[#F3F3F3]/50 font-[family-name:var(--font-inter)] mb-6">
-              Diagnóstico empresarial completo em 8 dimensões. 7 dias grátis.
+              Diagnóstico em 5 dimensões estratégicas. 15 minutos. 7 dias grátis.
             </p>
             <Link
               href="https://app.grupov3x.com.br"
               target="_blank"
-              className="inline-flex items-center gap-2 bg-[#F5C242] text-[#0B0B0B] font-[family-name:var(--font-montserrat)] font-semibold text-sm px-8 py-4 hover:bg-white transition-colors"
+              className="group w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-[#F5C242] text-[#0B0B0B] font-[family-name:var(--font-montserrat)] font-semibold text-sm px-8 py-4 hover:bg-white transition-all duration-200 hover:scale-[1.02]"
             >
-              Começar Diagnóstico Grátis →
+              Começar Diagnóstico Grátis
+              <span className="group-hover:translate-x-1 transition-transform duration-200">→</span>
             </Link>
           </div>
         </div>

@@ -99,8 +99,8 @@ export default function FAQPage() {
       />
       <Navbar />
       <main className="min-h-screen bg-[#0B0B0B] pt-24">
-        <div className="border-b border-[#2A2A2A] pb-12 pt-8">
-          <div className="max-w-4xl mx-auto px-6">
+        <div className="border-b border-[#2A2A2A] pb-10 md:pb-12 pt-8">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6">
             <ScrollReveal>
               <nav className="flex items-center gap-2 text-xs text-[#F3F3F3]/40 font-[family-name:var(--font-inter)] mb-6">
                 <Link href="/" className="hover:text-[#F5C242] transition-colors">V3X</Link>
@@ -110,7 +110,7 @@ export default function FAQPage() {
               <p className="text-xs font-[family-name:var(--font-montserrat)] font-semibold tracking-[0.2em] uppercase text-[#F5C242] mb-3">
                 Central de Ajuda
               </p>
-              <h1 className="font-[family-name:var(--font-anton)] text-5xl text-white tracking-wide">
+              <h1 className="font-[family-name:var(--font-anton)] text-4xl sm:text-5xl text-white tracking-wide">
                 PERGUNTAS FREQUENTES
               </h1>
               <p className="text-[#F3F3F3]/60 font-[family-name:var(--font-inter)] mt-3">
@@ -123,7 +123,7 @@ export default function FAQPage() {
           </div>
         </div>
 
-        <div className="max-w-4xl mx-auto px-6 py-16 flex flex-col gap-16">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 py-12 md:py-16 flex flex-col gap-12 md:gap-16">
           {faqs.map((cat, ci) => (
             <ScrollReveal key={cat.category} delay={ci * 100}>
               <div>

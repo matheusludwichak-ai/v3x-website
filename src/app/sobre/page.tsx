@@ -25,8 +25,8 @@ export default function SobrePage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <Navbar />
       <main className="min-h-screen bg-[#0B0B0B] pt-24">
-        <div className="border-b border-[#2A2A2A] pb-12 pt-8">
-          <div className="max-w-4xl mx-auto px-6">
+        <div className="border-b border-[#2A2A2A] pb-10 md:pb-12 pt-8">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6">
             <ScrollReveal>
               <nav className="flex items-center gap-2 text-xs text-[#F3F3F3]/40 font-[family-name:var(--font-inter)] mb-6">
                 <Link href="/" className="hover:text-[#F5C242] transition-colors">V3X</Link>
@@ -36,14 +36,14 @@ export default function SobrePage() {
               <p className="text-xs font-[family-name:var(--font-montserrat)] font-semibold tracking-[0.2em] uppercase text-[#F5C242] mb-3">
                 Sobre a V3X
               </p>
-              <h1 className="font-[family-name:var(--font-anton)] text-5xl text-white tracking-wide">
+              <h1 className="font-[family-name:var(--font-anton)] text-3xl sm:text-5xl text-white tracking-wide">
                 ESTRATÉGIA · ESCALA · PERFORMANCE
               </h1>
             </ScrollReveal>
           </div>
         </div>
 
-        <div className="max-w-4xl mx-auto px-6 py-16 flex flex-col gap-12">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 py-12 md:py-16 flex flex-col gap-10 md:gap-12">
           <div className="grid md:grid-cols-2 gap-12">
             <ScrollReveal direction="left">
               <div>

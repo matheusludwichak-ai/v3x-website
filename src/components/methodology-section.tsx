@@ -31,15 +31,15 @@ const dimensions = [
 
 export function MethodologySection() {
   return (
-    <section className="py-24 bg-[#111111] border-y border-[#2A2A2A]">
-      <div className="max-w-7xl mx-auto px-6">
+    <section className="py-16 md:py-24 bg-[#111111] border-y border-[#2A2A2A]">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
         {/* Header */}
-        <ScrollReveal className="mb-16 flex flex-col md:flex-row md:items-end justify-between gap-6">
+        <ScrollReveal className="mb-10 md:mb-16 flex flex-col md:flex-row md:items-end justify-between gap-4 md:gap-6">
           <div>
             <p className="text-xs font-[family-name:var(--font-montserrat)] font-semibold tracking-[0.2em] uppercase text-[#F5C242] mb-3">
               Metodologia
             </p>
-            <h2 className="font-[family-name:var(--font-anton)] text-4xl md:text-5xl text-white tracking-wide">
+            <h2 className="font-[family-name:var(--font-anton)] text-3xl sm:text-4xl md:text-5xl text-white tracking-wide">
               O MÉTODO V3X
             </h2>
           </div>
@@ -49,10 +49,10 @@ export function MethodologySection() {
         </ScrollReveal>
 
         {/* Pillars */}
-        <div className="grid md:grid-cols-3 gap-px bg-[#2A2A2A] mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-[#2A2A2A] mb-10 md:mb-16">
           {pillars.map((p, i) => (
             <ScrollReveal key={p.number} delay={i * 100}>
-              <div className="bg-[#111111] p-8 h-full group hover:bg-[#141414] transition-colors duration-200">
+              <div className="bg-[#111111] p-6 md:p-8 h-full group hover:bg-[#141414] transition-colors duration-200">
                 <p className="font-[family-name:var(--font-bebas)] text-5xl text-[#F5C242]/15 mb-4 group-hover:text-[#F5C242]/30 transition-colors duration-300">
                   {p.number}
                 </p>

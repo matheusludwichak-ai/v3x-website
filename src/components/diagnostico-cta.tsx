@@ -7,25 +7,25 @@ const benefits = [
   "Relatório executivo com score 0–100",
   "Plano de ação com 5 tarefas priorizadas",
   "Benchmarking do seu segmento",
-  "Sem cartão de crédito · Cancele quando quiser",
+  "7 dias grátis · Sem cartão de crédito",
 ];
 
 export function DiagnosticoCTA() {
   return (
-    <section id="diagnostico" className="py-24 bg-[#0B0B0B]">
-      <div className="max-w-5xl mx-auto px-6">
+    <section id="diagnostico" className="py-16 md:py-24 bg-[#0B0B0B]">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6">
         <ScrollReveal>
           <div className="border border-[#F5C242]/30 bg-[rgba(26,26,26,0.7)] backdrop-blur-sm relative overflow-hidden hover:border-[#F5C242]/50 transition-colors duration-300">
             <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#F5C242] to-transparent" />
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-64 h-24 bg-[#F5C242]/8 blur-[60px] pointer-events-none" />
 
-            <div className="relative p-8 md:p-12 flex flex-col md:flex-row gap-10 items-start md:items-center">
+            <div className="relative p-6 md:p-12 flex flex-col md:flex-row gap-8 md:gap-10 items-start md:items-center">
               {/* Left */}
-              <div className="flex-1">
+              <div className="flex-1 w-full">
                 <p className="text-xs font-[family-name:var(--font-montserrat)] font-semibold tracking-[0.2em] uppercase text-[#F5C242] mb-4">
                   V3X Diagnóstico
                 </p>
-                <h2 className="font-[family-name:var(--font-anton)] text-4xl md:text-5xl text-white tracking-wide leading-none mb-4">
+                <h2 className="font-[family-name:var(--font-anton)] text-3xl sm:text-4xl md:text-5xl text-white tracking-wide leading-none mb-4">
                   COMECE GRÁTIS.
                   <br />
                   RESULTADOS REAIS.
@@ -48,7 +48,7 @@ export function DiagnosticoCTA() {
                 <Link
                   href="https://app.grupov3x.com.br"
                   target="_blank"
-                  className="group inline-flex items-center gap-2 bg-[#F5C242] text-[#0B0B0B] font-[family-name:var(--font-montserrat)] font-semibold text-sm px-8 py-4 hover:bg-white transition-all duration-200 hover:scale-[1.02]"
+                  className="group w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-[#F5C242] text-[#0B0B0B] font-[family-name:var(--font-montserrat)] font-semibold text-sm px-8 py-4 hover:bg-white transition-all duration-200 hover:scale-[1.02]"
                 >
                   Começar Diagnóstico Grátis
                   <span className="group-hover:translate-x-1 transition-transform duration-200">→</span>
@@ -84,7 +84,7 @@ export function DiagnosticoCTA() {
                   </div>
                 ))}
                 <p className="text-xs text-[#F3F3F3]/20 font-[family-name:var(--font-inter)] text-center mt-1">
-                  Cota mensal · Cancele quando quiser
+                  7 dias grátis · Sem compromisso
                 </p>
               </div>
             </div>

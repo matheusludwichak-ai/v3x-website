@@ -24,9 +24,9 @@ export function Footer() {
     <footer className="bg-[#0B0B0B] border-t border-[#2A2A2A]">
       {/* CTA strip */}
       <div className="bg-[#F5C242]">
-        <div className="max-w-7xl mx-auto px-6 py-10 flex flex-col md:flex-row items-center justify-between gap-6">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 md:py-10 flex flex-col md:flex-row items-center justify-between gap-5 text-center md:text-left">
           <div>
-            <p className="font-[family-name:var(--font-anton)] text-2xl text-[#0B0B0B] tracking-wide">
+            <p className="font-[family-name:var(--font-anton)] text-xl md:text-2xl text-[#0B0B0B] tracking-wide">
               Pronto para escalar sua empresa?
             </p>
             <p className="text-sm text-[#0B0B0B]/70 font-[family-name:var(--font-montserrat)] mt-1">
@@ -36,7 +36,7 @@ export function Footer() {
           <Link
             href="https://app.grupov3x.com.br"
             target="_blank"
-            className="group bg-[#0B0B0B] text-white font-[family-name:var(--font-montserrat)] font-semibold text-sm px-8 py-3 hover:bg-[#1A1A1A] transition-all duration-200 whitespace-nowrap hover:scale-[1.02] inline-flex items-center gap-2"
+            className="group bg-[#0B0B0B] text-white font-[family-name:var(--font-montserrat)] font-semibold text-sm px-8 py-3 hover:bg-[#1A1A1A] transition-all duration-200 whitespace-nowrap hover:scale-[1.02] inline-flex items-center gap-2 w-full sm:w-auto justify-center"
           >
             Começar Agora
             <span className="group-hover:translate-x-1 transition-transform duration-200">→</span>
@@ -45,7 +45,7 @@ export function Footer() {
       </div>
 
       {/* Main footer */}
-      <div className="max-w-7xl mx-auto px-6 py-16 grid grid-cols-2 md:grid-cols-4 gap-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-16 grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-10">
         {/* Brand */}
         <div className="col-span-2 md:col-span-1">
           <span className="font-[family-name:var(--font-anton)] text-3xl text-white tracking-wider">
@@ -123,7 +123,7 @@ export function Footer() {
 
       {/* Bottom bar */}
       <div className="border-t border-[#2A2A2A]">
-        <div className="max-w-7xl mx-auto px-6 py-5 flex flex-col sm:flex-row items-center justify-between gap-2">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-5 flex flex-col sm:flex-row items-center justify-between gap-2">
           <p className="text-xs text-[#F3F3F3]/40 font-[family-name:var(--font-inter)]">
             © {new Date().getFullYear()} V3X. Todos os direitos reservados.
           </p>

@@ -32,8 +32,8 @@ export default async function BlogPage() {
       />
       <Navbar />
       <main className="min-h-screen bg-[#0B0B0B] pt-24">
-        <div className="border-b border-[#2A2A2A] pb-12 pt-8">
-          <div className="max-w-7xl mx-auto px-6">
+        <div className="border-b border-[#2A2A2A] pb-10 md:pb-12 pt-8">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6">
             <ScrollReveal>
               <nav className="flex items-center gap-2 text-xs text-[#F3F3F3]/40 font-[family-name:var(--font-inter)] mb-6">
                 <Link href="/" className="hover:text-[#F5C242] transition-colors">V3X</Link>
@@ -43,28 +43,28 @@ export default async function BlogPage() {
               <p className="text-xs font-[family-name:var(--font-montserrat)] font-semibold tracking-[0.2em] uppercase text-[#F5C242] mb-3">
                 Blog V3X
               </p>
-              <h1 className="font-[family-name:var(--font-anton)] text-5xl text-white tracking-wide">
+              <h1 className="font-[family-name:var(--font-anton)] text-4xl sm:text-5xl text-white tracking-wide">
                 CONTEÚDO QUE GERA RESULTADO
               </h1>
-              <p className="text-[#F3F3F3]/60 font-[family-name:var(--font-inter)] mt-3 max-w-xl">
+              <p className="text-[#F3F3F3]/60 font-[family-name:var(--font-inter)] mt-3 max-w-xl text-sm">
                 Artigos sobre gestão empresarial, escalabilidade, comercial e estratégia. Sem teoria — só o que funciona na prática.
               </p>
             </ScrollReveal>
           </div>
         </div>
 
-        <div className="max-w-7xl mx-auto px-6 py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-16">
           {posts.length === 0 ? (
             <p className="text-[#F3F3F3]/40 font-[family-name:var(--font-inter)]">Nenhum artigo publicado ainda.</p>
           ) : (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
               {posts.map((post, i) => (
                 <ScrollReveal key={post.slug} delay={i * 80}>
                   <Link
                     href={`/blog/${post.slug}`}
                     className="group border border-[#2A2A2A] bg-[#1A1A1A] hover:border-[#F5C242]/40 transition-all duration-200 flex flex-col hover:translate-y-[-4px]"
                   >
-                    <div className="p-6 flex flex-col gap-3 flex-1">
+                    <div className="p-5 md:p-6 flex flex-col gap-3 flex-1">
                       {post.category && (
                         <span className="text-xs font-[family-name:var(--font-montserrat)] font-semibold tracking-[0.15em] uppercase text-[#F5C242]">
                           {post.category}

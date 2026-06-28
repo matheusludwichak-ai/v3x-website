@@ -40,8 +40,8 @@ export default function GuiasPage() {
     <>
       <Navbar />
       <main className="min-h-screen bg-[#0B0B0B] pt-24">
-        <div className="border-b border-[#2A2A2A] pb-12 pt-8">
-          <div className="max-w-7xl mx-auto px-6">
+        <div className="border-b border-[#2A2A2A] pb-10 md:pb-12 pt-8">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6">
             <ScrollReveal>
               <nav className="flex items-center gap-2 text-xs text-[#F3F3F3]/40 font-[family-name:var(--font-inter)] mb-6">
                 <Link href="/" className="hover:text-[#F5C242] transition-colors">V3X</Link>
@@ -51,7 +51,7 @@ export default function GuiasPage() {
               <p className="text-xs font-[family-name:var(--font-montserrat)] font-semibold tracking-[0.2em] uppercase text-[#F5C242] mb-3">
                 Guias V3X
               </p>
-              <h1 className="font-[family-name:var(--font-anton)] text-5xl text-white tracking-wide">
+              <h1 className="font-[family-name:var(--font-anton)] text-4xl sm:text-5xl text-white tracking-wide">
                 CONTEÚDO COMPLETO
               </h1>
               <p className="text-[#F3F3F3]/60 font-[family-name:var(--font-inter)] mt-3 max-w-xl">
@@ -61,7 +61,7 @@ export default function GuiasPage() {
           </div>
         </div>
 
-        <div className="max-w-7xl mx-auto px-6 py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-16">
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
             {guias.map((g, i) => (
               <ScrollReveal key={g.title} delay={i * 100}>

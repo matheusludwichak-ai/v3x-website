@@ -9,12 +9,12 @@ const products = [
     tag: "V3X DIAGNÓSTICO",
     headline: "Descubra exatamente onde sua empresa está perdendo dinheiro",
     description:
-      "Diagnóstico empresarial em 8 dimensões com análise inteligente, plano de ação priorizado e benchmarking do seu setor. Em menos de 30 minutos você terá um relatório executivo completo.",
+      "Diagnóstico empresarial em 5 dimensões estratégicas com análise inteligente, plano de ação priorizado e benchmarking do seu setor. Em 15 minutos você terá um relatório executivo completo.",
     features: [
-      "8 dimensões analisadas simultaneamente",
+      "5 dimensões estratégicas analisadas",
       "Plano de ação priorizado por impacto",
       "Benchmarking do seu segmento",
-      "Relatório executivo completo",
+      "Relatório executivo com score 0–100",
     ],
     cta: "Começar Diagnóstico Grátis",
     href: "https://app.grupov3x.com.br",
@@ -45,14 +45,14 @@ const products = [
 
 export function ProductsSection() {
   return (
-    <section id="produtos" className="py-24 bg-[#0B0B0B]">
-      <div className="max-w-7xl mx-auto px-6">
+    <section id="produtos" className="py-16 md:py-24 bg-[#0B0B0B]">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
         {/* Header */}
-        <ScrollReveal className="mb-16">
+        <ScrollReveal className="mb-10 md:mb-16">
           <p className="text-xs font-[family-name:var(--font-montserrat)] font-semibold tracking-[0.2em] uppercase text-[#F5C242] mb-3">
             Ecossistema V3X
           </p>
-          <h2 className="font-[family-name:var(--font-anton)] text-4xl md:text-5xl text-white tracking-wide">
+          <h2 className="font-[family-name:var(--font-anton)] text-3xl sm:text-4xl md:text-5xl text-white tracking-wide">
             DOIS PRODUTOS.
             <br />
             UM OBJETIVO.
@@ -63,13 +63,13 @@ export function ProductsSection() {
         </ScrollReveal>
 
         {/* Cards */}
-        <div className="grid md:grid-cols-2 gap-6">
+        <div className="grid md:grid-cols-2 gap-4 md:gap-6">
           {products.map((p, i) => {
             const Icon = p.icon;
             return (
               <ScrollReveal key={p.id} delay={i * 150} direction={i === 0 ? "left" : "right"}>
                 <div
-                  className={`relative border p-8 flex flex-col gap-6 h-full transition-all duration-300 hover:translate-y-[-4px] ${
+                  className={`relative border p-6 md:p-8 flex flex-col gap-5 md:gap-6 h-full transition-all duration-300 hover:translate-y-[-4px] ${
                     p.accent
                       ? "border-[#F5C242]/40 bg-[rgba(26,26,26,0.8)] hover:border-[#F5C242]/70"
                       : "border-[#2A2A2A] bg-[#1A1A1A] hover:border-[#F3F3F3]/20"
@@ -102,14 +102,14 @@ export function ProductsSection() {
                         {p.tag}
                       </span>
                     </div>
-                    <span className="text-xs font-[family-name:var(--font-montserrat)] font-semibold text-[#F3F3F3]/30 border border-[#2A2A2A] px-2 py-1">
+                    <span className="text-xs font-[family-name:var(--font-montserrat)] font-semibold text-[#F3F3F3]/30 border border-[#2A2A2A] px-2 py-1 whitespace-nowrap">
                       {p.badge}
                     </span>
                   </div>
 
                   {/* Content */}
                   <div>
-                    <h3 className="font-[family-name:var(--font-anton)] text-2xl text-white tracking-wide leading-tight mb-3">
+                    <h3 className="font-[family-name:var(--font-anton)] text-xl md:text-2xl text-white tracking-wide leading-tight mb-3">
                       {p.headline}
                     </h3>
                     <p className="text-sm text-[#F3F3F3]/50 font-[family-name:var(--font-inter)] leading-relaxed">

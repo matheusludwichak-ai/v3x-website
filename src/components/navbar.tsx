@@ -66,7 +66,8 @@ export function Navbar() {
             Pipeline
           </Link>
           <Link
-            href="#diagnostico"
+            href="https://app.grupov3x.com.br"
+            target="_blank"
             className="text-sm font-[family-name:var(--font-montserrat)] font-semibold bg-[#F5C242] text-[#0B0B0B] px-4 py-2 hover:bg-white transition-colors"
           >
             Diagnóstico Grátis
@@ -106,7 +107,8 @@ export function Navbar() {
               V3X Pipeline
             </Link>
             <Link
-              href="#diagnostico"
+              href="https://app.grupov3x.com.br"
+              target="_blank"
               onClick={() => setOpen(false)}
               className="text-center text-sm font-[family-name:var(--font-montserrat)] font-semibold bg-[#F5C242] text-[#0B0B0B] px-4 py-3"
             >
