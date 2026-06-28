@@ -31,7 +31,7 @@ export function Navbar() {
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="h-[68px] flex items-center justify-between relative">
+        <div className="h-[76px] flex items-center justify-between relative">
 
           {/* Logo — bigger, black bg removed via mix-blend-mode */}
           <Link href="/" className="flex items-center flex-shrink-0">
@@ -40,7 +40,7 @@ export function Navbar() {
               alt="V3X — Estratégia · Escala · Performance"
               width={130}
               height={52}
-              className="h-10 w-auto object-contain"
+              className="h-14 w-auto object-contain"
               style={{ mixBlendMode: "screen" }}
               priority
             />
