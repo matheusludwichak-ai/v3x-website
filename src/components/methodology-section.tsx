@@ -44,7 +44,7 @@ export function MethodologySection() {
             </h2>
           </div>
           <p className="text-sm text-[#F3F3F3]/40 font-[family-name:var(--font-inter)] max-w-sm">
-            Mais de R$ 4M gerados para empresas aplicando esses três pilares de forma sistemática.
+            Mais de R$ 4M gerados.
           </p>
         </ScrollReveal>
 

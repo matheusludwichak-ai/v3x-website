@@ -2,6 +2,12 @@
 
 import Link from "next/link";
 import { useEffect, useRef } from "react";
+import { TrendingUp, Users } from "lucide-react";
+
+const toolsPreview = [
+  { slug: "calculadora-roi", label: "Calculadora de ROI", Icon: TrendingUp },
+  { slug: "calculadora-cac", label: "Calculadora de CAC", Icon: Users },
+];
 
 export function Hero() {
   const titleRef = useRef<HTMLHeadingElement>(null);
@@ -20,7 +26,7 @@ export function Hero() {
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#0B0B0B]">
-      {/* Animated grid */}
+      {/* Grid */}
       <div
         className="absolute inset-0 opacity-[0.035]"
         style={{
@@ -29,10 +35,10 @@ export function Hero() {
         }}
       />
 
-      {/* Glow center */}
+      {/* Glow */}
       <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] md:w-[700px] h-[500px] md:h-[700px] bg-[#F5C242]/4 blur-[140px] pointer-events-none animate-pulse" style={{ animationDuration: "4s" }} />
 
-      {/* Corner accents — hidden on mobile */}
+      {/* Corner accents */}
       <div className="hidden sm:block absolute top-24 left-0 w-32 h-px bg-gradient-to-r from-[#F5C242]/40 to-transparent" />
       <div className="hidden sm:block absolute top-24 left-0 w-px h-32 bg-gradient-to-b from-[#F5C242]/40 to-transparent" />
       <div className="hidden sm:block absolute top-24 right-0 w-32 h-px bg-gradient-to-l from-[#F5C242]/40 to-transparent" />
@@ -55,9 +61,9 @@ export function Hero() {
           ref={titleRef}
           className="font-[family-name:var(--font-anton)] text-5xl sm:text-7xl md:text-8xl text-white leading-none tracking-wide mb-6"
         >
-          SUA EMPRESA
+          GESTÃO COM DADOS,
           <br />
-          <span className="text-[#F5C242]">NO PRÓXIMO NÍVEL</span>
+          <span className="text-[#F5C242]">CRESCIMENTO COM MÉTODO</span>
         </h1>
 
         {/* Sub */}
@@ -65,40 +71,63 @@ export function Hero() {
           className="text-base sm:text-lg text-[#F3F3F3]/60 font-[family-name:var(--font-inter)] max-w-2xl mx-auto leading-relaxed mb-10"
           style={{ opacity: 0, animation: "fadeInUp 0.7s ease 0.5s forwards" }}
         >
-          A V3X é um ecossistema de ferramentas e metodologias para empresas
-          que faturam entre R$ 20k e R$ 5M/mês e querem crescer com
-          estratégia, dados e inteligência.
+          Ferramentas gratuitas, conteúdo estratégico e diagnóstico empresarial
+          para quem quer entender o negócio antes de tomar decisão.
         </p>
 
-        {/* CTAs */}
+        {/* Tool shortcuts */}
+        <div
+          className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-8"
+          style={{ opacity: 0, animation: "fadeInUp 0.7s ease 0.65s forwards" }}
+        >
+          {toolsPreview.map(({ slug, label, Icon }) => (
+            <Link
+              key={slug}
+              href={`/ferramentas/${slug}`}
+              className="group flex items-center gap-2.5 border border-[#2A2A2A] bg-[#111111] hover:border-[#F5C242]/40 hover:bg-[#141414] transition-all duration-200 px-4 py-2.5 text-[12px] font-[family-name:var(--font-montserrat)] font-semibold text-[#F3F3F3]/50 hover:text-white tracking-wide w-full sm:w-auto justify-center"
+            >
+              <Icon size={13} className="text-[#F5C242]/60 group-hover:text-[#F5C242] transition-colors" />
+              {label}
+              <span className="text-[#F5C242]/40 group-hover:text-[#F5C242] transition-colors group-hover:translate-x-0.5 inline-block">→</span>
+            </Link>
+          ))}
+          <Link
+            href="/ferramentas"
+            className="text-[11px] font-[family-name:var(--font-montserrat)] font-semibold text-[#F3F3F3]/25 hover:text-[#F5C242]/60 transition-colors tracking-wider"
+          >
+            +18 ferramentas →
+          </Link>
+        </div>
+
+        {/* Primary CTA */}
         <div
           className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4"
-          style={{ opacity: 0, animation: "fadeInUp 0.7s ease 0.7s forwards" }}
+          style={{ opacity: 0, animation: "fadeInUp 0.7s ease 0.8s forwards" }}
         >
           <Link
             href="https://app.grupov3x.com.br"
             target="_blank"
             className="group w-full sm:w-auto font-[family-name:var(--font-montserrat)] font-semibold text-sm bg-[#F5C242] text-[#0B0B0B] px-8 py-4 hover:bg-white transition-all duration-200 hover:scale-[1.02] tracking-wide text-center"
           >
-            Fazer Diagnóstico Gratuito
+            Diagnóstico Gratuito
             <span className="inline-block ml-1 group-hover:translate-x-1 transition-transform duration-200">→</span>
           </Link>
           <Link
-            href="#produtos"
-            className="w-full sm:w-auto font-[family-name:var(--font-montserrat)] font-semibold text-sm border border-[#2A2A2A] text-[#F3F3F3] px-8 py-4 hover:border-[#F5C242] hover:text-white transition-all duration-200 tracking-wide text-center"
+            href="/guias"
+            className="w-full sm:w-auto font-[family-name:var(--font-montserrat)] font-semibold text-sm border border-[#2A2A2A] text-[#F3F3F3] px-8 py-4 hover:border-[#F5C242]/40 hover:text-white transition-all duration-200 tracking-wide text-center"
           >
-            Conhecer os Produtos
+            Ver Guias →
           </Link>
         </div>
 
         {/* Stats */}
         <div
           className="mt-14 md:mt-16 pt-8 border-t border-[#2A2A2A] grid grid-cols-3 gap-4 md:gap-6 max-w-xl mx-auto"
-          style={{ opacity: 0, animation: "fadeInUp 0.7s ease 0.9s forwards" }}
+          style={{ opacity: 0, animation: "fadeInUp 0.7s ease 1s forwards" }}
         >
           {[
             { value: "R$ 4M+", label: "Gerados pelo método" },
-            { value: "5", label: "Dimensões analisadas" },
+            { value: "20", label: "Ferramentas gratuitas" },
             { value: "15 min", label: "Para o diagnóstico" },
           ].map((s) => (
             <div key={s.label} className="text-center group cursor-default">
