@@ -65,7 +65,7 @@ export function Navbar() {
             <Link
               href="https://pipeline.grupov3x.com.br"
               target="_blank"
-              className="btn-border-glow text-[13px] font-[family-name:var(--font-montserrat)] font-semibold text-[#F3F3F3]/70 hover:text-white transition-all duration-200 px-4 py-2 border border-[#2A2A2A] hover:border-[#F5C242]/50 hover:bg-[#1A1A1A]"
+              className="btn-border-glow text-[13px] font-[family-name:var(--font-montserrat)] font-semibold text-white transition-all duration-200 px-5 py-[9px] border border-[#F5C242]/60 bg-[#1A1A1A] hover:bg-[#252525] hover:border-[#F5C242] tracking-wide"
             >
               Pipeline
             </Link>
