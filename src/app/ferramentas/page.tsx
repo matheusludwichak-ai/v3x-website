@@ -119,7 +119,7 @@ export default function FerramentasPage() {
             Diagnóstico Empresarial
           </p>
           <h2 className="text-[32px] sm:text-[44px] font-[family-name:var(--font-anton)] text-white leading-tight mb-4">
-            OS NÚMEROS ESTÃO.<br className="hidden sm:block" /> O DIAGNÓSTICO FALTA.
+            VÁ ALÉM DOS NÚMEROS:<br className="hidden sm:block" /> ENTENDA O QUE ESTÁ TRAVANDO.
           </h2>
           <p className="text-[14px] text-[#F3F3F3]/50 max-w-lg mx-auto mb-8 leading-relaxed">
             As calculadoras mostram o que medir. O V3X Diagnóstico mostra o que está travando — com benchmarking do seu segmento e plano de ação.
