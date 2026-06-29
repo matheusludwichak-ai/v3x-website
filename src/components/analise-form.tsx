@@ -111,14 +111,31 @@ export function AnaliseForm() {
       if (typeof window !== "undefined" && (window as any).gtag) {
         (window as any).gtag("event", "conversion", { send_to: "AW-CONVERSION_ID/CONVERSION_LABEL" });
       }
-      await fetch("/api/analise", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          ...fields,
+      const scriptUrl = process.env.NEXT_PUBLIC_GOOGLE_SCRIPT_URL;
+      if (scriptUrl) {
+        const params = new URLSearchParams({
+          nome: fields.nome,
+          whatsapp: fields.whatsapp,
+          empresa: fields.empresa,
+          faturamento: fields.faturamento,
+          colaboradores: fields.colaboradores,
+          areaFoco: fields.areaFoco,
+          crescimento: fields.crescimento,
           origem: document.referrer || "direto",
-        }),
-      });
+        });
+        // no-cors: response is opaque but data is written to the sheet
+        await fetch(`${scriptUrl}?${params.toString()}`, {
+          method: "GET",
+          mode: "no-cors",
+        }).catch(() => null);
+      } else {
+        // fallback: API route
+        await fetch("/api/analise", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ ...fields, origem: document.referrer || "direto" }),
+        });
+      }
       router.push("/analise/obrigado");
     } catch {
       setLoading(false);
