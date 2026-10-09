@@ -1,30 +1,17 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import Link from "next/link";
 import Image from "next/image";
-import { CheckCircle2 } from "lucide-react";
+import { CheckCircle2, MessageCircle } from "lucide-react";
+
+const WA_NUMBER = "5547992770101";
+const WA_MSG = encodeURIComponent(
+  "Olá Matheus! Acabei de preencher o formulário da V3X e gostaria de conversar sobre a Análise Estratégica Gratuita."
+);
+const WA_URL = `https://wa.me/${WA_NUMBER}?text=${WA_MSG}`;
 
 export default function ObrigadoPage() {
-  const [countdown, setCountdown] = useState(8);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCountdown((prev) => {
-        if (prev <= 1) {
-          clearInterval(interval);
-          window.location.href = "https://grupov3x.com.br";
-          return 0;
-        }
-        return prev - 1;
-      });
-    }, 1000);
-    return () => clearInterval(interval);
-  }, []);
-
   return (
     <div className="min-h-screen bg-[#0B0B0B] flex flex-col items-center justify-center px-4 text-center">
-      {/* Grid bg */}
       <div
         className="fixed inset-0 opacity-[0.025] pointer-events-none"
         style={{
@@ -35,7 +22,6 @@ export default function ObrigadoPage() {
       <div className="fixed top-0 left-1/2 -translate-x-1/2 w-[500px] h-[400px] bg-[#F5C242]/4 blur-[120px] pointer-events-none" />
 
       <div className="relative z-10 flex flex-col items-center max-w-lg w-full">
-
         <Image
           src="/logo.png"
           alt="V3X"
@@ -50,26 +36,29 @@ export default function ObrigadoPage() {
         </div>
 
         <p className="text-[10px] font-[family-name:var(--font-montserrat)] font-bold text-[#F5C242] tracking-[0.3em] uppercase mb-4">
-          Solicitação Recebida
+          Concluído
         </p>
 
         <h1 className="font-[family-name:var(--font-anton)] text-[40px] sm:text-[52px] text-white leading-tight mb-5">
-          SOLICITAÇÃO<br />RECEBIDA!
+          RECEBEMOS<br />SUA SOLICITAÇÃO
         </h1>
 
-        <p className="text-[14px] text-[#F3F3F3]/50 font-[family-name:var(--font-inter)] leading-relaxed mb-8 max-w-sm">
-          Recebemos sua solicitação. Nossa equipe analisará as informações e entrará em contato caso sua empresa esteja dentro do perfil da análise.
+        <p className="text-[15px] text-[#F3F3F3]/50 font-[family-name:var(--font-inter)] leading-relaxed mb-10 max-w-sm">
+          Analisaremos as informações e entraremos em contato em breve. Se preferir, você pode me chamar agora no WhatsApp.
         </p>
 
-        <Link
-          href="https://grupov3x.com.br"
-          className="btn-glow-gold font-[family-name:var(--font-montserrat)] font-bold text-[13px] bg-[#F5C242] text-[#0B0B0B] px-8 py-3.5 hover:bg-white transition-all duration-200 tracking-wide mb-8"
+        <a
+          href={WA_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center gap-3 bg-[#25D366] text-white font-[family-name:var(--font-montserrat)] font-bold text-[14px] px-8 py-4 hover:bg-[#1ebe5d] transition-all duration-200 tracking-wide"
         >
-          Conhecer o Grupo V3X →
-        </Link>
+          <MessageCircle size={18} />
+          Falar com Matheus no WhatsApp
+        </a>
 
-        <p className="text-[11px] text-[#F3F3F3]/20 font-[family-name:var(--font-inter)]">
-          Redirecionando automaticamente em {countdown}s...
+        <p className="text-[11px] text-[#F3F3F3]/20 font-[family-name:var(--font-inter)] mt-8">
+          © {new Date().getFullYear()} Grupo V3X · grupov3x.com.br
         </p>
       </div>
     </div>

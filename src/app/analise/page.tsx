@@ -26,6 +26,7 @@ export default function AnalisePage() {
         'https://connect.facebook.net/en_US/fbevents.js');
         fbq('init', '2022390945071924');
         fbq('track', 'PageView');
+        fbq('track', 'ViewContent');
       `}</Script>
 
       {/* ── Google Tag Manager ──────────────────────────────────────────────

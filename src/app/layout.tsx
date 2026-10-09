@@ -96,6 +96,13 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "https://grupov3x.com.br",
   },
+  icons: {
+    icon: [
+      { url: "/icon.png", sizes: "any" },
+    ],
+    apple: "/icon.png",
+    shortcut: "/icon.png",
+  },
 };
 
 export default function RootLayout({
