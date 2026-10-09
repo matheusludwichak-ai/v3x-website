@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
-import Link from "next/link";
 import Image from "next/image";
+import { notFound } from "next/navigation";
 import { PageHero } from "@/components/page-hero";
 import { Reveal } from "@/components/reveal";
 import { StatusBadge } from "@/components/status-badge";
-import { getProject, projects } from "@/data/projects";
+import { CtaBand } from "@/components/site/cta-band";
+import { getProject, projects, type GalleryItem } from "@/data/projects";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -19,7 +19,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const project = getProject(slug);
   if (!project) return {};
-
   return {
     title: project.name,
     description: project.summary,
@@ -27,80 +26,89 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
+function Shot({ item, label, sizes, caption }: { item: GalleryItem; label: string; sizes: string; caption?: string }) {
+  return (
+    <figure>
+      <div className="browser">
+        <div className="browser-bar"><i /><i /><i /><u>{label}</u></div>
+        <Image src={item.src} alt={item.alt} width={item.width} height={item.height} sizes={sizes} className="h-auto w-full" />
+      </div>
+      {caption && <figcaption className="mt-3 text-sm text-muted-foreground">{caption.charAt(0).toUpperCase() + caption.slice(1)}</figcaption>}
+    </figure>
+  );
+}
+
 export default async function ProjectPage({ params }: Props) {
   const { slug } = await params;
   const project = getProject(slug);
   if (!project) notFound();
 
+  const screens = project.gallery.filter((g) => g.height / g.width > 0.5);
+  const strips = project.gallery.filter((g) => g.height / g.width <= 0.5);
+  const [lead, ...rest] = screens;
+  const label = project.name.toLowerCase();
+
   return (
     <>
-      <PageHero eyebrow={project.category} crumb={project.name} title={project.name}>
-        <div className="mt-6 flex flex-wrap items-center gap-4">
+      <PageHero eyebrow={project.category} crumb={project.name} title={project.name} lead={project.summary}>
+        <div className="hero-in hero-in-3 mt-8 flex flex-wrap items-center gap-3">
           <StatusBadge status={project.status} />
           {project.tech.map((t) => (
-            <span key={t} className="numbering text-dark-400">
-              {t}
-            </span>
+            <span key={t} className="rounded-full border border-white/12 px-3.5 py-1.5 text-xs text-foreground/85">{t}</span>
           ))}
         </div>
       </PageHero>
 
-      <section className="bg-paper py-20 md:py-28">
-        <div className="mx-auto max-w-[1280px] px-6">
-          <Reveal className="grid grid-cols-1 gap-12 lg:grid-cols-2">
-            <div>
-              <p className="eyebrow text-neutral-600">Problema / oportunidade</p>
-              <p className="mt-4 text-lg leading-relaxed text-neutral-800">{project.problem}</p>
-            </div>
-            <div>
-              <p className="eyebrow text-neutral-600">Nossa contribuição</p>
-              <p className="mt-4 text-lg leading-relaxed text-neutral-800">{project.contribution}</p>
-              {project.credits && (
-                <p className="mt-4 text-[14px] text-neutral-600">{project.credits}</p>
+      {lead && (
+        <section className="mx-auto max-w-[1280px] px-6 pt-20 md:px-12 md:pt-28">
+          <Reveal className="case-stage p-4 sm:p-10">
+            <Shot item={lead} label={label} sizes="(min-width: 1280px) 1180px, 100vw" />
+          </Reveal>
+        </section>
+      )}
+
+      <section className="mx-auto grid max-w-[1280px] gap-12 px-6 py-20 md:px-12 md:py-28 lg:grid-cols-2">
+        <Reveal>
+          <p className="eyebrow">Problema e oportunidade</p>
+          <p className="mt-6 text-xl leading-relaxed text-foreground/90">{project.problem}</p>
+        </Reveal>
+        <Reveal delay={100}>
+          <p className="eyebrow">Nossa contribuição</p>
+          <p className="mt-6 text-xl leading-relaxed text-foreground/90">{project.contribution}</p>
+          {project.credits && <p className="mt-5 text-sm text-muted-foreground">{project.credits}</p>}
+        </Reveal>
+      </section>
+
+      {(rest.length > 0 || strips.length > 0) && (
+        <section className="border-t border-border bg-[#07080f] py-20 md:py-28">
+          <div className="mx-auto max-w-[1280px] px-6 md:px-12">
+            <Reveal>
+              <p className="eyebrow">Dentro do produto</p>
+              {project.status === "Em desenvolvimento" && (
+                <p className="mt-4 max-w-[60ch] text-sm text-muted-foreground">Telas em modo demonstração, com dados fictícios.</p>
               )}
+            </Reveal>
+            <div className="mt-12 grid gap-8 md:grid-cols-2">
+              {rest.map((item, i) => (
+                <Reveal key={item.src} delay={(i % 2) * 100}>
+                  <Shot item={item} label={label} sizes="(min-width: 768px) 46vw, 100vw" caption={item.alt.replace(`${project.name}, `, "")} />
+                </Reveal>
+              ))}
             </div>
-          </Reveal>
-
-          <div className="mt-20 flex flex-col gap-10">
-            {project.gallery.map((item, i) => (
-              <Reveal key={item.src} delay={i * 60}>
-                <div className="product-window">
-                  <div className="window-bar">
-                    <span />
-                    <span />
-                    <span />
-                  </div>
-                  <div className="relative aspect-[16/10] w-full">
-                    <Image
-                      src={item.src}
-                      alt={item.alt}
-                      fill
-                      sizes="(min-width: 1024px) 1120px, 100vw"
-                      className="object-cover object-top"
-                    />
-                  </div>
-                </div>
-              </Reveal>
-            ))}
+            {strips.length > 0 && (
+              <div className="mt-8 space-y-8">
+                {strips.map((item) => (
+                  <Reveal key={item.src}>
+                    <Shot item={item} label={label} sizes="(min-width: 1280px) 1180px, 100vw" caption={item.alt.replace(`${project.name}, `, "")} />
+                  </Reveal>
+                ))}
+              </div>
+            )}
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
-      <section className="bg-ink py-20 text-on-ink md:py-28">
-        <div className="mx-auto max-w-[1280px] px-6 text-center">
-          <Reveal>
-            <h2 className="mx-auto max-w-[24ch] text-3xl font-semibold tracking-tight md:text-5xl">
-              Tem um projeto parecido em mente?
-            </h2>
-            <Link
-              href="/contato"
-              className="btn-shine btn-shine-dark mt-8 inline-flex h-12 items-center rounded-[4px] border border-[#F3F2EE] bg-[#F3F2EE] px-8 text-[16px] font-semibold text-ink transition-all hover:-translate-y-px hover:bg-neutral-200"
-            >
-              Start a project
-            </Link>
-          </Reveal>
-        </div>
-      </section>
+      <CtaBand title="Tem um projeto parecido em mente?" highlight="Vamos conversar." />
     </>
   );
 }

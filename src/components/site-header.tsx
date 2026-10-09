@@ -1,6 +1,11 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { ArrowUpRight } from "lucide-react";
 import { Logo } from "@/components/brand/Logo";
 import { MobileNav } from "@/components/mobile-nav";
+import { cn } from "@/lib/utils";
 
 const NAV_LINKS = [
   { href: "/servicos", label: "Serviços" },
@@ -10,36 +15,38 @@ const NAV_LINKS = [
 ];
 
 export function SiteHeader() {
+  const path = usePathname();
   return (
-    <header className="fixed inset-x-0 top-0 z-50 border-b border-border bg-background/85 backdrop-blur-md">
-      <div className="mx-auto flex h-16 max-w-[1280px] items-center justify-between px-6">
-        <Link href="/" aria-label="V3X — início" className="flex items-center gap-2">
-          <Logo className="w-[92px]" />
+    <header className="fixed inset-x-0 top-0 z-50">
+      <div aria-hidden className="absolute inset-0 -z-10 border-b border-white/8 bg-background/80 backdrop-blur-md" />
+      <div className="mx-auto flex h-[72px] max-w-[1280px] items-center justify-between px-6 md:px-12">
+        <Link href="/" aria-label="V3X, página inicial" className="block">
+          <Logo className="w-[104px]" />
         </Link>
 
-        <nav aria-label="Principal" className="hidden items-center gap-9 md:flex">
-          {NAV_LINKS.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="label-mono relative text-muted-foreground transition-colors hover:text-foreground"
-            >
-              {link.label}
-            </Link>
-          ))}
-          <Link href="/login" className="label-mono transition-colors hover:text-primary">
-            Control ↗
+        <nav aria-label="Principal" className="hidden items-center gap-9 text-sm md:flex">
+          {NAV_LINKS.map((link) => {
+            const active = path === link.href || path.startsWith(`${link.href}/`);
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                aria-current={active ? "page" : undefined}
+                className={cn("nav-link transition-colors hover:text-foreground", active ? "text-foreground" : "text-muted-foreground")}
+              >
+                {link.label}
+                {active && <span aria-hidden className="absolute -bottom-[25px] left-0 h-[2px] w-full bg-gradient-x" />}
+              </Link>
+            );
+          })}
+          <Link href="/login" className="nav-link text-muted-foreground transition-colors hover:text-foreground">
+            Control
           </Link>
         </nav>
 
-        <div className="hidden items-center md:flex">
-          <Link
-            href="/contato"
-            className="label-mono inline-flex h-10 items-center rounded-sm border border-border bg-primary px-5 text-primary-foreground transition-all hover:-translate-y-px hover:brightness-110"
-          >
-            Começar um projeto
-          </Link>
-        </div>
+        <Link href="/contato" className="btn-primary hidden h-10 px-5 text-sm md:inline-flex">
+          Começar um projeto <ArrowUpRight className="size-4" />
+        </Link>
 
         <MobileNav links={NAV_LINKS} />
       </div>

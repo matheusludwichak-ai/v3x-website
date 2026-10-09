@@ -12,14 +12,14 @@ export default function TermosPage() {
   return (
     <>
       <PageHero eyebrow="Legal" crumb="Termos" title="Termos de Uso" />
-      <section className="bg-paper py-16 md:py-20">
-        <div className="mx-auto max-w-[760px] px-6">
+      <section className="py-16 md:py-24">
+        <div className="mx-auto max-w-[820px] px-6">
           <div className="prose-v3x">
             <p>Última atualização: 9 de outubro de 2026.</p>
             <h2>1. Sobre este site</h2>
             <p>
               Este site (grupov3x.com.br) é o site institucional da V3X, um digital product studio.
-              Ele apresenta nossos serviços, projetos e canais de contato — não processa pagamentos
+              Ele apresenta nossos serviços, projetos e canais de contato. Não processa pagamentos
               nem oferece um produto próprio diretamente.
             </p>
             <h2>2. Uso do formulário de contato</h2>
@@ -31,12 +31,12 @@ export default function TermosPage() {
             <h2>3. Projetos e serviços</h2>
             <p>
               Qualquer projeto contratado com a V3X é regido por um contrato ou proposta comercial
-              específica, com escopo, prazo e valores acordados separadamente — estes Termos cobrem
+              específica, com escopo, prazo e valores acordados separadamente. Estes Termos cobrem
               apenas o uso deste site.
             </p>
             <h2>4. Propriedade intelectual</h2>
             <p>
-              Todo o conteúdo deste site — identidade visual, textos, imagens de projetos próprios —
+              Todo o conteúdo deste site (identidade visual, textos e imagens de projetos próprios)
               é de propriedade da V3X. É vedada a reprodução sem autorização expressa.
             </p>
             <h2>5. Contato</h2>

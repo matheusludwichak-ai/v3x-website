@@ -3,7 +3,7 @@ import { PageHero } from "@/components/page-hero";
 
 export const metadata: Metadata = {
   title: "Política de Privacidade",
-  description: "Política de Privacidade da V3X — como coletamos, usamos e protegemos seus dados.",
+  description: "Política de Privacidade da V3X, como coletamos, usamos e protegemos seus dados.",
   alternates: { canonical: "https://grupov3x.com.br/privacidade" },
   robots: { index: false, follow: false },
 };
@@ -12,14 +12,13 @@ export default function PrivacidadePage() {
   return (
     <>
       <PageHero eyebrow="Legal" crumb="Privacidade" title="Política de Privacidade" />
-      <section className="bg-paper py-16 md:py-20">
-        <div className="mx-auto max-w-[760px] px-6">
+      <section className="py-16 md:py-24">
+        <div className="mx-auto max-w-[820px] px-6">
           <div className="prose-v3x">
             <p>Última atualização: 9 de outubro de 2026.</p>
             <h2>1. Coleta de dados</h2>
             <p>
-              Coletamos apenas os dados que você nos envia voluntariamente através do formulário de
-              contato — nome, e-mail, empresa e informações sobre o projeto — além de dados de
+              Coletamos apenas os dados que você nos envia voluntariamente através do formulário de contato (nome, e-mail, empresa e informações sobre o projeto), além de dados de
               navegação anônimos via Google Analytics.
             </p>
             <h2>2. Uso dos dados</h2>

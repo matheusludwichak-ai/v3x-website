@@ -6,7 +6,7 @@ import { services } from "@/data/services";
 type Status = "idle" | "submitting" | "success" | "error";
 
 const inputClass =
-  "w-full rounded-[4px] border border-neutral-200 bg-white px-4 py-3 text-base text-ink placeholder:text-neutral-600 focus-visible:border-accent focus-visible:shadow-[0_0_0_3px_rgba(59,110,255,0.18)] focus-visible:outline-none";
+  "w-full rounded-xl border border-white/12 bg-[#0b0d1a] px-4 py-3 text-base text-foreground outline-none transition-colors placeholder:text-muted-foreground/70 hover:border-white/25 focus-visible:border-[#3882F6] focus-visible:ring-3 focus-visible:ring-[#3882F6]/25";
 
 export function ContactForm() {
   const [status, setStatus] = useState<Status>("idle");
@@ -46,9 +46,9 @@ export function ContactForm() {
 
   if (status === "success") {
     return (
-      <div className="border-t border-neutral-200 pt-8">
-        <p className="eyebrow text-accent">Recebemos sua mensagem</p>
-        <p className="mt-4 max-w-[48ch] text-lg leading-relaxed text-ink">
+      <div className="rounded-[28px] border border-white/10 bg-[#07080f] p-10" role="status">
+        <p className="eyebrow">Recebemos sua mensagem</p>
+        <p className="mt-5 max-w-[48ch] text-lg leading-relaxed text-foreground">
           Obrigado pelo contato. Vamos ler com calma e responder em até 1 dia útil no e-mail
           informado.
         </p>
@@ -103,21 +103,21 @@ export function ContactForm() {
 
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
         <Field label="Faixa de investimento" htmlFor="investimento" optional>
-          <input id="investimento" name="investimento" type="text" className={inputClass} placeholder="Ex: R$ 15k – 30k" />
+          <input id="investimento" name="investimento" type="text" className={inputClass} placeholder="Ex.: R$ 15 mil a 30 mil" />
         </Field>
         <Field label="Prazo desejado" htmlFor="prazo" optional>
-          <input id="prazo" name="prazo" type="text" className={inputClass} placeholder="Ex: 2 meses" />
+          <input id="prazo" name="prazo" type="text" className={inputClass} placeholder="Ex.: 2 meses" />
         </Field>
       </div>
 
-      {status === "error" && <p className="text-[14px] text-red-700">{errorMsg}</p>}
+      {status === "error" && <p role="alert" className="text-sm text-[#c4b5fd]">{errorMsg}</p>}
 
       <button
         type="submit"
         disabled={status === "submitting"}
-        className="btn-shine mt-2 inline-flex h-12 w-fit items-center rounded-[4px] border border-ink bg-ink px-8 text-[16px] font-semibold text-on-ink transition-all hover:-translate-y-px hover:bg-neutral-800 disabled:opacity-50"
+        className="btn-primary mt-2 w-fit disabled:opacity-50"
       >
-        {status === "submitting" ? "Enviando…" : "Enviar mensagem"}
+        {status === "submitting" ? "Enviando..." : "Enviar mensagem"}
       </button>
     </form>
   );
@@ -136,8 +136,8 @@ function Field({
 }) {
   return (
     <div className="flex flex-col gap-2">
-      <label htmlFor={htmlFor} className="eyebrow text-neutral-600">
-        {label} {optional && <span className="normal-case text-neutral-400">(opcional)</span>}
+      <label htmlFor={htmlFor} className="text-sm font-medium text-foreground/90">
+        {label} {optional && <span className="font-normal text-muted-foreground">(opcional)</span>}
       </label>
       {children}
     </div>

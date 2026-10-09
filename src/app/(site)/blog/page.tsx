@@ -1,14 +1,16 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
 import { PageHero } from "@/components/page-hero";
 import { Reveal } from "@/components/reveal";
 import { BlogTabs } from "@/components/blog-tabs";
+import { XMark } from "@/components/brand/XMark";
+import { CtaBand } from "@/components/site/cta-band";
 import { getAllPosts } from "@/lib/posts";
-import { services } from "@/data/services";
 
 export const metadata: Metadata = {
   title: "Blog",
-  description: "Web design, motion design, software e produtos digitais — conteúdo da V3X.",
+  description: "Web design, motion design, software e produtos digitais: conteúdo da V3X.",
   alternates: { canonical: "https://grupov3x.com.br/blog" },
 };
 
@@ -32,66 +34,44 @@ export default async function BlogPage() {
       <PageHero
         eyebrow="Blog V3X"
         crumb="Blog"
-        title="Conteúdo que gera resultado."
-        lead="Sobre web design, motion design, sistemas e produtos digitais — o que realmente usamos para construir."
-      >
-        <div className="mt-8 flex flex-wrap gap-2">
-          {services.map((s) => (
-            <span
-              key={s.slug}
-              className="eyebrow rounded-full border border-dark-border px-4 py-2 text-dark-600"
-            >
-              {s.name}
-            </span>
-          ))}
-        </div>
-      </PageHero>
+        title={<>O que usamos <span className="text-gradient-x">para construir.</span></>}
+        lead="Web design, motion design, sistemas e produtos digitais, escrito por quem executa."
+      />
 
       {featured && (
-        <section className="bg-paper pt-20 md:pt-28">
-          <div className="mx-auto max-w-[1280px] px-6">
-            <Reveal>
-              <Link
-                href={`/blog/${featured.slug}`}
-                className="group grid grid-cols-1 items-center gap-10 border-b border-neutral-200 pb-16 lg:grid-cols-[1fr_1.1fr]"
-              >
-                <div>
-                  <p className="eyebrow text-accent">Em destaque</p>
-                  <h2 className="mt-5 text-3xl font-bold leading-tight tracking-tight text-ink transition-colors group-hover:text-accent md:text-5xl">
-                    {featured.title}
-                  </h2>
-                  <p className="mt-5 max-w-[56ch] text-lg leading-relaxed text-neutral-600">
-                    {featured.excerpt}
-                  </p>
-                  <p className="eyebrow mt-6 inline-flex items-center gap-2 text-ink">
-                    Ler artigo
-                    <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
-                  </p>
-                </div>
-                <div className="relative overflow-hidden rounded-[8px] border border-neutral-200 bg-ink p-10">
-                  <p className="eyebrow text-dark-600">{featured.category}</p>
-                  <p className="mt-6 text-2xl font-semibold leading-snug text-on-ink">
-                    {featured.title}
-                  </p>
-                  <p className="numbering mt-8 text-dark-400">{featured.readingTime}</p>
-                  <div
-                    className="absolute -right-10 -top-10 h-40 w-40 rounded-full opacity-20 blur-2xl"
-                    style={{ background: "var(--gradient-signature)" }}
-                  />
-                </div>
-              </Link>
-            </Reveal>
-          </div>
+        <section className="mx-auto max-w-[1280px] px-6 pt-20 md:px-12 md:pt-28">
+          <Reveal>
+            <Link href={`/blog/${featured.slug}`} className="group grid items-stretch gap-8 lg:grid-cols-12">
+              <div className="flex flex-col justify-center lg:col-span-6">
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#7fb2ff]">{featured.category}</p>
+                <h2 className="mt-5 text-balance text-3xl font-semibold leading-[1.1] tracking-[-0.03em] transition-colors md:text-5xl">
+                  {featured.title}
+                </h2>
+                <p className="mt-5 max-w-[54ch] text-lg leading-relaxed text-muted-foreground">{featured.excerpt}</p>
+                <span className="link-underline mt-8 inline-flex w-fit items-center gap-2 font-medium">
+                  Ler artigo <ArrowUpRight className="size-4" />
+                </span>
+              </div>
+              <div className="case-stage relative flex min-h-72 flex-col justify-between overflow-hidden p-8 lg:col-span-6">
+                <XMark className="pointer-events-none absolute -right-10 -top-6 w-[360px] opacity-90 transition-transform duration-700 ease-out group-hover:-translate-x-2 group-hover:translate-y-1" />
+                <span className="relative text-xs uppercase tracking-[0.2em] text-muted-foreground">Artigo em destaque</span>
+                <span className="relative">
+                  <span className="block text-2xl font-semibold">{featured.category}</span>
+                  <span className="mt-1 block text-sm text-muted-foreground">{featured.readingTime}</span>
+                </span>
+              </div>
+            </Link>
+          </Reveal>
         </section>
       )}
 
-      <section className="bg-paper py-20 md:py-28">
-        <div className="mx-auto max-w-[1280px] px-6">
-          <Reveal>
-            <BlogTabs posts={rest.length > 0 ? rest : posts} />
-          </Reveal>
-        </div>
+      <section className="mx-auto max-w-[1280px] px-6 py-20 md:px-12 md:py-28">
+        <Reveal>
+          <BlogTabs posts={rest.length > 0 ? rest : posts} />
+        </Reveal>
       </section>
+
+      <CtaBand title="Quer colocar isso em prática" highlight="no seu projeto?" />
     </>
   );
 }

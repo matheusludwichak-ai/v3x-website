@@ -26,7 +26,7 @@ export function BlogTabs({ posts }: { posts: Post[] }) {
 
   return (
     <div>
-      <div className="relative flex flex-wrap gap-2 border-b border-neutral-200 pb-px">
+      <div role="group" aria-label="Filtrar por categoria" className="relative flex flex-wrap gap-1 border-b border-border pb-px">
         {categories.map((cat, i) => (
           <button
             key={cat}
@@ -36,8 +36,8 @@ export function BlogTabs({ posts }: { posts: Post[] }) {
             type="button"
             onClick={() => setActive(cat)}
             aria-pressed={active === cat}
-            className={`eyebrow relative px-4 py-3 transition-colors ${
-              active === cat ? "text-ink" : "text-neutral-400 hover:text-neutral-800"
+            className={`relative px-4 py-3 text-sm transition-colors ${
+              active === cat ? "text-foreground" : "text-muted-foreground hover:text-foreground"
             }`}
           >
             {cat}
@@ -48,27 +48,27 @@ export function BlogTabs({ posts }: { posts: Post[] }) {
           style={{
             left: indicator.left,
             width: indicator.width,
-            background: "var(--gradient-signature)",
+            background: "var(--gradient-x)",
           }}
         />
       </div>
 
       {filtered.length === 0 ? (
-        <p className="mt-14 text-neutral-600">Nenhum artigo nessa categoria ainda.</p>
+        <p className="mt-14 text-muted-foreground">Nenhum artigo nessa categoria ainda.</p>
       ) : (
-        <div className="mt-14 grid grid-cols-1 gap-x-8 gap-y-14 md:grid-cols-3">
+        <div className="mt-12 grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
           {filtered.map((post) => (
             <Link
               key={post.slug}
               href={`/blog/${post.slug}`}
-              className="group block border-t border-neutral-200 pt-6 transition-transform duration-300 hover:-translate-y-1"
+              className="group flex h-full flex-col rounded-[24px] border border-white/10 bg-white/[0.02] p-7 transition-[transform,border-color,background-color] duration-300 hover:-translate-y-1 hover:border-white/25 hover:bg-white/[0.04]"
             >
-              <p className="eyebrow text-neutral-600">{post.category}</p>
-              <h2 className="mt-4 text-xl font-semibold leading-snug text-ink group-hover:text-accent">
+              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#7fb2ff]">{post.category}</p>
+              <h2 className="mt-4 text-xl font-semibold leading-snug tracking-tight">
                 {post.title}
               </h2>
-              <p className="mt-3 text-[15px] leading-relaxed text-neutral-600">{post.excerpt}</p>
-              <p className="numbering mt-5 flex items-center gap-2 text-neutral-400">
+              <p className="mt-3 text-[15px] leading-relaxed text-muted-foreground">{post.excerpt}</p>
+              <p className="mt-auto flex items-center gap-2 pt-6 text-sm text-muted-foreground">
                 {post.readingTime}
                 <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
               </p>
