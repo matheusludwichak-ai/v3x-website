@@ -1,0 +1,53 @@
+import type { Metadata } from "next";
+import { PageHero } from "@/components/page-hero";
+
+export const metadata: Metadata = {
+  title: "Política de Privacidade",
+  description: "Política de Privacidade da V3X — como coletamos, usamos e protegemos seus dados.",
+  alternates: { canonical: "https://grupov3x.com.br/privacidade" },
+  robots: { index: false, follow: false },
+};
+
+export default function PrivacidadePage() {
+  return (
+    <>
+      <PageHero eyebrow="Legal" crumb="Privacidade" title="Política de Privacidade" />
+      <section className="bg-paper py-16 md:py-20">
+        <div className="mx-auto max-w-[760px] px-6">
+          <div className="prose-v3x">
+            <p>Última atualização: 9 de outubro de 2026.</p>
+            <h2>1. Coleta de dados</h2>
+            <p>
+              Coletamos apenas os dados que você nos envia voluntariamente através do formulário de
+              contato — nome, e-mail, empresa e informações sobre o projeto — além de dados de
+              navegação anônimos via Google Analytics.
+            </p>
+            <h2>2. Uso dos dados</h2>
+            <p>
+              Os dados enviados pelo formulário de contato são usados exclusivamente para avaliar e
+              responder à sua solicitação de projeto. Não usamos esses dados para nenhuma outra
+              finalidade.
+            </p>
+            <h2>3. Compartilhamento</h2>
+            <p>
+              Não vendemos, alugamos ou compartilhamos seus dados pessoais com terceiros, exceto
+              quando necessário para a operação técnica do site (infraestrutura de hospedagem e
+              processamento do formulário de contato).
+            </p>
+            <h2>4. Cookies</h2>
+            <p>
+              Utilizamos cookies para análise de tráfego (Google Analytics) e para melhorar a
+              experiência de navegação. Você pode desativar cookies nas configurações do seu
+              navegador a qualquer momento.
+            </p>
+            <h2>5. Seus direitos</h2>
+            <p>
+              Você tem direito a acessar, corrigir ou solicitar a exclusão dos seus dados a qualquer
+              momento. Entre em contato: <a href="mailto:suporte@grupov3x.com.br">suporte@grupov3x.com.br</a>.
+            </p>
+          </div>
+        </div>
+      </section>
+    </>
+  );
+}

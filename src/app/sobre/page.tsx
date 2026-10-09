@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
-import { Navbar } from "@/components/navbar";
-import { Footer } from "@/components/footer";
-import { ScrollReveal } from "@/components/scroll-reveal";
+import { PageHero } from "@/components/page-hero";
+import { Reveal } from "@/components/reveal";
+import { team } from "@/data/team";
 
 export const metadata: Metadata = {
-  title: "Sobre a V3X — Estratégia, Escala e Performance",
-  description: "A V3X é um ecossistema de ferramentas e metodologias criado para empresas que faturam entre R$ 20k e R$ 5M/mês e querem crescer com inteligência.",
+  title: "Sobre",
+  description:
+    "A V3X une estratégia, design e tecnologia para transformar ideias em produtos digitais. Conheça o estúdio e os fundadores.",
   alternates: { canonical: "https://grupov3x.com.br/sobre" },
 };
 
@@ -15,94 +17,89 @@ const jsonLd = {
   "@type": "Organization",
   name: "V3X",
   url: "https://grupov3x.com.br",
-  description: "Ecossistema de ferramentas e metodologias para empresas que querem crescer com estratégia, escala e performance.",
-  slogan: "Estratégia · Escala · Performance",
+  description:
+    "V3X é um digital product studio que une estratégia, design e tecnologia para transformar ideias em produtos digitais.",
+  slogan: "We turn ideas into digital products.",
 };
 
 export default function SobrePage() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <Navbar />
-      <main className="min-h-screen bg-[#0B0B0B] pt-24">
-        <div className="border-b border-[#2A2A2A] pb-10 md:pb-12 pt-8">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6">
-            <ScrollReveal>
-              <nav className="flex items-center gap-2 text-xs text-[#F3F3F3]/40 font-[family-name:var(--font-inter)] mb-6">
-                <Link href="/" className="hover:text-[#F5C242] transition-colors">V3X</Link>
-                <span>/</span>
-                <span className="text-[#F3F3F3]/70">Sobre</span>
-              </nav>
-              <p className="text-xs font-[family-name:var(--font-montserrat)] font-semibold tracking-[0.2em] uppercase text-[#F5C242] mb-3">
-                Sobre a V3X
-              </p>
-              <h1 className="font-[family-name:var(--font-anton)] text-3xl sm:text-5xl text-white tracking-wide">
-                ESTRATÉGIA · ESCALA · PERFORMANCE
-              </h1>
-            </ScrollReveal>
-          </div>
+
+      <PageHero
+        eyebrow="Quem somos"
+        crumb="Sobre"
+        title="Unimos estratégia, design e tecnologia para transformar ideias em produtos digitais."
+      />
+
+      <section className="bg-paper py-20 md:py-28">
+        <div className="mx-auto grid max-w-[1280px] grid-cols-1 gap-12 px-6 lg:grid-cols-3">
+          {[
+            { title: "Estratégia", body: "Visão de negócio antes de qualquer tela." },
+            { title: "Design", body: "Interfaces e experiências claras de usar." },
+            { title: "Tecnologia", body: "Engenharia que sustenta o produto." },
+          ].map((item, i) => (
+            <Reveal key={item.title} delay={i * 80}>
+              <div className="border-t border-neutral-200 pt-6">
+                <h2 className="text-2xl font-semibold text-ink">{item.title}</h2>
+                <p className="mt-3 text-[15px] leading-relaxed text-neutral-600">{item.body}</p>
+              </div>
+            </Reveal>
+          ))}
         </div>
+      </section>
 
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 py-12 md:py-16 flex flex-col gap-10 md:gap-12">
-          <div className="grid md:grid-cols-2 gap-12">
-            <ScrollReveal direction="left">
-              <div>
-                <h2 className="font-[family-name:var(--font-anton)] text-2xl text-white tracking-wide mb-4">O QUE É A V3X</h2>
-                <p className="text-[#F3F3F3]/60 font-[family-name:var(--font-inter)] leading-relaxed text-sm">
-                  A V3X é um ecossistema de ferramentas e metodologias criado para empresas que faturam entre R$ 20k e R$ 5M/mês e querem crescer com estratégia, dados e inteligência — sem depender de achismos ou consultoria cara.
-                </p>
-                <p className="text-[#F3F3F3]/60 font-[family-name:var(--font-inter)] leading-relaxed text-sm mt-4">
-                  Nascemos da prática, não da teoria. Mais de R$ 4M gerados aplicando esse método em empresas reais.
-                </p>
-              </div>
-            </ScrollReveal>
-            <ScrollReveal direction="right">
-              <div>
-                <h2 className="font-[family-name:var(--font-anton)] text-2xl text-white tracking-wide mb-4">NOSSA MISSÃO</h2>
-                <p className="text-[#F3F3F3]/60 font-[family-name:var(--font-inter)] leading-relaxed text-sm">
-                  Democratizar o acesso a ferramentas e metodologias de gestão de alto nível para o empresário brasileiro — aquele que não tem tempo a perder e precisa de resultado real.
-                </p>
-              </div>
-            </ScrollReveal>
-          </div>
+      <section className="bg-ink py-20 text-on-ink md:py-28">
+        <div className="mx-auto max-w-[1280px] px-6">
+          <Reveal>
+            <p className="eyebrow text-dark-600">Fundadores</p>
+            <h2 className="mt-4 max-w-[26ch] text-3xl font-semibold tracking-tight md:text-5xl">
+              Negócios, tecnologia e finanças na mesma mesa.
+            </h2>
+          </Reveal>
 
-          <ScrollReveal>
-            <div className="grid grid-cols-3 gap-px bg-[#2A2A2A]">
-              {[
-                { value: "R$ 4M+", label: "Gerados pelo método" },
-                { value: "5", label: "Dimensões estratégicas" },
-                { value: "2", label: "Produtos no ecossistema" },
-              ].map((s) => (
-                <div key={s.label} className="bg-[#0B0B0B] p-8 text-center hover:bg-[#0F0F0F] transition-colors duration-200">
-                  <p className="font-[family-name:var(--font-bebas)] text-4xl text-[#F5C242] tracking-wide">{s.value}</p>
-                  <p className="text-xs text-[#F3F3F3]/40 font-[family-name:var(--font-inter)] mt-1">{s.label}</p>
+          <div className="mt-16 flex flex-col gap-20">
+            {team.map((member, i) => (
+              <Reveal key={member.slug} delay={i * 80}>
+                <div className="grid grid-cols-1 items-start gap-10 md:grid-cols-[280px_1fr]">
+                  <div className="relative aspect-[4/5] w-full max-w-[280px] overflow-hidden rounded-[4px] bg-dark-surface">
+                    <Image src={member.photo} alt={member.name} fill sizes="280px" className="object-cover" />
+                  </div>
+                  <div>
+                    <p className="eyebrow text-dark-600">{member.area}</p>
+                    <h3 className="mt-2 text-3xl font-semibold">{member.name}</h3>
+                    <p className="mt-1 text-[15px] font-medium text-accent">{member.role}</p>
+                    <div className="mt-5 flex max-w-[60ch] flex-col gap-4">
+                      {member.longBio.map((p) => (
+                        <p key={p} className="text-[15px] leading-relaxed text-dark-600">
+                          {p}
+                        </p>
+                      ))}
+                    </div>
+                  </div>
                 </div>
-              ))}
-            </div>
-          </ScrollReveal>
-
-          <ScrollReveal>
-            <div>
-              <h2 className="font-[family-name:var(--font-anton)] text-2xl text-white tracking-wide mb-6">O ECOSSISTEMA</h2>
-              <div className="grid md:grid-cols-2 gap-4">
-                {[
-                  { name: "V3X Diagnóstico", desc: "Análise empresarial em 8 dimensões com relatório executivo e plano de ação.", href: "https://app.grupov3x.com.br" },
-                  { name: "V3X Pipeline", desc: "CRM comercial com kanban, histórico de contatos e métricas em tempo real.", href: "https://pipeline.grupov3x.com.br" },
-                ].map((p) => (
-                  <Link key={p.name} href={p.href} target="_blank" className="group border border-[#2A2A2A] bg-[#1A1A1A] hover:border-[#F5C242]/40 hover:translate-y-[-4px] transition-all duration-200 p-6">
-                    <p className="font-[family-name:var(--font-montserrat)] font-semibold text-[#F5C242] text-sm mb-2">{p.name}</p>
-                    <p className="text-sm text-[#F3F3F3]/50 font-[family-name:var(--font-inter)] leading-relaxed">{p.desc}</p>
-                    <p className="text-xs text-[#F5C242] font-[family-name:var(--font-montserrat)] font-semibold mt-4 group-hover:gap-2 flex items-center gap-1 transition-all duration-200">
-                      Conhecer →
-                    </p>
-                  </Link>
-                ))}
-              </div>
-            </div>
-          </ScrollReveal>
+              </Reveal>
+            ))}
+          </div>
         </div>
-      </main>
-      <Footer />
+      </section>
+
+      <section className="bg-paper py-20 text-center md:py-28">
+        <div className="mx-auto max-w-[1280px] px-6">
+          <Reveal>
+            <h2 className="mx-auto max-w-[24ch] text-3xl font-semibold tracking-tight text-ink md:text-5xl">
+              Let&apos;s build something <span className="text-gradient">meaningful.</span>
+            </h2>
+            <Link
+              href="/contato"
+              className="mt-8 inline-flex h-12 items-center rounded-[4px] border border-ink bg-ink px-8 text-[16px] font-semibold text-on-ink transition-all hover:-translate-y-px hover:bg-neutral-800"
+            >
+              Start a project
+            </Link>
+          </Reveal>
+        </div>
+      </section>
     </>
   );
 }

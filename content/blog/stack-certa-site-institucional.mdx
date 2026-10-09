@@ -1,0 +1,44 @@
+---
+title: "Como escolher a stack certa para o site institucional da sua empresa"
+excerpt: "Next.js, Astro, WordPress, Webflow — a stack não importa tanto quanto parece. O que importa é o que ela permite (e impede) seu site de fazer daqui a um ano."
+date: "2026-10-09"
+category: "Web Design & Development"
+tags: ["web design", "nextjs", "performance", "seo"]
+---
+
+A pergunta errada é "qual stack é a melhor". A pergunta certa é "o que esse site precisa fazer em um ano, e qual stack não vai virar um problema quando chegar lá".
+
+## O que decide a escolha
+
+Três coisas pesam mais do que a moda da vez:
+
+**Quem vai editar o conteúdo depois.** Se é a própria equipe, sem desenvolvedor por perto, um CMS com editor visual compensa a rigidez. Se é a equipe técnica ou uma agência que mantém o site, um sistema baseado em arquivos (Markdown/MDX com Git) é mais rápido de evoluir e mais barato de manter.
+
+**Quanto o site precisa de velocidade.** Páginas estáticas (pré-renderizadas) carregam quase instantaneamente e pontuam melhor em SEO técnico. Isso importa mais para quem depende de tráfego orgânico do que para quem só recebe tráfego pago direcionado.
+
+**O quanto o site vai crescer.** Uma landing page de campanha não precisa da mesma arquitetura que um site institucional com blog, páginas de serviço e portfólio que vai dobrar de tamanho em seis meses.
+
+## Por que optamos por Next.js como padrão
+
+Na V3X, a maioria dos sites institucionais que construímos usa Next.js com renderização estática. Os motivos práticos:
+
+- Páginas pré-renderizadas no build, servidas como HTML estático — carregamento rápido sem depender de JavaScript pesado no cliente.
+- Conteúdo de blog e páginas versionado em Git, sem depender de um banco de dados externo para o que é essencialmente texto.
+- Rotas de API no mesmo projeto, quando algo precisa de lógica de servidor (formulário, integração), sem precisar de um backend separado.
+- Deploy contínuo: cada alteração publicada vira uma nova versão no ar em minutos.
+
+Isso não significa que WordPress ou Webflow estejam errados — eles resolvem bem o caso de quem precisa editar conteúdo visualmente, com frequência, sem depender de ninguém. A escolha errada é copiar a stack de outra empresa sem entender por que ela fez sentido lá.
+
+## O erro mais comum
+
+O erro mais caro não é escolher a tecnologia errada — é construir o site sem arquitetura de informação nenhuma: uma página só, longa, com todo o conteúdo empilhado, sem URLs próprias para cada assunto. Isso prejudica SEO, dificulta a navegação e torna impossível medir o que funciona.
+
+Um site institucional bem estruturado tem páginas com objetivo próprio — serviços, portfólio, sobre, contato — cada uma otimizada para uma pergunta diferente que o visitante está fazendo.
+
+## Como decidir rápido
+
+Se você precisa editar o site sozinho, sem ajuda técnica, toda semana: CMS visual.
+Se você tem uma equipe (própria ou terceirizada) cuidando do site: stack baseada em código, com deploy automático.
+Se o site é principalmente institucional, com pouca mudança de conteúdo: estático é quase sempre a escolha certa.
+
+A stack certa é a que você esquece que existe — porque ela só resolve o problema, sem virar um projeto paralelo de manutenção.

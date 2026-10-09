@@ -1,15 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { PageHero } from "@/components/page-hero";
+import { Reveal } from "@/components/reveal";
 import { getAllPosts } from "@/lib/posts";
-import { Navbar } from "@/components/navbar";
-import { Footer } from "@/components/footer";
-import { ScrollReveal } from "@/components/scroll-reveal";
 
 export const metadata: Metadata = {
-  title: "Blog — Gestão, Estratégia e Crescimento Empresarial",
-  description:
-    "Artigos sobre diagnóstico empresarial, pipeline de vendas, escalabilidade, gestão financeira e muito mais. Conteúdo para empresários que querem crescer.",
+  title: "Blog",
+  description: "Web design, motion design, software e produtos digitais — conteúdo da V3X.",
   alternates: { canonical: "https://grupov3x.com.br/blog" },
 };
 
@@ -18,7 +15,7 @@ const jsonLd = {
   "@type": "Blog",
   name: "Blog V3X",
   url: "https://grupov3x.com.br/blog",
-  description: "Conteúdo sobre gestão empresarial, escalabilidade e estratégia para empresários.",
+  description: "Conteúdo sobre web design, motion design, software e produtos digitais.",
 };
 
 export default async function BlogPage() {
@@ -26,73 +23,37 @@ export default async function BlogPage() {
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
-      <Navbar />
-      <main className="min-h-screen bg-[#0B0B0B] pt-24">
-        <div className="border-b border-[#2A2A2A] pb-10 md:pb-12 pt-8">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6">
-            <ScrollReveal>
-              <nav className="flex items-center gap-2 text-xs text-[#F3F3F3]/40 font-[family-name:var(--font-inter)] mb-6">
-                <Link href="/" className="hover:text-[#F5C242] transition-colors">V3X</Link>
-                <span>/</span>
-                <span className="text-[#F3F3F3]/70">Blog</span>
-              </nav>
-              <p className="text-xs font-[family-name:var(--font-montserrat)] font-semibold tracking-[0.2em] uppercase text-[#F5C242] mb-3">
-                Blog V3X
-              </p>
-              <h1 className="font-[family-name:var(--font-anton)] text-4xl sm:text-5xl text-white tracking-wide">
-                CONTEÚDO QUE GERA RESULTADO
-              </h1>
-              <p className="text-[#F3F3F3]/60 font-[family-name:var(--font-inter)] mt-3 max-w-xl text-sm">
-                Artigos sobre gestão empresarial, escalabilidade, comercial e estratégia. Sem teoria — só o que funciona na prática.
-              </p>
-            </ScrollReveal>
-          </div>
-        </div>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-16">
+      <PageHero
+        eyebrow="Blog V3X"
+        crumb="Blog"
+        title="Conteúdo que gera resultado."
+        lead="Sobre web design, motion design, sistemas e produtos digitais — o que realmente usamos para construir."
+      />
+
+      <section className="bg-paper py-20 md:py-28">
+        <div className="mx-auto max-w-[1280px] px-6">
           {posts.length === 0 ? (
-            <p className="text-[#F3F3F3]/40 font-[family-name:var(--font-inter)]">Nenhum artigo publicado ainda.</p>
+            <p className="text-neutral-600">Nenhum artigo publicado ainda.</p>
           ) : (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+            <div className="grid grid-cols-1 gap-x-8 gap-y-14 md:grid-cols-3">
               {posts.map((post, i) => (
-                <ScrollReveal key={post.slug} delay={i * 80}>
-                  <Link
-                    href={`/blog/${post.slug}`}
-                    className="group border border-[#2A2A2A] bg-[#1A1A1A] hover:border-[#F5C242]/40 transition-all duration-200 flex flex-col hover:translate-y-[-4px]"
-                  >
-                    <div className="p-5 md:p-6 flex flex-col gap-3 flex-1">
-                      {post.category && (
-                        <span className="text-xs font-[family-name:var(--font-montserrat)] font-semibold tracking-[0.15em] uppercase text-[#F5C242]">
-                          {post.category}
-                        </span>
-                      )}
-                      <h2 className="font-[family-name:var(--font-anton)] text-xl text-white tracking-wide leading-snug group-hover:text-[#F5C242] transition-colors duration-200">
-                        {post.title}
-                      </h2>
-                      <p className="text-sm text-[#F3F3F3]/50 font-[family-name:var(--font-inter)] leading-relaxed flex-1">
-                        {post.excerpt}
-                      </p>
-                      <div className="flex items-center justify-between pt-4 border-t border-[#2A2A2A]">
-                        <span className="text-xs text-[#F3F3F3]/30 font-[family-name:var(--font-inter)]">
-                          {post.readingTime}
-                        </span>
-                        <span className="text-xs text-[#F5C242] font-[family-name:var(--font-montserrat)] font-semibold flex items-center gap-1 group-hover:gap-2 transition-all duration-200">
-                          Ler <ArrowRight size={11} />
-                        </span>
-                      </div>
-                    </div>
+                <Reveal key={post.slug} delay={i * 60}>
+                  <Link href={`/blog/${post.slug}`} className="group block border-t border-neutral-200 pt-6">
+                    <p className="eyebrow text-neutral-600">{post.category}</p>
+                    <h2 className="mt-4 text-xl font-semibold leading-snug text-ink group-hover:text-accent">
+                      {post.title}
+                    </h2>
+                    <p className="mt-3 text-[15px] leading-relaxed text-neutral-600">{post.excerpt}</p>
+                    <p className="numbering mt-5 text-neutral-400">{post.readingTime}</p>
                   </Link>
-                </ScrollReveal>
+                </Reveal>
               ))}
             </div>
           )}
         </div>
-      </main>
-      <Footer />
+      </section>
     </>
   );
 }
