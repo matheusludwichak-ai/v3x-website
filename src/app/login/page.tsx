@@ -36,18 +36,18 @@ export default function LoginPage() {
     <main className="relative isolate flex min-h-svh flex-col overflow-hidden bg-background">
       <div className="pointer-events-none absolute inset-0 -z-10 opacity-50"><GridField /></div>
       <header className="flex items-center justify-between border-b border-border px-6 py-6 md:px-12">
-        <Link href="/" aria-label="V3X Studio"><Logo className="text-3xl" /></Link>
-        <Button render={<Link href="/" />} nativeButton={false} variant="ghost" className="text-muted-foreground"><ArrowLeft /> Studio</Button>
+        <Link href="/" aria-label="Voltar ao site da V3X"><Logo className="text-3xl" /></Link>
+        <Button render={<Link href="/" />} nativeButton={false} variant="ghost" className="text-muted-foreground"><ArrowLeft /> Site</Button>
       </header>
       <div className="mx-auto grid w-full max-w-[1400px] flex-1 items-center gap-8 px-6 py-9 md:grid-cols-2 md:gap-20 md:px-12 md:py-24">
         <section className="login-enter self-center">
-          <span className="label-mono">V3X / INTERNAL WORKSPACE</span>
+          <span className="label-mono">V3X / WORKSPACE INTERNO</span>
           <h1 className="mt-4 text-5xl font-medium leading-none md:mt-6 md:text-7xl xl:text-8xl">Control<span className="text-brand-violet">.</span></h1>
           <p className="mt-4 max-w-sm text-base leading-relaxed text-muted-foreground md:mt-6 md:text-xl">Um estúdio.<br />Todas as possibilidades.</p>
           <div aria-hidden className="login-graphic mt-12 hidden h-56 max-w-md items-center justify-center md:flex">
             <div className="login-grid-frame"><span /><span /><span /><span /></div>
-            <span className="label-mono absolute bottom-4 left-4">DESIGN / MOTION / SYSTEMS</span>
-            <span className="label-mono absolute right-4 top-4">01—04</span>
+            <span className="label-mono absolute bottom-4 left-4">DESIGN / MOTION / SISTEMAS</span>
+            <span className="label-mono absolute right-4 top-4">01-04</span>
           </div>
         </section>
         <section className="login-enter w-full max-w-md md:justify-self-end">

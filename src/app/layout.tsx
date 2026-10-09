@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     template: "%s | V3X",
   },
   description:
-    "We turn ideas into digital products. A V3X une estratégia, design e tecnologia para criar sites, sistemas e produtos digitais.",
+    "Criamos produtos digitais que fazem empresas avançarem. A V3X une estratégia, design e tecnologia para criar sites, sistemas e produtos digitais.",
   keywords: [
     "digital product studio",
     "web design e desenvolvimento",
@@ -58,7 +58,7 @@ export const metadata: Metadata = {
     url: "https://grupov3x.com.br",
     siteName: "V3X",
     title: "V3X — Digital Product Studio",
-    description: "We turn ideas into digital products. Estratégia, design e tecnologia em um só estúdio.",
+    description: "Criamos produtos digitais que fazem empresas avançarem. Estratégia, design e tecnologia em um só estúdio.",
     images: [
       {
         url: "/og-image.png",
@@ -71,7 +71,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "V3X — Digital Product Studio",
-    description: "We turn ideas into digital products.",
+    description: "Criamos produtos digitais que fazem empresas avançarem.",
     images: ["/og-image.png"],
   },
   alternates: {

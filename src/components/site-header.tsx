@@ -14,7 +14,7 @@ export function SiteHeader() {
     <header className="fixed inset-x-0 top-0 z-50 border-b border-border bg-background/85 backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-[1280px] items-center justify-between px-6">
         <Link href="/" aria-label="V3X — início" className="flex items-center gap-2">
-          <Logo className="text-2xl" />
+          <Logo className="w-[92px]" />
         </Link>
 
         <nav aria-label="Principal" className="hidden items-center gap-9 md:flex">
@@ -37,7 +37,7 @@ export function SiteHeader() {
             href="/contato"
             className="label-mono inline-flex h-10 items-center rounded-sm border border-border bg-primary px-5 text-primary-foreground transition-all hover:-translate-y-px hover:brightness-110"
           >
-            Start a project
+            Começar um projeto
           </Link>
         </div>
 

@@ -243,7 +243,55 @@
 .metric-strip > div:last-child { border-right: 0; }
 @media (max-width: 767px) { .metric-strip { grid-template-columns: repeat(2,minmax(0,1fr)); } .metric-strip > div { border-right: 1px solid var(--border); } }
 
+/* Hero */
+.hero-glow {
+  background-image:
+    radial-gradient(1100px 800px at 92% -5%, oklch(0.616 0.193 259 / 16%), transparent 60%),
+    radial-gradient(900px 700px at 0% 105%, oklch(0.605 0.218 292 / 13%), transparent 60%);
+}
+.hero-in { opacity: 0; transform: translateY(24px); animation: hero-in 1s var(--ease-out-expo) 0.1s forwards; }
+.hero-in-2 { animation-delay: 0.22s; }
+.hero-in-3 { animation-delay: 0.34s; }
+.hero-in-4 { animation-delay: 0.46s; }
+@keyframes hero-in { to { opacity: 1; transform: none; } }
+.hero-x { clip-path: inset(0 100% 0 0); animation: hero-wipe 1.4s var(--ease-out-expo) 0.35s forwards; }
+@keyframes hero-wipe { to { clip-path: inset(0 0 0 0); } }
+
+/* Links */
+.nav-link { position: relative; }
+.nav-link::after { content: ""; position: absolute; left: 0; right: 0; bottom: -6px; height: 1px; background: currentColor; transform: scaleX(0); transform-origin: right; transition: transform var(--duration-base) var(--ease-out-expo); }
+.nav-link:hover::after, .nav-link:focus-visible::after { transform: scaleX(1); transform-origin: left; }
+.link-underline { background-image: var(--gradient-x); background-size: 100% 2px; background-repeat: no-repeat; background-position: 0 100%; padding-bottom: 4px; transition: background-size var(--duration-base) var(--ease-out-expo); }
+.link-underline:hover, .link-underline:focus-visible { background-size: 35% 2px; }
+
+/* Section eyebrow, as in the brand presentation */
+.eyebrow { display: inline-flex; align-items: center; gap: 14px; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted-foreground); }
+.eyebrow::before { content: ""; width: 28px; height: 3px; background: var(--gradient-x); }
+
+/* Project showcases */
+.case-stage { position: relative; isolation: isolate; overflow: hidden; border-radius: 28px; border: 1px solid oklch(1 0 0 / 10%); background: radial-gradient(120% 90% at 85% 0%, oklch(0.616 0.193 259 / 22%), transparent 55%), radial-gradient(90% 80% at 0% 100%, oklch(0.605 0.218 292 / 18%), transparent 60%), #0b0d1a; transition: border-color var(--duration-base), transform 700ms var(--ease-out-expo); }
+.case:hover .case-stage { border-color: oklch(1 0 0 / 22%); }
+.case-float { transition: transform 900ms var(--ease-out-expo); transform: translate3d(calc(var(--mx, 0) * -10px), calc(var(--my, 0) * -8px), 0); }
+.case-float-b { transition: transform 900ms var(--ease-out-expo); transform: translate3d(calc(var(--mx, 0) * 14px), calc(var(--my, 0) * 10px), 0); }
+.browser { overflow: hidden; border-radius: 14px; border: 1px solid oklch(1 0 0 / 14%); background: #0b0d1a; box-shadow: 0 40px 90px -30px rgb(3 4 16 / 85%); }
+.browser-bar { display: flex; height: 30px; align-items: center; gap: 7px; padding: 0 14px; background: #14162a; }
+.browser-bar i { width: 9px; height: 9px; border-radius: 50%; background: #2b2e4a; }
+.browser-bar u { margin-left: 12px; font-size: 11px; color: #7c80a0; text-decoration: none; letter-spacing: 0.04em; }
+@media (max-width: 640px) {
+  .browser { border-radius: 10px; }
+  .browser-bar { height: 20px; gap: 5px; padding: 0 9px; }
+  .browser-bar i { width: 6px; height: 6px; }
+  .browser-bar u { margin-left: 6px; font-size: 8.5px; }
+  .case-stage { border-radius: 20px; }
+}
+.phone { position: relative; overflow: hidden; border-radius: 46px; border: 1px solid oklch(1 0 0 / 18%); background: #05060c; padding: 10px; box-shadow: 0 50px 90px -35px rgb(3 4 16 / 90%), inset 0 0 0 1px oklch(1 0 0 / 6%); }
+.phone-screen { position: relative; height: 100%; overflow: hidden; border-radius: 37px; }
+.phone-island { position: absolute; left: 50%; top: 9px; z-index: 2; width: 92px; height: 26px; transform: translateX(-50%); border-radius: 20px; background: #000; }
+
 @media (prefers-reduced-motion: reduce) {
+  .hero-in { opacity: 1 !important; transform: none !important; animation: none !important; }
+  .hero-x { clip-path: inset(0 0 0 0) !important; animation: none !important; }
+  .case-float, .case-float-b { transform: none !important; }
   .reveal,
   .reveal-mask,
   .word-up > span {

@@ -28,7 +28,8 @@ export function SiteFooter() {
       <div className="mx-auto max-w-[1280px] px-6 py-20">
         <div className="grid grid-cols-1 gap-12 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
           <div>
-            <Logo className="text-xl" tagline />
+            <Logo className="w-[150px]" />
+            <p className="mt-3 text-[0.65rem] font-semibold uppercase tracking-[0.42em] text-foreground/80">Digital Product Studio</p>
             <p className="mt-6 max-w-[32ch] text-[15px] leading-relaxed text-muted-foreground">
               Unimos estratégia, design e tecnologia para transformar ideias em produtos digitais.
             </p>
@@ -54,7 +55,7 @@ export function SiteFooter() {
           </div>
 
           <div>
-            <p className="label-mono text-muted-foreground">Studio</p>
+            <p className="label-mono text-muted-foreground">Estúdio</p>
             <ul className="mt-5 flex flex-col gap-3">
               {SITE_LINKS.map((l) => (
                 <li key={l.href}>

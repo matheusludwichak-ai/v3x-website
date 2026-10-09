@@ -8,10 +8,10 @@ export type DemoWork = {
   stack: string[];
 };
 
-/** Illustrative concept pieces only — not delivered client work. */
+/** Illustrative concepts only, not delivered client work. Used by the Control portfolio demo. */
 export const demoWorks: DemoWork[] = [
-  { id: "orbit", title: "Orbit Analytics", kind: "Dashboard · Concept", year: "2026", image: "/work/work-dashboard.jpg", summary: "A dense analytics surface exploring how financial signals can read at a glance.", stack: ["Data viz", "Design system", "React"] },
-  { id: "fold", title: "Fold / Motion", kind: "Motion frame · Concept", year: "2026", image: "/work/work-motion.jpg", summary: "Extruded geometry and a single light streak: a study in brand motion.", stack: ["3D", "Motion", "Art direction"] },
-  { id: "monolith", title: "Monolith Site", kind: "Web interface · Concept", year: "2026", image: "/work/work-web.jpg", summary: "An editorial landing system built around oversized type and quiet imagery.", stack: ["Web design", "Typography", "Front-end"] },
-  { id: "pulse", title: "Pulse App", kind: "Digital product · Concept", year: "2026", image: "/work/work-product.jpg", summary: "A mobile SaaS prototype pairing an assistant flow with live business metrics.", stack: ["Product", "Mobile UI", "MVP"] },
+  { id: "orbit", title: "Orbit Analytics", kind: "Software e dashboards · Conceito", year: "2026", image: "/work/work-dashboard.jpg", summary: "Painel que reúne receita, clientes e cancelamentos em uma leitura clara.", stack: ["Dashboards", "Design system", "Aplicação web"] },
+  { id: "fold", title: "Fold Motion", kind: "Motion design · Peça da V3X", year: "2026", image: "/work/v3x-motion-poster.jpg", summary: "Motion institucional da V3X: um minuto sobre quem somos e o que fazemos.", stack: ["Roteiro", "Animação de marca", "Vídeo"] },
+  { id: "monolith", title: "Monolith Site", kind: "Web design · Conceito", year: "2026", image: "/work/work-web.jpg", summary: "Site editorial para um estúdio de arquitetura, com tipografia expressiva.", stack: ["Site institucional", "Direção de arte", "Front-end"] },
+  { id: "pulse", title: "Pulse App", kind: "Produto digital · Conceito", year: "2026", image: "/work/work-product.jpg", summary: "App mobile que une o resumo de vendas do dia a um assistente com IA.", stack: ["App mobile", "Assistente com IA", "MVP"] },
 ];

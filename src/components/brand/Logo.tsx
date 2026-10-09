@@ -1,18 +1,23 @@
 import { cn } from "@/lib/utils";
 
-/** Supplied V3X wordmark, vectorized from the official artwork — scales losslessly at any size. */
+/** Official V3X wordmark (2040x540 artwork, transparent background, for dark surfaces). */
 export function Logo({ className, tagline = false }: { className?: string; tagline?: boolean }) {
   return (
     <span className={cn("inline-flex w-[3em] flex-col leading-none", className)}>
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        src="/brand/wordmark.svg"
+        src="/brand/v3x-logo.png"
         alt="V3X"
         className="block h-auto w-full min-w-0"
-        width={1013}
-        height={263}
+        width={2040}
+        height={540}
+        decoding="async"
       />
-      {tagline && <span className="label-mono mt-1 text-[0.5rem]">Digital Product Studio</span>}
+      {tagline && (
+        <span className="mt-[0.9em] whitespace-nowrap font-display text-[0.62em] font-semibold uppercase tracking-[0.42em] text-foreground/90">
+          Digital Product Studio
+        </span>
+      )}
     </span>
   );
 }

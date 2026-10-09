@@ -65,25 +65,25 @@ function ProductsVisual() {
 }
 
 const pillars = [
-  { n: "01", title: "Web Design & Development", body: "Experiências web, landing pages, sites institucionais e interfaces digitais.", Visual: WebVisual },
-  { n: "02", title: "Motion Design", body: "Animação publicitária, motion 2D/3D e comunicação visual em movimento.", Visual: MotionVisual },
-  { n: "03", title: "Software & Systems", body: "CRMs, dashboards, sistemas personalizados e ferramentas operacionais.", Visual: SystemsVisual },
-  { n: "04", title: "Digital Products", body: "SaaS, micro-SaaS, MVPs e plataformas digitais.", Visual: ProductsVisual },
+  { n: "01", title: "Web Design e Desenvolvimento", body: "Landing pages, sites institucionais e experiências web com execução técnica.", services: ["Landing pages", "Sites institucionais", "Redesign"], Visual: WebVisual },
+  { n: "02", title: "Motion Design", body: "Animação de marcas e produtos, peças para campanhas e vídeos de 15 a 60 segundos.", services: ["Motion publicitário", "Animação 2D e 3D", "Vídeos curtos"], Visual: MotionVisual },
+  { n: "03", title: "Software e Sistemas", body: "CRMs, dashboards e sistemas sob medida para organizar processos e centralizar informações.", services: ["CRMs", "Dashboards", "Sistemas internos"], Visual: SystemsVisual },
+  { n: "04", title: "Produtos Digitais", body: "SaaS, MVPs e plataformas, da concepção ao lançamento, com espaço para evoluir.", services: ["SaaS", "MVPs", "Aplicações web"], Visual: ProductsVisual },
 ] as const;
 
 export function Pillars() {
   return (
-    <section id="pillars" className="relative px-6 py-32 md:px-12">
-      <div className="mb-20 grid gap-8 md:grid-cols-[1fr_2fr]">
-        <span className="label-mono">( What we build )</span>
-        <h2 className="text-4xl font-semibold leading-tight md:text-6xl lg:text-7xl">
-          <SplitWords text="Four disciplines." />
-          <SplitWords text="One studio." className="text-gradient-x" />
+    <section id="servicos" className="relative px-6 py-28 md:px-12 md:py-36">
+      <div className="mb-16 max-w-4xl md:mb-20">
+        <span className="eyebrow">O que fazemos</span>
+        <h2 className="mt-6 text-4xl font-semibold leading-[1.05] tracking-[-0.035em] md:text-6xl lg:text-7xl">
+          <SplitWords text="Quatro áreas de atuação," />
+          <SplitWords text="um só padrão de qualidade." className="text-gradient-x" />
         </h2>
       </div>
 
       <div className="border-t border-border">
-        {pillars.map(({ n, title, body, Visual }, i) => (
+        {pillars.map(({ n, title, body, services, Visual }, i) => (
           <Reveal key={n} delay={i * 80}>
             <article
               tabIndex={0}
@@ -94,7 +94,12 @@ export function Pillars() {
                 <h3 className="text-3xl font-medium leading-tight transition-transform duration-500 group-hover:translate-x-2 group-focus-visible:translate-x-2 md:text-4xl lg:text-5xl">
                   {title}
                 </h3>
-                <p className="mt-4 max-w-md text-sm text-muted-foreground md:inline-block">{body}</p>
+                <p className="mt-4 max-w-md text-[0.95rem] leading-relaxed text-muted-foreground">{body}</p>
+                <ul className="mt-5 flex flex-wrap gap-2">
+                  {services.map((s) => (
+                    <li key={s} className="rounded-full border border-white/12 px-3 py-1 text-xs text-foreground/85">{s}</li>
+                  ))}
+                </ul>
               </div>
               <div className="flex text-foreground opacity-60 transition-all duration-500 group-hover:opacity-100 md:col-span-5 md:justify-end">
                 <Visual />

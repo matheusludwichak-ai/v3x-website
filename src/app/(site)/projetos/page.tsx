@@ -16,7 +16,7 @@ export default function ProjetosPage() {
   return (
     <>
       <PageHero
-        eyebrow="Selected work"
+        eyebrow="Projetos selecionados"
         crumb="Projetos"
         title="Projeto próprio, estudos e produto em desenvolvimento."
         lead="Mostramos o que é real: o status de cada projeto está sempre visível, nunca escondido."
