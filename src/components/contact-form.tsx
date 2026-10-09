@@ -115,7 +115,7 @@ export function ContactForm() {
       <button
         type="submit"
         disabled={status === "submitting"}
-        className="mt-2 inline-flex h-12 w-fit items-center rounded-[4px] border border-ink bg-ink px-8 text-[16px] font-semibold text-on-ink transition-all hover:-translate-y-px hover:bg-neutral-800 disabled:opacity-50"
+        className="btn-shine mt-2 inline-flex h-12 w-fit items-center rounded-[4px] border border-ink bg-ink px-8 text-[16px] font-semibold text-on-ink transition-all hover:-translate-y-px hover:bg-neutral-800 disabled:opacity-50"
       >
         {status === "submitting" ? "Enviando…" : "Enviar mensagem"}
       </button>

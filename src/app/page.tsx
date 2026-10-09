@@ -49,13 +49,13 @@ export default async function HomePage() {
             <div className="mt-10 flex flex-wrap items-center gap-4">
               <Link
                 href="/projetos"
-                className="inline-flex h-12 items-center rounded-[4px] border border-[#F3F2EE] bg-[#F3F2EE] px-7 text-[16px] font-semibold text-ink transition-all hover:-translate-y-px hover:bg-neutral-200"
+                className="btn-shine btn-shine-dark inline-flex h-12 items-center rounded-[4px] border border-[#F3F2EE] bg-[#F3F2EE] px-7 text-[16px] font-semibold text-ink transition-all hover:-translate-y-px hover:bg-neutral-200"
               >
                 Explore our work
               </Link>
               <Link
                 href="/contato"
-                className="inline-flex h-12 items-center rounded-[4px] border border-[#F3F2EE] px-7 text-[16px] font-semibold text-on-ink transition-all hover:bg-[#F3F2EE] hover:text-ink"
+                className="btn-shine inline-flex h-12 items-center rounded-[4px] border border-[#F3F2EE] px-7 text-[16px] font-semibold text-on-ink transition-all hover:bg-[#F3F2EE] hover:text-ink"
               >
                 Start a project
               </Link>
@@ -271,7 +271,7 @@ export default async function HomePage() {
             </p>
             <Link
               href="/contato"
-              className="mt-10 inline-flex h-12 items-center rounded-[4px] border border-ink bg-ink px-8 text-[16px] font-semibold text-on-ink transition-all hover:-translate-y-px hover:bg-neutral-800"
+              className="btn-shine mt-10 inline-flex h-12 items-center rounded-[4px] border border-ink bg-ink px-8 text-[16px] font-semibold text-on-ink transition-all hover:-translate-y-px hover:bg-neutral-800"
             >
               Start a project
             </Link>

@@ -93,7 +93,7 @@ export default function SobrePage() {
             </h2>
             <Link
               href="/contato"
-              className="mt-8 inline-flex h-12 items-center rounded-[4px] border border-ink bg-ink px-8 text-[16px] font-semibold text-on-ink transition-all hover:-translate-y-px hover:bg-neutral-800"
+              className="btn-shine mt-8 inline-flex h-12 items-center rounded-[4px] border border-ink bg-ink px-8 text-[16px] font-semibold text-on-ink transition-all hover:-translate-y-px hover:bg-neutral-800"
             >
               Start a project
             </Link>

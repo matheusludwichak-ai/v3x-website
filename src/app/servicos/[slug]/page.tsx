@@ -112,7 +112,7 @@ export default async function ServicePage({ params }: Props) {
             </h2>
             <Link
               href="/contato"
-              className="mt-8 inline-flex h-12 items-center rounded-[4px] border border-[#F3F2EE] bg-[#F3F2EE] px-8 text-[16px] font-semibold text-ink transition-all hover:-translate-y-px hover:bg-neutral-200"
+              className="btn-shine btn-shine-dark mt-8 inline-flex h-12 items-center rounded-[4px] border border-[#F3F2EE] bg-[#F3F2EE] px-8 text-[16px] font-semibold text-ink transition-all hover:-translate-y-px hover:bg-neutral-200"
             >
               Start a project
             </Link>

@@ -1,0 +1,43 @@
+---
+title: "Checklist de SEO técnico antes de lançar um site"
+excerpt: "A maior parte do SEO técnico não é estratégia — é checklist. Se esses itens não estiverem prontos antes do lançamento, o Google demora mais pra confiar no site."
+date: "2026-09-28"
+category: "Web Design & Development"
+tags: ["seo", "web design", "performance"]
+---
+
+SEO técnico não é a parte criativa do trabalho — é a parte que garante que a parte criativa seja encontrada. A maioria dos problemas de SEO não vem de falta de conteúdo bom; vem de detalhes técnicos que nunca foram verificados antes do lançamento.
+
+## Antes de publicar
+
+**Sitemap e robots.txt.** Todo site precisa de um `sitemap.xml` gerado automaticamente e de um `robots.txt` que não bloqueie, por engano, páginas que deveriam ser indexadas.
+
+**Meta tags únicas por página.** Título e descrição diferentes em cada página — nunca o mesmo título repetido em todo o site. Isso parece óbvio, mas é o erro mais comum em sites feitos rápido.
+
+**Hierarquia de headings correta.** Um único `<h1>` por página, headings em ordem lógica (`h2` depois `h1`, nunca pulando níveis só pelo tamanho da fonte).
+
+**HTTPS e canonical.** Toda página precisa de uma URL canônica declarada — evita penalização por conteúdo duplicado quando a mesma página é acessível por mais de uma URL.
+
+## Performance como fator de SEO
+
+O Google usa Core Web Vitals como sinal de ranqueamento. Três métricas importam mais:
+
+- **LCP (Largest Contentful Paint):** tempo até o maior elemento visível carregar. Imagens não otimizadas são a causa mais comum de LCP ruim.
+- **CLS (Cumulative Layout Shift):** o quanto a página "pula" enquanto carrega. Imagens sem `width`/`height` declarados e fontes carregadas sem fallback são as causas mais comuns.
+- **INP (Interaction to Next Paint):** quanto tempo a página demora para responder a um clique. JavaScript pesado no carregamento inicial é o maior vilão aqui.
+
+Um site estático (gerado no build, sem depender de JavaScript pesado no cliente) já resolve a maior parte disso por padrão.
+
+## Dados estruturados
+
+Marcação Schema.org (`Organization`, `Article`, `BreadcrumbList`) não muda o ranking diretamente, mas muda como o resultado aparece na busca — breadcrumbs, estrelas, FAQ expansível. Isso aumenta a taxa de clique mesmo em posições iguais.
+
+## O que verificar manualmente antes de lançar
+
+1. Todo link interno aponta pra uma página que existe (zero 404 conhecido)
+2. Toda imagem tem texto alternativo descritivo
+3. O site responde bem em mobile — não uma versão "adaptada", uma versão pensada pra mobile
+4. O domínio final está configurado com redirecionamento correto (com ou sem `www`, nunca os dois servindo conteúdo duplicado)
+5. Google Search Console está conectado desde o primeiro dia, não semanas depois
+
+Nenhum desses itens é sofisticado. A diferença entre um site que rankeia bem e um que nunca decola, na maioria das vezes, está exatamente nesse checklist — não em nenhuma técnica avançada escondida.

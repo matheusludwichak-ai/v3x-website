@@ -39,7 +39,7 @@ export function SiteHeader() {
         <div className="hidden items-center md:flex">
           <Link
             href="/contato"
-            className="eyebrow inline-flex h-10 items-center rounded-[4px] border border-ink bg-ink px-5 text-[#F3F2EE] transition-all hover:-translate-y-px hover:bg-neutral-800"
+            className="btn-shine eyebrow inline-flex h-10 items-center rounded-[4px] border border-ink bg-ink px-5 text-[#F3F2EE] transition-all hover:-translate-y-px hover:bg-neutral-800"
           >
             Start a project
           </Link>
