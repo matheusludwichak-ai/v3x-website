@@ -32,9 +32,11 @@ export function Founders() {
           ))}
         </dl>
       </Reveal>
-      <Reveal mask className="self-start overflow-hidden md:col-span-8">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/work/v3x-team.jpg" alt="V3X founders in the studio" loading="lazy" className="concept-image h-auto w-full" />
+      <Reveal mask className="self-start md:col-span-8">
+        <div className="overflow-hidden rounded-2xl border border-border md:ml-auto md:max-w-[560px]">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/work/v3x-team.jpg" alt="V3X founders in the studio" loading="lazy" className="concept-image h-auto w-full" />
+        </div>
       </Reveal>
     </section>
   );
