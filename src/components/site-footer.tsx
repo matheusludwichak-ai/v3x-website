@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Image from "next/image";
+import { Logo } from "@/components/brand/Logo";
 
 const SERVICE_LINKS = [
   { href: "/servicos/web-design", label: "Web Design & Development" },
@@ -24,34 +24,28 @@ export function SiteFooter() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="bg-ink text-on-ink">
+    <footer className="border-t border-border bg-surface/60 text-foreground">
       <div className="mx-auto max-w-[1280px] px-6 py-20">
         <div className="grid grid-cols-1 gap-12 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
           <div>
-            <Image
-              src="/brand/logo-white.png"
-              alt="V3X — Digital Product Studio"
-              width={120}
-              height={32}
-              className="h-6 w-auto"
-            />
-            <p className="mt-6 max-w-[32ch] text-[15px] leading-relaxed text-dark-600">
+            <Logo className="text-xl" tagline />
+            <p className="mt-6 max-w-[32ch] text-[15px] leading-relaxed text-muted-foreground">
               Unimos estratégia, design e tecnologia para transformar ideias em produtos digitais.
             </p>
             <a
               href="https://grupov3x.com.br"
-              className="eyebrow mt-6 inline-block border-b border-dark-400 pb-1 text-dark-600 hover:text-on-ink"
+              className="label-mono mt-6 inline-block border-b border-border pb-1 text-muted-foreground hover:text-foreground"
             >
               grupov3x.com.br
             </a>
           </div>
 
           <div>
-            <p className="eyebrow text-dark-600">Serviços</p>
+            <p className="label-mono text-muted-foreground">Serviços</p>
             <ul className="mt-5 flex flex-col gap-3">
               {SERVICE_LINKS.map((l) => (
                 <li key={l.href}>
-                  <Link href={l.href} className="text-[15px] text-dark-600 hover:text-on-ink">
+                  <Link href={l.href} className="text-[15px] text-muted-foreground hover:text-foreground">
                     {l.label}
                   </Link>
                 </li>
@@ -60,11 +54,11 @@ export function SiteFooter() {
           </div>
 
           <div>
-            <p className="eyebrow text-dark-600">Studio</p>
+            <p className="label-mono text-muted-foreground">Studio</p>
             <ul className="mt-5 flex flex-col gap-3">
               {SITE_LINKS.map((l) => (
                 <li key={l.href}>
-                  <Link href={l.href} className="text-[15px] text-dark-600 hover:text-on-ink">
+                  <Link href={l.href} className="text-[15px] text-muted-foreground hover:text-foreground">
                     {l.label}
                   </Link>
                 </li>
@@ -73,11 +67,11 @@ export function SiteFooter() {
           </div>
 
           <div>
-            <p className="eyebrow text-dark-600">Legal</p>
+            <p className="label-mono text-muted-foreground">Legal</p>
             <ul className="mt-5 flex flex-col gap-3">
               {LEGAL_LINKS.map((l) => (
                 <li key={l.href}>
-                  <Link href={l.href} className="text-[15px] text-dark-600 hover:text-on-ink">
+                  <Link href={l.href} className="text-[15px] text-muted-foreground hover:text-foreground">
                     {l.label}
                   </Link>
                 </li>
@@ -86,11 +80,11 @@ export function SiteFooter() {
           </div>
         </div>
 
-        <div className="mt-16 flex flex-col items-start justify-between gap-4 border-t border-dark-border pt-6 md:flex-row md:items-center">
-          <p className="numbering text-dark-400">
+        <div className="mt-16 flex flex-col items-start justify-between gap-4 border-t border-border pt-6 md:flex-row md:items-center">
+          <p className="label-mono text-muted-foreground">
             © {year} V3X — Digital Product Studio. Todos os direitos reservados.
           </p>
-          <p className="numbering text-dark-400">Estratégia · Design · Tecnologia</p>
+          <p className="label-mono text-muted-foreground">Estratégia · Design · Tecnologia</p>
         </div>
       </div>
     </footer>

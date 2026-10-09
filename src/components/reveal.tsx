@@ -20,7 +20,7 @@ export function Reveal({
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          el.classList.add("is-visible");
+          el.classList.add("is-in");
           observer.unobserve(el);
         }
       },
