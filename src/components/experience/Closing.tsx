@@ -53,7 +53,7 @@ export function ContactDialog({ open, onOpenChange }: { open: boolean; onOpenCha
       <DialogContent className="max-h-[90svh] overflow-y-auto border-border bg-surface sm:max-w-lg">
         <DialogHeader>
           <DialogTitle className="text-2xl">Start a conversation</DialogTitle>
-          <DialogDescription>Prototype form — nothing is sent anywhere yet.</DialogDescription>
+          <DialogDescription>Prototype form. Nothing is sent anywhere yet.</DialogDescription>
         </DialogHeader>
         {sent ? (
           <div className="flex flex-col items-center gap-4 py-10 text-center">

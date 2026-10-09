@@ -46,16 +46,12 @@ export function Hero({ onContact }: { onContact: () => void }) {
 
       <div className="relative z-10 grid min-h-[min(780px,calc(90svh-88px))] grid-rows-[1fr_auto] px-6 md:px-12">
         <div className="flex flex-col justify-center [perspective:1200px]">
-          <div className="label-mono mb-6 flex items-center gap-3">
-            <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-primary" /> Digital Product Studio
+          <div ref={markRef} className="mb-8 w-fit transition-transform duration-500 ease-out will-change-transform md:mb-10">
+            <Logo className="w-[108px] md:w-[136px]" />
           </div>
-          <div ref={markRef} className="transition-transform duration-500 ease-out will-change-transform">
-            <h1 className="sr-only">V3X</h1>
-            <Logo className="w-full max-w-[950px]" />
-          </div>
-          <p className="mt-8 max-w-3xl text-3xl font-medium leading-tight md:text-5xl lg:text-6xl">
+          <h1 className="max-w-4xl text-4xl font-medium leading-[1.05] md:text-6xl lg:text-7xl">
             We turn ideas into <span className="text-gradient-x">digital products.</span>
-          </p>
+          </h1>
         </div>
 
         <div className="flex flex-col gap-6 border-t border-border py-8 md:flex-row md:items-end md:justify-between">
