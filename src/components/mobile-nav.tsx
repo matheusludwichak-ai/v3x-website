@@ -21,7 +21,7 @@ export function MobileNav({ links }: { links: { href: string; label: string }[] 
       </button>
 
       {open && (
-        <div className="hero-glow fixed inset-0 top-[72px] z-40 flex flex-col justify-between bg-background px-6 pb-10 pt-8">
+        <div className="hero-glow fixed inset-0 top-[60px] z-40 flex flex-col justify-between bg-background px-6 pb-10 pt-8">
           <nav aria-label="Menu mobile" className="flex flex-col">
             {[{ href: "/", label: "Início" }, ...links, { href: "/contato", label: "Contato" }].map((link) => (
               <Link

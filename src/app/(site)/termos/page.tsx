@@ -41,7 +41,7 @@ export default function TermosPage() {
             </p>
             <h2>5. Contato</h2>
             <p>
-              Dúvidas sobre estes termos: <a href="mailto:suporte@grupov3x.com.br">suporte@grupov3x.com.br</a>.
+              Dúvidas sobre estes termos: <a href="mailto:contato@grupov3x.com.br">contato@grupov3x.com.br</a>.
             </p>
           </div>
         </div>

@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { PageHero } from "@/components/page-hero";
 import { Reveal } from "@/components/reveal";
 import { ContactForm } from "@/components/contact-form";
+import { WhatsAppIcon } from "@/components/site/whatsapp-icon";
+import { CONTACT_EMAIL, CONTACT_EMAIL_HREF, WHATSAPP_DISPLAY, whatsappHref } from "@/config/contact";
 
 export const metadata: Metadata = {
   title: "Contato",
@@ -16,6 +18,7 @@ const steps = [
 ];
 
 export default function ContatoPage() {
+  const wa = whatsappHref();
   return (
     <>
       <PageHero
@@ -25,7 +28,7 @@ export default function ContatoPage() {
         lead="Conte o que você está construindo e vamos encontrar a melhor forma de tirar sua ideia do papel."
       />
 
-      <section className="mx-auto grid max-w-[1280px] gap-16 px-6 py-24 md:px-12 md:py-28 lg:grid-cols-12">
+      <section className="container-v3x grid gap-16 section-y lg:grid-cols-12">
         <Reveal className="lg:col-span-5">
           <p className="eyebrow">Como funciona</p>
           <ol className="mt-8">
@@ -39,10 +42,20 @@ export default function ContatoPage() {
               </li>
             ))}
           </ol>
-          <div className="mt-6 rounded-2xl border border-white/10 bg-[#07080f] p-6">
-            <p className="text-sm text-muted-foreground">Prefere e-mail?</p>
-            <a href="mailto:suporte@grupov3x.com.br" className="link-underline mt-2 inline-block text-lg font-medium">
-              suporte@grupov3x.com.br
+          <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
+            {wa && (
+              <a href={wa} target="_blank" rel="noopener noreferrer" className="group rounded-2xl border border-white/10 bg-[#07080f] p-6 transition-colors hover:border-white/25">
+                <span className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <WhatsAppIcon className="size-4 text-foreground" /> WhatsApp
+                </span>
+                <span className="mt-2 block text-lg font-medium">{WHATSAPP_DISPLAY}</span>
+                <span className="mt-1 block text-xs text-muted-foreground">Abre uma conversa com mensagem pronta</span>
+              </a>
+            )}
+            <a href={CONTACT_EMAIL_HREF} className="group rounded-2xl border border-white/10 bg-[#07080f] p-6 transition-colors hover:border-white/25">
+              <span className="text-sm text-muted-foreground">E-mail</span>
+              <span className="mt-2 block break-all text-lg font-medium">{CONTACT_EMAIL}</span>
+              <span className="mt-1 block text-xs text-muted-foreground">Respondemos em até 1 dia útil</span>
             </a>
           </div>
         </Reveal>

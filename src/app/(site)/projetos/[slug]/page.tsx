@@ -60,14 +60,14 @@ export default async function ProjectPage({ params }: Props) {
       </PageHero>
 
       {lead && (
-        <section className="mx-auto max-w-[1280px] px-6 pt-20 md:px-12 md:pt-28">
+        <section className="container-v3x pt-20 md:pt-28">
           <Reveal className="case-stage p-4 sm:p-10">
             <Shot item={lead} label={label} sizes="(min-width: 1280px) 1180px, 100vw" />
           </Reveal>
         </section>
       )}
 
-      <section className="mx-auto grid max-w-[1280px] gap-12 px-6 py-20 md:px-12 md:py-28 lg:grid-cols-2">
+      <section className="container-v3x grid gap-12 py-20  md:py-28 lg:grid-cols-2">
         <Reveal>
           <p className="eyebrow">Problema e oportunidade</p>
           <p className="mt-6 text-xl leading-relaxed text-foreground/90">{project.problem}</p>
@@ -81,7 +81,7 @@ export default async function ProjectPage({ params }: Props) {
 
       {(rest.length > 0 || strips.length > 0) && (
         <section className="border-t border-border bg-[#07080f] py-20 md:py-28">
-          <div className="mx-auto max-w-[1280px] px-6 md:px-12">
+          <div className="container-v3x">
             <Reveal>
               <p className="eyebrow">Dentro do produto</p>
               {project.status === "Em desenvolvimento" && (

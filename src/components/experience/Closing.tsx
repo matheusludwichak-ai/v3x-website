@@ -2,14 +2,14 @@
 
 import { useState, type FormEvent } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import { ArrowUpRight, Check } from "lucide-react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Logo } from "@/components/brand/Logo";
 import { XMark } from "@/components/brand/XMark";
+import { WhatsAppIcon } from "@/components/site/whatsapp-icon";
+import { CONTACT_EMAIL, CONTACT_EMAIL_HREF, whatsappHref } from "@/config/contact";
 import { Reveal, SplitWords } from "./Reveal";
 
 const areas = [
@@ -20,14 +20,15 @@ const areas = [
 
 export function Founders() {
   return (
-    <section id="fundadores" className="border-t border-border px-6 py-28 md:px-12 md:py-36">
+    <section id="fundadores" className="border-t border-border">
+      <div className="container-v3x section-y">
       <div className="grid items-center gap-14 lg:grid-cols-12 lg:gap-10">
         <Reveal className="lg:col-span-5">
           <span className="eyebrow">Fundadores</span>
-          <h2 className="mt-6 text-4xl font-semibold leading-[1.05] tracking-[-0.035em] md:text-5xl xl:text-6xl">
+          <h2 className="t-h2 mt-6 font-semibold">
             As pessoas por trás <span className="text-gradient-x">da V3X.</span>
           </h2>
-          <p className="mt-6 max-w-md text-base leading-relaxed text-muted-foreground md:text-lg">
+          <p className="t-lead mt-6 max-w-md text-muted-foreground">
             Três perspectivas, uma visão: negócios, tecnologia e finanças trabalhando juntos desde o primeiro contato.
           </p>
           <dl className="mt-10 grid gap-6 sm:grid-cols-3 lg:grid-cols-1 xl:grid-cols-3">
@@ -56,6 +57,7 @@ export function Founders() {
             <span aria-hidden className="mx-auto mt-5 block h-[3px] w-24 bg-gradient-x" />
           </figure>
         </Reveal>
+      </div>
       </div>
     </section>
   );
@@ -124,57 +126,40 @@ export function ContactDialog({ open, onOpenChange }: { open: boolean; onOpenCha
   );
 }
 
-const footerLinks = [
-  { href: "#servicos", label: "Serviços" },
-  { href: "#projetos", label: "Projetos" },
-  { href: "#fundadores", label: "Fundadores" },
-  { href: "/blog", label: "Blog" },
-];
-
 export function Closing({ onContact }: { onContact: () => void }) {
+  const wa = whatsappHref();
   return (
-    <section className="hero-glow relative overflow-hidden border-t border-border px-6 pb-10 pt-28 md:px-12 md:pt-36">
+    <section className="hero-glow relative overflow-hidden border-t border-border">
       <div aria-hidden className="tech-grid absolute inset-0 opacity-40 [mask-image:linear-gradient(to_bottom,black,transparent)]" />
-      <XMark className="pointer-events-none absolute -right-24 top-16 hidden w-[520px] opacity-25 lg:block" />
-      <div className="relative">
+      <XMark className="scroll-drift pointer-events-none absolute -right-24 top-16 hidden w-[480px] opacity-25 lg:block" />
+      <div className="container-v3x section-y relative">
         <span className="eyebrow">Próximo passo</span>
-        <h2 className="mt-8 text-[2.75rem] font-semibold leading-[1.02] tracking-[-0.04em] sm:text-6xl md:text-7xl xl:text-8xl">
+        <h2 className="t-h2 mt-7 font-semibold">
           <SplitWords text="Vamos construir" />
           <SplitWords text="algo que importa." className="text-gradient-x" />
         </h2>
-        <p className="mt-6 max-w-lg text-base leading-relaxed text-muted-foreground md:text-lg">
-          Do primeiro contato à evolução do produto, com um processo claro em cada etapa.
+        <p className="t-lead mt-6 max-w-lg text-muted-foreground">
+          Conte o que você precisa. Respondemos em até 1 dia útil, com um caminho claro para o seu projeto.
         </p>
-        <button
-          type="button"
-          onClick={onContact}
-          className="group mt-10 inline-flex h-14 items-center gap-4 rounded-full bg-gradient-x px-8 text-base font-semibold text-white shadow-[0_18px_40px_-18px_rgba(56,130,246,0.9)] transition-[filter,transform] hover:brightness-110 active:scale-[0.97]"
-        >
-          Começar um projeto
-          <ArrowUpRight className="size-5 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
-        </button>
+        <div className="mt-10 flex flex-wrap items-center gap-4">
+          <button type="button" onClick={onContact} className="btn-primary">
+            Começar um projeto
+            <ArrowUpRight className="size-5" />
+          </button>
+          {wa && (
+            <a href={wa} target="_blank" rel="noopener noreferrer" className="btn-outline">
+              <WhatsAppIcon className="size-[18px]" />
+              Conversar no WhatsApp
+            </a>
+          )}
+        </div>
+        <p className="mt-8 text-sm text-muted-foreground">
+          Prefere e-mail?{" "}
+          <a href={CONTACT_EMAIL_HREF} className="link-underline font-medium text-foreground">
+            {CONTACT_EMAIL}
+          </a>
+        </p>
       </div>
-
-      <footer className="relative mt-24 grid gap-10 border-t border-border pt-10 md:mt-32 md:grid-cols-[1fr_auto] md:items-end">
-        <div>
-          <Logo className="w-[150px]" />
-          <p className="mt-3 text-[0.65rem] font-semibold uppercase tracking-[0.42em] text-foreground/80">Digital Product Studio</p>
-          <p className="mt-6 text-sm text-muted-foreground">Design. Tecnologia. Produtos digitais.</p>
-        </div>
-        <div className="flex flex-col gap-6 md:items-end">
-          <nav aria-label="Rodapé" className="flex flex-wrap gap-x-7 gap-y-3 text-sm">
-            {footerLinks.map((l) => (
-              <a key={l.href} href={l.href} className="nav-link text-muted-foreground transition-colors hover:text-foreground">{l.label}</a>
-            ))}
-          </nav>
-          <div className="flex flex-wrap gap-x-6 gap-y-2 text-xs text-muted-foreground">
-            <span>© 2026 V3X</span>
-            <Link href="/privacidade" className="transition-colors hover:text-foreground">Privacidade</Link>
-            <Link href="/termos" className="transition-colors hover:text-foreground">Termos</Link>
-            <span>grupov3x.com.br</span>
-          </div>
-        </div>
-      </footer>
     </section>
   );
 }

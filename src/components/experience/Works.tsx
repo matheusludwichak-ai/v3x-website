@@ -67,7 +67,7 @@ function CaseText({ info, className }: { info: CaseInfo; className?: string }) {
   return (
     <div className={cn("flex flex-col", className)}>
       <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#7fb2ff]">{info.kind}</p>
-      <h3 className="mt-4 text-3xl font-semibold tracking-[-0.03em] md:text-4xl">{info.title}</h3>
+      <h3 className="t-h3 mt-4 font-semibold">{info.title}</h3>
       <p className="mt-4 text-[0.95rem] leading-relaxed text-muted-foreground">{info.challenge}</p>
       <ul className="mt-6 flex flex-wrap gap-2" aria-label="O que a V3X entrega">
         {info.deliver.map((d) => (
@@ -98,7 +98,7 @@ function Veredito() {
             <i className="size-2 rounded-full bg-gradient-x" />
             Projeto real em desenvolvimento
           </span>
-          <h3 className="mt-6 text-5xl font-bold tracking-[-0.045em] md:text-6xl">Veredito</h3>
+          <h3 className="t-h2 mt-6 font-bold">Veredito</h3>
           <p className="mt-4 text-lg leading-relaxed text-foreground/90">
             CRM jurídico para advogados e operações jurídicas, do primeiro contato à assinatura do contrato.
           </p>
@@ -114,7 +114,7 @@ function Veredito() {
             Ver o projeto <ArrowUpRight className="size-4" />
           </Link>
         </div>
-        <div className="case-stage relative px-5 pb-10 pt-6 sm:px-8 md:px-12 md:pt-12 lg:col-span-8">
+        <div className="case-stage scroll-rise relative px-5 pb-10 pt-6 sm:px-8 md:px-12 md:pt-12 lg:col-span-8">
           <div className="case-float browser">
             <div className="browser-bar"><i /><i /><i /><u>veredito · demonstração</u></div>
             <Image src="/work/veredito/dashboard.jpg" alt="Veredito, visão geral do CRM com indicadores e funil" width={1800} height={1125} sizes="(min-width: 1024px) 60vw, 100vw" className="h-auto w-full" />
@@ -131,24 +131,24 @@ function Veredito() {
 
 export function Works() {
   return (
-    <section id="projetos" className="relative px-6 py-28 md:px-12 md:py-40">
-      <div className="mb-16 max-w-4xl md:mb-24">
+    <section id="projetos" className="container-v3x section-y relative">
+      <div className="mb-12 max-w-3xl md:mb-20">
         <span className="eyebrow">Projetos</span>
-        <h2 className="mt-6 text-4xl font-semibold leading-[1.05] tracking-[-0.035em] md:text-6xl lg:text-7xl">
+        <h2 className="t-h2 mt-6 font-semibold">
           <SplitWords text="Explorações" />
           <SplitWords text="selecionadas." className="text-gradient-x" />
         </h2>
-        <p className="mt-6 max-w-2xl text-base leading-relaxed text-muted-foreground md:text-lg">
+        <p className="t-lead mt-6 max-w-2xl text-muted-foreground">
           Um produto real em desenvolvimento e quatro conceitos demonstrativos que mostram como pensamos cada tipo de projeto. Os conceitos não são trabalhos de clientes.
         </p>
       </div>
 
-      <div className="space-y-24 md:space-y-36">
+      <div className="space-y-[clamp(4.5rem,9vw,7.5rem)]">
         <Veredito />
 
         <Case>
           <div className="grid items-center gap-10 lg:grid-cols-12">
-            <div className="case-stage px-4 py-6 sm:px-8 sm:py-10 lg:col-span-8">
+            <div className="case-stage scroll-rise px-4 py-6 sm:px-8 sm:py-10 lg:col-span-8">
               <div className="case-float browser">
                 <div className="browser-bar"><i /><i /><i /><u>app.orbit.com.br</u></div>
                 <Scaled width={1100} height={760}><OrbitDashboard /></Scaled>
@@ -160,13 +160,13 @@ export function Works() {
 
         <div className="grid gap-16 lg:grid-cols-12 lg:gap-8">
           <Case className="lg:col-span-5">
-            <div className="case-stage grid place-items-center px-6 py-10 sm:py-14">
+            <div className="case-stage scroll-rise grid place-items-center px-6 py-10 sm:py-14">
               <MotionVideo />
             </div>
             <CaseText info={cases.fold} className="mt-8" />
           </Case>
           <Case className="lg:col-span-7">
-            <div className="case-stage px-4 py-8 sm:px-10 sm:py-12">
+            <div className="case-stage scroll-rise px-4 py-8 sm:px-10 sm:py-12">
               <Scaled width={720} height={640}><PulsePhones /></Scaled>
             </div>
             <CaseText info={cases.pulse} className="mt-8 max-w-xl" />
@@ -176,7 +176,7 @@ export function Works() {
         <Case>
           <div className="grid items-center gap-10 lg:grid-cols-12">
             <CaseText info={cases.monolith} className="order-2 lg:order-1 lg:col-span-4" />
-            <div className="case-stage order-1 px-4 py-6 sm:px-8 sm:py-10 lg:order-2 lg:col-span-8">
+            <div className="case-stage scroll-rise order-1 px-4 py-6 sm:px-8 sm:py-10 lg:order-2 lg:col-span-8">
               <Scaled width={1180} height={760}><MonolithSite /></Scaled>
             </div>
           </div>

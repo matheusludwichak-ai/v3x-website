@@ -4,6 +4,7 @@ import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import Script from "next/script";
 import { Toaster } from "@/components/ui/sonner";
+import { PublicChrome } from "@/components/site/public-chrome";
 import "./globals.css";
 
 const GA_ID = "G-H3NVMRK99E";
@@ -105,6 +106,7 @@ export default function RootLayout({
           `}
         </Script>
         {children}
+        <PublicChrome />
         <Toaster />
         <Analytics />
         <SpeedInsights />

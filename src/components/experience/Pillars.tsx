@@ -15,10 +15,10 @@ const pillars = [
 
 export function Pillars() {
   return (
-    <section id="servicos" className="relative px-6 py-28 md:px-12 md:py-36">
-      <div className="mb-16 max-w-4xl md:mb-20">
+    <section id="servicos" className="container-v3x section-y relative">
+      <div className="mb-12 max-w-3xl md:mb-16">
         <span className="eyebrow">O que fazemos</span>
-        <h2 className="mt-6 text-4xl font-semibold leading-[1.05] tracking-[-0.035em] md:text-6xl lg:text-7xl">
+        <h2 className="t-h2 mt-6 font-semibold">
           <SplitWords text="Quatro áreas de atuação," />
           <SplitWords text="um só padrão de qualidade." className="text-gradient-x" />
         </h2>
@@ -31,11 +31,11 @@ export function Pillars() {
             <Reveal key={n} delay={i * 80}>
               <Link
                 href={`/servicos/${slug}`}
-                className="group relative grid items-center gap-8 border-b border-border py-10 transition-colors duration-500 hover:bg-white/[0.025] md:grid-cols-12 md:py-12"
+                className="group relative grid items-center gap-6 border-b border-border py-9 transition-colors duration-500 hover:bg-white/[0.025] md:grid-cols-12 md:gap-8 md:py-10"
               >
                 <span className="text-xs font-semibold tracking-[0.18em] text-[#7fb2ff] md:col-span-1 md:self-start md:pt-3">{n}</span>
                 <div className="md:col-span-6">
-                  <h3 className="text-3xl font-medium leading-tight tracking-[-0.025em] transition-transform duration-500 group-hover:translate-x-2 md:text-4xl lg:text-5xl">
+                  <h3 className="t-h3 font-medium transition-transform duration-500 group-hover:translate-x-2">
                     {title}
                   </h3>
                   <p className="mt-4 max-w-md text-[0.95rem] leading-relaxed text-muted-foreground">{body}</p>
@@ -50,13 +50,13 @@ export function Pillars() {
                 </div>
                 {img && (
                   <div className="md:col-span-5 md:flex md:justify-end">
-                    <div className="case-stage w-full overflow-hidden md:max-w-[340px]">
+                    <div className="case-stage w-full overflow-hidden md:max-w-[300px]">
                       <Image
                         src={img.src}
                         alt={img.alt}
                         width={img.width}
                         height={img.height}
-                        sizes="(min-width: 768px) 340px, 100vw"
+                        sizes="(min-width: 768px) 300px, 100vw"
                         className="aspect-[4/3] w-full object-cover opacity-80 transition-[transform,opacity] duration-700 ease-out group-hover:scale-[1.05] group-hover:opacity-100 md:aspect-square"
                       />
                     </div>

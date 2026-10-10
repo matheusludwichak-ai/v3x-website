@@ -50,7 +50,7 @@ export default async function ServicePage({ params }: Props) {
         </div>
       </PageHero>
 
-      <section className="mx-auto grid max-w-[1280px] items-center gap-14 px-6 py-24 md:px-12 md:py-32 lg:grid-cols-12">
+      <section className="container-v3x grid items-center gap-14 section-y lg:grid-cols-12">
         {img && (
           <Reveal className="lg:col-span-6">
             <div className="case-stage overflow-hidden">
@@ -84,8 +84,8 @@ export default async function ServicePage({ params }: Props) {
         </div>
       </section>
 
-      <section className="border-y border-border bg-[#07080f] py-24 md:py-32">
-        <div className="mx-auto max-w-[1280px] px-6 md:px-12">
+      <section className="border-y border-border bg-[#07080f] section-y">
+        <div className="container-v3x">
           <Reveal>
             <p className="eyebrow">Como trabalhamos</p>
             <h2 className="mt-6 max-w-[20ch] text-4xl font-semibold leading-[1.05] tracking-[-0.035em] md:text-5xl">
@@ -109,7 +109,7 @@ export default async function ServicePage({ params }: Props) {
       </section>
 
       {service.faq.length > 0 && (
-        <section className="mx-auto max-w-[1280px] px-6 py-24 md:px-12 md:py-32">
+        <section className="container-v3x section-y">
           <div className="grid gap-12 lg:grid-cols-12">
             <Reveal className="lg:col-span-4">
               <p className="eyebrow">Perguntas frequentes</p>
@@ -130,7 +130,7 @@ export default async function ServicePage({ params }: Props) {
         </section>
       )}
 
-      <section className="mx-auto max-w-[1280px] px-6 pb-24 md:px-12">
+      <section className="container-v3x pb-24 ">
         <p className="eyebrow">Outras áreas</p>
         <div className="mt-8 grid gap-4 md:grid-cols-3">
           {others.map((s) => (

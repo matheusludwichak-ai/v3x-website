@@ -42,7 +42,7 @@ export default function PrivacidadePage() {
             <h2>5. Seus direitos</h2>
             <p>
               Você tem direito a acessar, corrigir ou solicitar a exclusão dos seus dados a qualquer
-              momento. Entre em contato: <a href="mailto:suporte@grupov3x.com.br">suporte@grupov3x.com.br</a>.
+              momento. Entre em contato: <a href="mailto:contato@grupov3x.com.br">contato@grupov3x.com.br</a>.
             </p>
           </div>
         </div>

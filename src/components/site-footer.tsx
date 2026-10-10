@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { Logo } from "@/components/brand/Logo";
+import { WhatsAppIcon } from "@/components/site/whatsapp-icon";
+import { CONTACT_EMAIL, CONTACT_EMAIL_HREF, WHATSAPP_DISPLAY, whatsappHref } from "@/config/contact";
 
 const COLUMNS = [
   {
@@ -30,9 +32,10 @@ const COLUMNS = [
 ];
 
 export function SiteFooter() {
+  const wa = whatsappHref();
   return (
     <footer className="border-t border-border bg-[#07080f]">
-      <div className="mx-auto max-w-[1280px] px-6 py-20 md:px-12">
+      <div className="container-v3x py-16 md:py-20">
         <div className="grid grid-cols-1 gap-12 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
           <div>
             <Logo className="w-[150px]" />
@@ -40,9 +43,21 @@ export function SiteFooter() {
             <p className="mt-6 max-w-[34ch] text-[15px] leading-relaxed text-muted-foreground">
               Unimos estratégia, design e tecnologia para transformar ideias em produtos digitais.
             </p>
-            <a href="mailto:suporte@grupov3x.com.br" className="link-underline mt-6 inline-block text-sm text-foreground">
-              suporte@grupov3x.com.br
-            </a>
+            <ul className="mt-6 space-y-3 text-sm">
+              <li>
+                <a href={CONTACT_EMAIL_HREF} className="link-underline text-foreground">
+                  {CONTACT_EMAIL}
+                </a>
+              </li>
+              {wa && (
+                <li>
+                  <a href={wa} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-foreground/85 transition-colors hover:text-foreground">
+                    <WhatsAppIcon className="size-4" />
+                    WhatsApp {WHATSAPP_DISPLAY}
+                  </a>
+                </li>
+              )}
+            </ul>
           </div>
           {COLUMNS.map((col) => (
             <div key={col.title}>

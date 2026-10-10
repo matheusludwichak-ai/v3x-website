@@ -24,7 +24,7 @@ export default function ServicosPage() {
         lead="Web, motion, sistemas e produtos. Cada área tem serviços claros e o mesmo processo por trás."
       />
 
-      <section className="mx-auto max-w-[1280px] px-6 py-24 md:px-12 md:py-32">
+      <section className="container-v3x section-y">
         <div className="grid gap-x-8 gap-y-20 md:grid-cols-2">
           {services.map((service, i) => {
             const img = areaImages[service.slug];

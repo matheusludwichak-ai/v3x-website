@@ -31,7 +31,7 @@ export default function ProjetosPage() {
         lead="Mostramos o que é real: o estágio de cada projeto está sempre indicado, nunca escondido."
       />
 
-      <section className="mx-auto max-w-[1280px] space-y-28 px-6 py-24 md:px-12 md:py-32">
+      <section className="container-v3x section-y space-y-[clamp(4.5rem,9vw,7rem)]">
         {projects.map((project, i) => (
           <Reveal key={project.slug}>
             <Link href={`/projetos/${project.slug}`} className="case group grid items-center gap-10 lg:grid-cols-12">
@@ -63,7 +63,7 @@ export default function ProjetosPage() {
       </section>
 
       <section className="border-t border-border bg-[#07080f] py-24 md:py-28">
-        <div className="mx-auto max-w-[1280px] px-6 md:px-12">
+        <div className="container-v3x">
           <Reveal>
             <p className="eyebrow">Explorações conceituais</p>
             <h2 className="mt-6 max-w-[22ch] text-3xl font-semibold tracking-[-0.03em] md:text-5xl">

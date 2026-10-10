@@ -61,7 +61,7 @@ export default function SobrePage() {
         lead="Não vendemos apenas páginas bonitas ou linhas de código. Desenvolvemos experiências, sistemas e produtos que resolvem problemas reais e ajudam empresas a evoluir."
       />
 
-      <section className="mx-auto max-w-[1280px] px-6 py-24 md:px-12 md:py-32">
+      <section className="container-v3x section-y">
         <Reveal className="grid items-stretch gap-3 lg:grid-cols-[1fr_auto_1fr_auto_1fr_auto_1.3fr]">
           {equation.map((item, i) => (
             <div key={item.title} className="contents">
@@ -85,8 +85,8 @@ export default function SobrePage() {
         </Reveal>
       </section>
 
-      <section className="border-t border-border bg-[#07080f] py-24 md:py-32">
-        <div className="mx-auto max-w-[1280px] px-6 md:px-12">
+      <section className="border-t border-border bg-[#07080f] section-y">
+        <div className="container-v3x">
           <Reveal>
             <p className="eyebrow">Fundadores</p>
             <h2 className="mt-6 max-w-[22ch] text-4xl font-semibold leading-[1.05] tracking-[-0.035em] md:text-5xl">
@@ -126,7 +126,7 @@ export default function SobrePage() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-[1280px] px-6 py-24 md:px-12 md:py-32">
+      <section className="container-v3x section-y">
         <Reveal>
           <p className="eyebrow">Como trabalhamos</p>
           <h2 className="mt-6 max-w-[20ch] text-4xl font-semibold leading-[1.05] tracking-[-0.035em] md:text-5xl">
@@ -149,8 +149,8 @@ export default function SobrePage() {
         </div>
       </section>
 
-      <section className="border-t border-border py-24 md:py-32">
-        <div className="mx-auto max-w-[1280px] px-6 md:px-12">
+      <section className="border-t border-border section-y">
+        <div className="container-v3x">
           <Reveal>
             <p className="eyebrow">Por que a V3X</p>
             <h2 className="mt-6 text-4xl font-semibold tracking-[-0.035em] md:text-5xl">Por que conversar com a V3X.</h2>

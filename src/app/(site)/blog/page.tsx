@@ -39,7 +39,7 @@ export default async function BlogPage() {
       />
 
       {featured && (
-        <section className="mx-auto max-w-[1280px] px-6 pt-20 md:px-12 md:pt-28">
+        <section className="container-v3x pt-20 md:pt-28">
           <Reveal>
             <Link href={`/blog/${featured.slug}`} className="group grid items-stretch gap-8 lg:grid-cols-12">
               <div className="flex flex-col justify-center lg:col-span-6">
@@ -65,7 +65,7 @@ export default async function BlogPage() {
         </section>
       )}
 
-      <section className="mx-auto max-w-[1280px] px-6 py-20 md:px-12 md:py-28">
+      <section className="container-v3x py-20 md:py-28">
         <Reveal>
           <BlogTabs posts={rest.length > 0 ? rest : posts} />
         </Reveal>

@@ -5,6 +5,8 @@ import { Hero } from "./Hero";
 import { Pillars } from "./Pillars";
 import { Works } from "./Works";
 import { Founders, Closing, ContactDialog } from "./Closing";
+import { SiteHeader } from "@/components/site-header";
+import { SiteFooter } from "@/components/site-footer";
 
 /** Section anchors from the previous version of the site, still present in old links and history. */
 const LEGACY_ANCHORS: Record<string, string> = { pillars: "servicos", work: "projetos", people: "fundadores" };
@@ -50,11 +52,15 @@ export function HomeExperience() {
 
   return (
     <>
+      <SiteHeader />
+      <main>
       <Hero onContact={() => setContact(true)} />
       <Pillars />
       <Works />
       <Founders />
       <Closing onContact={() => setContact(true)} />
+      </main>
+      <SiteFooter />
       <ContactDialog open={contact} onOpenChange={setContact} />
     </>
   );

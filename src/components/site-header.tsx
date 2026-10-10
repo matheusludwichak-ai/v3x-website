@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ArrowUpRight } from "lucide-react";
@@ -16,10 +17,20 @@ const NAV_LINKS = [
 
 export function SiteHeader() {
   const path = usePathname();
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const update = () => setScrolled(window.scrollY > 24);
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+    return () => window.removeEventListener("scroll", update);
+  }, []);
+
   return (
-    <header className="fixed inset-x-0 top-0 z-50">
-      <div aria-hidden className="absolute inset-0 -z-10 border-b border-white/8 bg-background/80 backdrop-blur-md" />
-      <div className="mx-auto flex h-[72px] max-w-[1280px] items-center justify-between px-6 md:px-12">
+    <header className="site-header fixed inset-x-0 top-0 z-50" data-scrolled={scrolled}>
+      <div aria-hidden className="scroll-progress" />
+      <div aria-hidden className="site-header-bg absolute inset-0 -z-10 border-b border-white/8 bg-background/85 backdrop-blur-md" />
+      <div className="site-header-bar container-v3x flex h-[72px] items-center justify-between">
         <Link href="/" aria-label="V3X, página inicial" className="block">
           <Logo className="w-[104px]" />
         </Link>
@@ -35,7 +46,7 @@ export function SiteHeader() {
                 className={cn("nav-link transition-colors hover:text-foreground", active ? "text-foreground" : "text-muted-foreground")}
               >
                 {link.label}
-                {active && <span aria-hidden className="absolute -bottom-[25px] left-0 h-[2px] w-full bg-gradient-x" />}
+                {active && <span aria-hidden className="absolute -bottom-2 left-0 h-[2px] w-full bg-gradient-x" />}
               </Link>
             );
           })}

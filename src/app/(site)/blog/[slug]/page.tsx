@@ -69,7 +69,7 @@ export default async function BlogPost({ params }: Props) {
               <span className="text-muted-foreground">{post.readingTime}</span>
               {date && <time dateTime={post.date} className="text-muted-foreground">{date}</time>}
             </div>
-            <h1 className="hero-in mt-5 text-balance text-4xl font-semibold leading-[1.08] tracking-[-0.035em] md:text-6xl">{post.title}</h1>
+            <h1 className="hero-in t-display mt-5 text-balance font-semibold">{post.title}</h1>
             <p className="hero-in hero-in-2 mt-6 text-lg leading-relaxed text-muted-foreground md:text-xl">{post.excerpt}</p>
           </div>
         </header>
