@@ -9,6 +9,13 @@ Ele funciona em três modos, escolhidos automaticamente pelas variáveis de ambi
 | **Local** | Desenvolvimento (`npm run dev`) sem Supabase | Dados em `.data/control.json` (ignorado pelo Git), sem login, só aceita acesso pelo próprio computador. |
 | **Demonstração** | Produção sem Supabase | Somente leitura, registros marcados “Exemplo”, IA e escrita desativadas. |
 
+## Estado atual (10/10/2026)
+
+- Projeto Supabase **v3x-control** criado (região São Paulo, `https://lwmxrhaixxtgkbbcwawt.supabase.co`), com todas as migrations aplicadas e verificadas.
+- Autenticação: Site URL `https://grupov3x.com.br`, redirect `https://grupov3x.com.br/login`, cadastro público **desligado**.
+- Convite de administrador cadastrado para o e-mail do fundador (tabela `control_invites`).
+- Vercel: `NEXT_PUBLIC_SUPABASE_URL` definida. Faltam as chaves (abaixo).
+
 ## 1. Ativar o banco e o login (Supabase)
 
 1. No projeto Supabase da V3X, abra **SQL Editor**, cole o conteúdo de `supabase/setup.sql` e execute
@@ -20,7 +27,12 @@ Ele funciona em três modos, escolhidos automaticamente pelas variáveis de ambi
    - `NEXT_PUBLIC_SUPABASE_ANON_KEY`: chave pública *anon/publishable*.
    - `SUPABASE_SERVICE_ROLE_KEY`: chave *service_role*. Só servidor, usada apenas pelo webhook do WhatsApp e pela rotina diária. Nunca com prefixo `NEXT_PUBLIC_`.
 3. Em **Authentication → Users**, crie (ou convide) as contas da equipe. Não há cadastro público.
-4. Libere cada conta no Control, no SQL Editor:
+4. Libere cada conta no Control. O jeito mais simples é o convite: cadastre o e-mail antes, e o acesso é concedido
+   automaticamente quando a conta for criada (Authentication → Users → Add user):
+   ```sql
+   insert into public.control_invites (email, role) values ('pessoa@grupov3x.com.br', 'member');
+   ```
+   Ou, para contas que já existem:
    ```sql
    insert into public.control_users (user_id, role)
    select id, 'admin' from auth.users where email = 'email-da-pessoa@grupov3x.com.br';
