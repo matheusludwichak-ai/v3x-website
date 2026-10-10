@@ -106,11 +106,11 @@ export function Hero({ onContact }: { onContact: () => void }) {
           </p>
 
           <div className="mt-9 flex flex-wrap items-center gap-x-8 gap-y-5">
-            <button type="button" onClick={onContact} data-magnetic="0.25" className="hero-cta hero-pre btn-primary btn-island">
+            <button type="button" onClick={onContact} data-magnetic="0.25" data-track="cta_click" data-track-cta-name="abrir_formulario" data-track-area="hero" className="hero-cta hero-pre btn-primary btn-island">
               Começar um projeto
               <span className="btn-island-icon"><ArrowUpRight className="size-4" /></span>
             </button>
-            <a href="#servicos" className="hero-cta hero-pre link-underline text-base font-medium text-foreground">
+            <a href="#servicos" data-track="cta_click" data-track-cta-name="explorar_servicos" data-track-area="hero" className="hero-cta hero-pre link-underline text-base font-medium text-foreground">
               Explorar os serviços
             </a>
           </div>

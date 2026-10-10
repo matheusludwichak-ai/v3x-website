@@ -170,6 +170,7 @@ export function PublicChrome() {
           rel="noopener noreferrer"
           aria-label="Conversar com a V3X no WhatsApp (abre em nova aba)"
           className="wa-float group"
+          data-track-area="whatsapp_float"
         >
           <WhatsAppIcon className="size-[22px] shrink-0" />
           <span className="wa-float-label">Conversar no WhatsApp</span>

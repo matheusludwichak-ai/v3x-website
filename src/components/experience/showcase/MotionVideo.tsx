@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { track } from "@/lib/analytics/track";
 import { Pause, Play, Volume2, VolumeX } from "lucide-react";
 
 const SRC = "/work/v3x-motion.mp4";
@@ -43,6 +44,7 @@ export function MotionVideo() {
   const toggle = () => {
     const video = ref.current;
     if (!video) return;
+    track("video_interaction", { video_title: "v3x_motion", video_action: video.paused ? "play" : "pause" });
     if (video.paused) {
       userPaused.current = false;
       video.play().catch(() => undefined);
@@ -82,7 +84,10 @@ export function MotionVideo() {
           <button type="button" onClick={toggle} aria-label={playing ? "Pausar vídeo" : "Reproduzir vídeo"} className="grid size-11 place-items-center rounded-full bg-black/55 text-white backdrop-blur transition-transform hover:scale-105 active:scale-95">
             {playing ? <Pause className="size-4" /> : <Play className="size-4 translate-x-px" />}
           </button>
-          <button type="button" onClick={() => setMuted((m) => !m)} aria-label={muted ? "Ativar som" : "Desativar som"} className="grid size-11 place-items-center rounded-full bg-black/55 text-white backdrop-blur transition-transform hover:scale-105 active:scale-95">
+          <button type="button" onClick={() => {
+            track("video_interaction", { video_title: "v3x_motion", video_action: muted ? "unmute" : "mute" });
+            setMuted((m) => !m);
+          }} aria-label={muted ? "Ativar som" : "Desativar som"} className="grid size-11 place-items-center rounded-full bg-black/55 text-white backdrop-blur transition-transform hover:scale-105 active:scale-95">
             {muted ? <VolumeX className="size-4" /> : <Volume2 className="size-4" />}
           </button>
         </div>

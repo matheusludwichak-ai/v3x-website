@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Logo } from "@/components/brand/Logo";
 import { WhatsAppIcon } from "@/components/site/whatsapp-icon";
+import { CookiePreferencesButton } from "@/components/analytics/CookiePreferencesButton";
 import { CONTACT_EMAIL, CONTACT_EMAIL_HREF, WHATSAPP_DISPLAY, whatsappHref } from "@/config/contact";
 
 const COLUMNS = [
@@ -34,7 +35,7 @@ const COLUMNS = [
 export function SiteFooter() {
   const wa = whatsappHref();
   return (
-    <footer className="border-t border-border bg-[#07080f]">
+    <footer className="border-t border-border bg-[#07080f]" data-track-area="footer">
       <div className="container-v3x py-16 md:py-20">
         <div className="grid grid-cols-1 gap-12 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
           <div>
@@ -75,7 +76,10 @@ export function SiteFooter() {
           ))}
         </div>
         <div className="mt-16 flex flex-col items-start justify-between gap-4 border-t border-border pt-6 text-xs text-muted-foreground md:flex-row md:items-center">
-          <p>© 2026 V3X. Todos os direitos reservados.</p>
+          <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
+            <p>© 2026 V3X. Todos os direitos reservados.</p>
+            <CookiePreferencesButton className="underline-offset-4 transition-colors hover:text-foreground hover:underline" />
+          </div>
           <p className="uppercase tracking-[0.3em]">Design · Tecnologia · Produtos digitais</p>
         </div>
       </div>

@@ -41,7 +41,7 @@ export default async function ServicePage({ params }: Props) {
       <PageHero eyebrow={`Serviço ${service.number} · ${service.name}`} crumb={service.name} title={service.heroLine}>
         <p className="hero-in hero-in-2 mt-6 max-w-[60ch] text-lg leading-relaxed text-muted-foreground">{service.description}</p>
         <div className="hero-in hero-in-3 mt-9 flex flex-wrap gap-4">
-          <Link href="/contato" className="btn-primary">
+          <Link href="/contato" className="btn-primary" data-track="cta_click" data-track-cta-name="comecar_projeto" data-track-area="service_hero" data-track-service-interest={service.slug}>
             Começar um projeto <ArrowUpRight className="size-5" />
           </Link>
           <Link href="/servicos" className="btn-outline">

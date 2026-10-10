@@ -15,11 +15,11 @@ export default function PrivacidadePage() {
       <section className="py-16 md:py-24">
         <div className="mx-auto max-w-[820px] px-6">
           <div className="prose-v3x">
-            <p>Última atualização: 9 de outubro de 2026.</p>
+            <p>Última atualização: 10 de outubro de 2026.</p>
             <h2>1. Coleta de dados</h2>
             <p>
               Coletamos apenas os dados que você nos envia voluntariamente através do formulário de contato (nome, e-mail, empresa e informações sobre o projeto), além de dados de
-              navegação anônimos via Google Analytics.
+              navegação coletados pelo Google Analytics somente quando você permite (veja “Cookies”).
             </p>
             <h2>2. Uso dos dados</h2>
             <p>
@@ -35,9 +35,16 @@ export default function PrivacidadePage() {
             </p>
             <h2>4. Cookies</h2>
             <p>
-              Utilizamos cookies para análise de tráfego (Google Analytics) e para melhorar a
-              experiência de navegação. Você pode desativar cookies nas configurações do seu
-              navegador a qualquer momento.
+              Cookies essenciais mantêm o site funcionando e guardam a sua escolha de privacidade.
+              Cookies de análise do Google Analytics só são ativados se você permitir no aviso de
+              cookies. Com eles medimos páginas visitadas, a origem do acesso (busca, redes sociais,
+              campanhas) e cliques em botões e canais de contato, sem enviar seu nome, e-mail,
+              telefone ou o conteúdo das mensagens. Hoje o site não usa cookies de publicidade.
+            </p>
+            <p>
+              Também usamos as métricas de audiência e desempenho da Vercel, nossa hospedagem, que
+              não usam cookies. Você pode mudar sua escolha a qualquer momento em “Preferências de
+              cookies”, no rodapé do site, ou bloquear cookies nas configurações do navegador.
             </p>
             <h2>5. Seus direitos</h2>
             <p>

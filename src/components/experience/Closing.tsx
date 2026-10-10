@@ -10,6 +10,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { WhatsAppIcon } from "@/components/site/whatsapp-icon";
 import { CONTACT_EMAIL, CONTACT_EMAIL_HREF, whatsappHref } from "@/config/contact";
+import { useLeadFormTracking } from "@/lib/analytics/forms";
 import { SplitReveal } from "./Reveal";
 import { gsap, useGSAP, EASE, MOTION_OK, lockScroll } from "@/lib/motion";
 
@@ -86,6 +87,7 @@ type Status = "idle" | "sending" | "sent" | "error";
 export function ContactDialog({ open, onOpenChange }: { open: boolean; onOpenChange: (o: boolean) => void }) {
   const [status, setStatus] = useState<Status>("idle");
   const [error, setError] = useState("");
+  const lead = useLeadFormTracking("contato_modal");
 
   useEffect(() => {
     lockScroll(open);
@@ -96,6 +98,7 @@ export function ContactDialog({ open, onOpenChange }: { open: boolean; onOpenCha
     e.preventDefault();
     const form = e.currentTarget;
     const data = Object.fromEntries(new FormData(form).entries());
+    lead.submitted();
     setStatus("sending");
     setError("");
     try {
@@ -104,18 +107,21 @@ export function ContactDialog({ open, onOpenChange }: { open: boolean; onOpenCha
       if (!res.ok || !json.ok) {
         setStatus("error");
         setError(json.error ?? "Não foi possível enviar. Tente novamente.");
+        lead.failed(res.status === 503 ? "unavailable" : res.status === 400 ? "validation" : "server");
         return;
       }
+      lead.succeeded();
       setStatus("sent");
       form.reset();
     } catch {
       setStatus("error");
       setError("Não foi possível enviar. Verifique sua conexão e tente novamente.");
+      lead.failed("network");
     }
   };
 
   return (
-    <Dialog open={open} onOpenChange={(o) => { onOpenChange(o); if (!o) setTimeout(() => setStatus("idle"), 300); }}>
+    <Dialog open={open} onOpenChange={(o) => { onOpenChange(o); if (!o) { lead.closed(); setTimeout(() => setStatus("idle"), 300); } }}>
       <DialogContent data-lenis-prevent className="max-h-[90svh] overflow-y-auto border-border bg-surface sm:max-w-lg">
         <DialogHeader>
           <DialogTitle className="text-2xl">Vamos conversar sobre o seu projeto</DialogTitle>
@@ -127,7 +133,7 @@ export function ContactDialog({ open, onOpenChange }: { open: boolean; onOpenCha
             <p className="text-muted-foreground">Recebemos sua mensagem. Vamos responder no e-mail informado.</p>
           </div>
         ) : (
-          <form onSubmit={submit} className="space-y-4">
+          <form onSubmit={submit} onFocusCapture={lead.onFocusCapture} onInvalidCapture={lead.invalid} className="space-y-4">
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="space-y-2"><Label htmlFor="c-nome">Nome</Label><Input id="c-nome" name="nome" autoComplete="name" required /></div>
               <div className="space-y-2"><Label htmlFor="c-empresa">Empresa <span className="text-muted-foreground">(opcional)</span></Label><Input id="c-empresa" name="empresa" autoComplete="organization" /></div>
@@ -199,7 +205,7 @@ export function Closing({ onContact }: { onContact: () => void }) {
         </p>
 
         <div className="contact-tiles mt-12 grid gap-4 md:grid-cols-3">
-          <button type="button" onClick={onContact} data-tilt="3" className="contact-tile contact-tile-main group">
+          <button type="button" onClick={onContact} data-tilt="3" data-track="cta_click" data-track-cta-name="abrir_formulario" className="contact-tile contact-tile-main group">
             <span className="contact-tile-kicker">Formulário</span>
             <span className="contact-tile-title">Começar um projeto</span>
             <span className="contact-tile-text">Algumas perguntas rápidas sobre o que você quer construir.</span>

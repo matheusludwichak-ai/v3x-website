@@ -51,11 +51,11 @@ export function SiteHeader() {
   }, [path]);
 
   return (
-    <header className="site-header fixed inset-x-0 top-0 z-50" data-scrolled={scrolled}>
+    <header className="site-header fixed inset-x-0 top-0 z-50" data-scrolled={scrolled} data-track-area="header">
       <div aria-hidden className="scroll-progress" />
       <div aria-hidden className="site-header-bg absolute inset-0 -z-10 border-b border-white/8 bg-background/85 backdrop-blur-md" />
       <div className="site-header-bar container-v3x flex h-[72px] items-center justify-between">
-        <Link href="/" aria-label="V3X, página inicial" className="block">
+        <Link href="/" aria-label="V3X, página inicial" className="block" data-track-nav-item="logo">
           <Logo className="w-[104px]" />
         </Link>
 
@@ -77,7 +77,7 @@ export function SiteHeader() {
           })}
         </nav>
 
-        <Link href="/contato" data-magnetic="0.2" className="btn-primary hidden h-10 px-5 text-sm lg:inline-flex">
+        <Link href="/contato" data-magnetic="0.2" data-track="cta_click" data-track-cta-name="comecar_projeto" className="btn-primary hidden h-10 px-5 text-sm lg:inline-flex">
           Começar um projeto <ArrowUpRight className="size-4" />
         </Link>
 

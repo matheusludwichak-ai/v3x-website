@@ -14,7 +14,8 @@ export async function POST(request: Request) {
     const scriptUrl = process.env.GOOGLE_SCRIPT_URL;
 
     if (!scriptUrl) {
-      console.log("[CONTATO LEAD — SEM GOOGLE_SCRIPT_URL CONFIGURADO]", JSON.stringify(data, null, 2));
+      // Never log the lead itself (name, e-mail and message are personal data).
+      console.error("[CONTATO] GOOGLE_SCRIPT_URL não configurado; envio recusado.");
       return NextResponse.json(
         { ok: false, error: "Envio indisponível no momento. Tente novamente por e-mail." },
         { status: 503 }
@@ -37,7 +38,11 @@ export async function POST(request: Request) {
     const getUrl = `${scriptUrl}?${params.toString()}`;
 
     const res = await fetch(getUrl, { method: "GET", redirect: "follow" });
-    console.log("[CONTATO] Script response status:", res.status);
+    if (!res.ok) {
+      // Only report success when the lead was really accepted (analytics counts generate_lead on ok).
+      console.error("[CONTATO] Planilha recusou o envio. Status:", res.status);
+      return NextResponse.json({ ok: false, error: "Não foi possível enviar agora. Tente novamente ou fale pelo WhatsApp." }, { status: 502 });
+    }
 
     return NextResponse.json({ ok: true });
   } catch (err) {

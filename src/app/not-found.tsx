@@ -5,7 +5,7 @@ import { XMark } from "@/components/brand/XMark";
 
 export default function NotFound() {
   return (
-    <main className="hero-glow relative flex min-h-[100dvh] flex-col overflow-hidden px-6 md:px-12">
+    <main className="hero-glow relative flex min-h-[100dvh] flex-col overflow-hidden px-6 md:px-12" data-page-not-found data-track-area="not_found">
       <header className="flex h-[72px] items-center">
         <Link href="/" aria-label="V3X, página inicial">
           <Logo className="w-[104px]" />

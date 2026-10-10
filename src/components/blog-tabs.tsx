@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import type { Post } from "@/lib/posts";
+import { track } from "@/lib/analytics/track";
 
 export function BlogTabs({ posts }: { posts: Post[] }) {
   const categories = useMemo(() => {
@@ -37,6 +38,7 @@ export function BlogTabs({ posts }: { posts: Post[] }) {
             }}
             type="button"
             onClick={() => {
+              if (cat !== active) track("content_filter", { filter_name: "blog_category", filter_value: cat });
               setActive(cat);
               setLimit(12);
             }}

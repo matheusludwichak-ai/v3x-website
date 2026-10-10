@@ -1,13 +1,11 @@
 import type { Metadata } from "next";
 import { Sora, JetBrains_Mono } from "next/font/google";
-import { Analytics } from "@vercel/analytics/react";
-import { SpeedInsights } from "@vercel/speed-insights/next";
-import Script from "next/script";
 import { Toaster } from "@/components/ui/sonner";
 import { PublicChrome } from "@/components/site/public-chrome";
+import { AnalyticsProvider } from "@/components/analytics/AnalyticsProvider";
+import { ConsentBanner } from "@/components/analytics/ConsentBanner";
+import { VercelMetrics } from "@/components/analytics/VercelMetrics";
 import "./globals.css";
-
-const GA_ID = "G-H3NVMRK99E";
 
 const sora = Sora({
   subsets: ["latin"],
@@ -93,23 +91,12 @@ export default function RootLayout({
   return (
     <html lang="pt-BR" className={`${sora.variable} ${jetbrainsMono.variable}`} suppressHydrationWarning>
       <body>
-        <Script
-          src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
-          strategy="afterInteractive"
-        />
-        <Script id="ga4-init" strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', '${GA_ID}', { page_path: window.location.pathname });
-          `}
-        </Script>
+        <AnalyticsProvider />
         {children}
         <PublicChrome />
         <Toaster />
-        <Analytics />
-        <SpeedInsights />
+        <ConsentBanner />
+        <VercelMetrics />
       </body>
     </html>
   );

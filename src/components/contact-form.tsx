@@ -2,6 +2,7 @@
 
 import { useState, type FormEvent } from "react";
 import { services } from "@/data/services";
+import { useLeadFormTracking, type LeadFormError } from "@/lib/analytics/forms";
 
 type Status = "idle" | "submitting" | "success" | "error";
 
@@ -11,14 +12,29 @@ const inputClass =
 export function ContactForm() {
   const [status, setStatus] = useState<Status>("idle");
   const [errorMsg, setErrorMsg] = useState("");
+  const lead = useLeadFormTracking("contato_pagina");
+
+  const fail = (type: LeadFormError, message: string) => {
+    setStatus("error");
+    setErrorMsg(message);
+    lead.failed(type);
+  };
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const form = e.currentTarget;
     const data = Object.fromEntries(new FormData(form).entries());
 
-    if (!data.nome || !data.email || !data.descricao) return;
+    if (!String(data.nome ?? "").trim() || !String(data.email ?? "").trim() || !String(data.descricao ?? "").trim()) {
+      fail("validation", "Preencha nome, e-mail e a descrição do projeto.");
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(data.email).trim())) {
+      fail("validation", "Informe um e-mail válido.");
+      return;
+    }
 
+    lead.submitted();
     setStatus("submitting");
     setErrorMsg("");
 
@@ -31,16 +47,15 @@ export function ContactForm() {
       const json = await res.json();
 
       if (!res.ok || !json.ok) {
-        setStatus("error");
-        setErrorMsg(json.error || "Não foi possível enviar. Tente novamente.");
+        fail(res.status === 503 ? "unavailable" : res.status === 400 ? "validation" : "server", json.error || "Não foi possível enviar. Tente novamente.");
         return;
       }
 
+      lead.succeeded(String(data.servico ?? ""));
       setStatus("success");
       form.reset();
     } catch {
-      setStatus("error");
-      setErrorMsg("Não foi possível enviar. Verifique sua conexão e tente novamente.");
+      fail("network", "Não foi possível enviar. Verifique sua conexão e tente novamente.");
     }
   }
 
@@ -57,7 +72,7 @@ export function ContactForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-6" noValidate>
+    <form onSubmit={handleSubmit} onFocusCapture={lead.onFocusCapture} className="flex flex-col gap-6" noValidate>
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
         <Field label="Nome" htmlFor="nome">
           <input
