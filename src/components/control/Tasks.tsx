@@ -8,11 +8,12 @@ import type { Task } from "@/lib/control/schema";
 import { AIBtn, Avatar, Badge, Btn, Confirm, Drawer, Empty, ErrorBox, Field, ModeBanner, Page, PageHeader, Select, Skeleton, Tabs, TextArea, TextInput, optionsOf, useDebounced } from "./ui";
 import { ai, ApiError, fmtDate, relative, today, useCollection, useSession } from "./lib/client";
 import { useLookups } from "./lib/lookups";
+import { deadlineBuckets } from "./lib/deadline";
 import { PRIORITY_LABEL, PRIORITY_TONE, TASK_STATUS_LABEL } from "./lib/labels";
 import { cn } from "@/lib/utils";
 
 const COLUMNS = ["todo", "doing", "waiting", "done"] as const;
-type View = "status" | "project";
+type View = "status" | "deadline" | "project";
 
 export function Tasks() {
   const session = useSession();
@@ -25,7 +26,14 @@ export function Tasks() {
   const [assignee, setAssignee] = useState("");
   const [project, setProject] = useState("");
   const [priority, setPriority] = useState("");
-  const [openId, setOpenId] = useState<string | null>(params.get("abrir"));
+  const abrir = params.get("abrir");
+  const [openId, setOpenId] = useState<string | null>(abrir);
+  // Same-page navigation (e.g. from the search palette) changes ?abrir= without remounting.
+  const [lastAbrir, setLastAbrir] = useState(abrir);
+  if (abrir !== lastAbrir) {
+    setLastAbrir(abrir);
+    setOpenId(abrir);
+  }
   const [over, setOver] = useState<string | null>(null);
   const quickRef = useRef<HTMLInputElement>(null);
   const q = useDebounced(query).trim().toLowerCase();
@@ -146,7 +154,7 @@ export function Tasks() {
       </div>
 
       <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
-        <Tabs<View> value={view} onChange={setView} items={[{ value: "status", label: "Por status" }, { value: "project", label: "Por projeto" }]} />
+        <Tabs<View> value={view} onChange={setView} items={[{ value: "status", label: "Por status" }, { value: "deadline", label: "Por prazo" }, { value: "project", label: "Por projeto" }]} />
         <form onSubmit={quickAdd} className="flex min-w-[280px] flex-1 justify-end gap-2 md:max-w-md">
           <TextInput ref={quickRef} placeholder="Criação rápida: escreva e pressione Enter" aria-label="Título da nova tarefa" disabled={tasks.readonly} />
           <Btn type="submit" disabled={tasks.readonly} icon={<Plus className="size-4" />}>
@@ -190,6 +198,23 @@ export function Tasks() {
               </section>
             );
           })}
+        </div>
+      ) : view === "deadline" ? (
+        <div className="space-y-6">
+          {deadlineBuckets(filtered, now).map((b) => (
+            <section key={b.key} aria-label={b.label}>
+              <h2 className={cn("mb-3 flex items-center gap-2 text-sm font-semibold", b.tone)}>
+                {b.label}
+                <span className="cx-tab-count">{b.items.length}</span>
+              </h2>
+              {b.items.length ? (
+                <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">{b.items.map((t) => <Tile key={t.id} t={t} />)}</div>
+              ) : (
+                <p className="rounded-lg border border-dashed border-white/8 px-4 py-4 text-xs text-[#6e6e76]">Nenhuma tarefa aberta aqui.</p>
+              )}
+            </section>
+          ))}
+          <p className="text-xs text-[#6e6e76]">Tarefas concluídas não aparecem nesta visão.</p>
         </div>
       ) : (
         <div className="space-y-6">

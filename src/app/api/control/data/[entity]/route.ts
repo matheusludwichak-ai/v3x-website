@@ -18,7 +18,7 @@ export async function GET(request: Request, { params }: Ctx) {
     for (const [k, v] of url.searchParams) if (k.startsWith("where.")) where[k.slice(6)] = v;
     const store = await getStore();
     const rows = await store.list(entity as EntityKey, { limit, where });
-    return Response.json({ data: rows, mode: session.mode, readonly: store.readonly });
+    return Response.json({ data: rows, mode: session.mode, readonly: store.readonly || !session.canWrite });
   } catch (error) {
     return errorResponse(error);
   }

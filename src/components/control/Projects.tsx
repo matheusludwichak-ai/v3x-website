@@ -38,7 +38,14 @@ export function ProjectsList() {
   const look = useLookups();
   const params = useSearchParams();
   const router = useRouter();
-  const [creating, setCreating] = useState(Boolean(params.get("novo")));
+  const novo = Boolean(params.get("novo"));
+  const [creating, setCreating] = useState(novo);
+  // Opening "Novo projeto" from the search palette while already on this page.
+  const [lastNovo, setLastNovo] = useState(novo);
+  if (novo !== lastNovo) {
+    setLastNovo(novo);
+    if (novo) setCreating(true);
+  }
   const [status, setStatus] = useState<"open" | "done" | "all">("open");
   const [query, setQuery] = useState("");
   const q = useDebounced(query).trim().toLowerCase();

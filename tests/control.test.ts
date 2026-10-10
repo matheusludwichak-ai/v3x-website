@@ -185,3 +185,24 @@ describe("Gemini service", () => {
     await expect(generateText({ system: "s", prompt: "p" })).rejects.toMatchObject({ code: "quota", status: 429 });
   });
 });
+
+describe("tasks by deadline", () => {
+  it("buckets open tasks relative to today and skips done ones", async () => {
+    const { deadlineBuckets } = await import("@/components/control/lib/deadline");
+    const now = "2026-10-10";
+    const t = (due_date: string | null, status: "todo" | "done" = "todo") => ({ status, due_date });
+    const out = Object.fromEntries(
+      deadlineBuckets([t("2026-10-08"), t(now), t("2026-10-17"), t("2026-10-18"), t(null), t("2026-10-01", "done")], now).map((b) => [b.key, b.items.length]),
+    );
+    expect(out).toEqual({ late: 1, today: 1, week: 1, later: 1, none: 1 });
+  });
+});
+
+describe("client navigation", () => {
+  it("client accounts only get client-facing pages", async () => {
+    const { navFor, NAV } = await import("@/components/control/nav");
+    const hrefs = navFor("client_viewer").flatMap((g) => g.items.map((i) => i.href));
+    expect(hrefs).toEqual(["/control", "/control/projetos", "/control/monitoramento", "/control/relatorios"]);
+    expect(navFor("member")).toBe(NAV);
+  });
+});

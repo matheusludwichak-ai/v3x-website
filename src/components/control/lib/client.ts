@@ -163,7 +163,11 @@ export function ai<T = Record<string, unknown>>(payload: Record<string, unknown>
   return api<T>("/api/control/ai", { method: "POST", body: JSON.stringify(payload) });
 }
 
-export const today = () => new Date().toISOString().slice(0, 10);
+/** Local calendar date (YYYY-MM-DD); UTC would flip to tomorrow in the Brazilian evening. */
+export const today = () => {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+};
 export const fmtDate = (iso?: string | null) => (iso ? new Date(iso.length === 10 ? `${iso}T12:00:00` : iso).toLocaleDateString("pt-BR", { day: "2-digit", month: "short" }) : "Sem data");
 export const fmtDateTime = (iso?: string | null) => (iso ? new Date(iso).toLocaleString("pt-BR", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" }) : "Nunca");
 export const relative = (iso?: string | null) => {

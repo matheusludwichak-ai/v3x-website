@@ -9,12 +9,19 @@ Ele funciona em três modos, escolhidos automaticamente pelas variáveis de ambi
 | **Local** | Desenvolvimento (`npm run dev`) sem Supabase | Dados em `.data/control.json` (ignorado pelo Git), sem login, só aceita acesso pelo próprio computador. |
 | **Demonstração** | Produção sem Supabase | Somente leitura, registros marcados “Exemplo”, IA e escrita desativadas. |
 
+## Endereço
+
+O Control roda em **https://control.grupov3x.com.br** (CNAME `control` na Hostinger → Vercel, variável `CONTROL_HOST`).
+No domínio principal, `/control` e `/login` redirecionam para o subdomínio, e o site público não tem mais link para o Control.
+O subdomínio responde com `X-Robots-Tag: noindex` e devolve as páginas do site ao domínio principal.
+
 ## Estado atual (10/10/2026)
 
 - Projeto Supabase **v3x-control** criado (região São Paulo, `https://lwmxrhaixxtgkbbcwawt.supabase.co`), com todas as migrations aplicadas e verificadas.
-- Autenticação: Site URL `https://grupov3x.com.br`, redirect `https://grupov3x.com.br/login`, cadastro público **desligado**.
+- Autenticação: Site URL `https://control.grupov3x.com.br`, redirects `/login` nos dois domínios, cadastro público **desligado**.
+- Security Advisor do Supabase: 0 erros, 0 avisos.
 - Convite de administrador cadastrado para o e-mail do fundador (tabela `control_invites`).
-- Vercel: `NEXT_PUBLIC_SUPABASE_URL` definida. Faltam as chaves (abaixo).
+- Vercel: `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `GEMINI_API_KEY` e `CONTROL_HOST` definidas.
 
 ## 1. Ativar o banco e o login (Supabase)
 
@@ -83,6 +90,12 @@ Itens aprovados em **Portfólio → Aprovar para o site** (exige situação Conc
 ## 4.2 Mídia
 
 Com o Supabase ativo, os campos de capa, miniatura e vídeo ganham o botão **Enviar arquivo** (bucket `control-media`, até 50 MB, imagens e vídeos). O bucket é público por link: não envie material confidencial.
+
+## 4.3 Busca, prazos e portal do cliente
+
+- **Busca (Ctrl+K ou botão "Buscar")**: encontra tarefas, projetos, artigos, clientes, leads, portfólio e motion, e oferece ações rápidas (nova tarefa, artigo com IA, novo projeto, relatório).
+- **Tarefas → Por prazo**: Atrasadas, Hoje, Próximos 7 dias, Depois e Sem prazo (só tarefas abertas).
+- **Portal do cliente**: uma conta com papel `client_viewer` (convite em `control_invites` com `client_id`) vê só Visão geral, Projetos, Monitoramento e Relatórios do próprio cliente, sem botões de edição. Quem filtra os dados é o banco (RLS); a interface apenas esconde o que não se aplica. Páginas internas abertas pela URL mostram "Área interna da V3X".
 
 ## 5. Rotina diária (preparada, não agendada)
 

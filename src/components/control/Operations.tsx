@@ -149,6 +149,7 @@ export function Reports() {
   const [error, setError] = useState<string | null>(null);
   const [viewing, setViewing] = useState<Report | null>(null);
   const [confirmDelete, setConfirmDelete] = useState(false);
+  const isClient = session?.user?.role === "client_viewer";
 
   const projectOptions = useMemo(() => look.projects.filter((p) => !clientId || p.client_id === clientId).map((p) => ({ value: p.id, label: p.name })), [look.projects, clientId]);
 
@@ -170,7 +171,8 @@ export function Reports() {
   return (
     <Page>
       <ModeBanner session={session} />
-      <PageHeader eyebrow="Operações" title="Relatórios" description="A IA redige o relatório usando apenas os registros do Control no período e escopo escolhidos, e informa quando os dados são insuficientes." />
+      <PageHeader eyebrow="Operações" title="Relatórios" description={isClient ? "Relatórios que a V3X preparou para você, com base nos registros do seu projeto." : "A IA redige o relatório usando apenas os registros do Control no período e escopo escolhidos, e informa quando os dados são insuficientes."} />
+      {!isClient && (
       <Card title="Novo relatório" className="mb-6">
         <div className="grid gap-4 md:grid-cols-3">
           <Field label="Tipo"><Select value={type} onChange={(e) => { const v = e.target.value as typeof type; setType(v); if (v === "executive") setAudience("client"); }} options={optionsOf(REPORT_TYPE_LABEL)} /></Field>
@@ -185,6 +187,7 @@ export function Reports() {
           <AIBtn session={session} loading={busy} onClick={generate} disabled={audience === "client" && !clientId}>Gerar relatório</AIBtn>
         </div>
       </Card>
+      )}
 
       <h2 className="mb-3 text-sm font-semibold">Relatórios salvos</h2>
       {reports.loading ? (

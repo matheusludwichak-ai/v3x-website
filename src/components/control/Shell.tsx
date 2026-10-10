@@ -3,72 +3,16 @@
 import { useEffect, useState, type ReactNode } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import {
-  LayoutDashboard,
-  CheckSquare,
-  MessageCircle,
-  FolderKanban,
-  GitBranch,
-  Building2,
-  FileText,
-  Images,
-  Film,
-  Activity,
-  FileBarChart,
-  Network,
-  PlugZap,
-  Menu,
-  X,
-  ArrowUpRight,
-  LogOut,
-} from "lucide-react";
+import { Menu, X, ArrowUpRight, LogOut, Search } from "lucide-react";
 import { Logo } from "@/components/brand/Logo";
 import { supabaseBrowser } from "@/lib/control/browser";
 import { SITE_URL } from "@/config/site";
 import { useSession } from "./lib/client";
+import { NAV, navFor } from "./nav";
+import { CommandPalette } from "./CommandPalette";
+import { ClientHome, ClientRestricted } from "./ClientPortal";
 import { Badge } from "./ui";
 import { cn } from "@/lib/utils";
-
-export const NAV = [
-  {
-    group: "Dia a dia",
-    items: [
-      { href: "/control", label: "Visão geral", icon: LayoutDashboard },
-      { href: "/control/tarefas", label: "Tarefas", icon: CheckSquare },
-      { href: "/control/atendimento", label: "Atendimento", icon: MessageCircle },
-    ],
-  },
-  {
-    group: "Projetos",
-    items: [
-      { href: "/control/projetos", label: "Projetos", icon: FolderKanban },
-      { href: "/control/pipeline", label: "Pipeline comercial", icon: GitBranch },
-      { href: "/control/clientes", label: "Clientes", icon: Building2 },
-    ],
-  },
-  {
-    group: "Conteúdo",
-    items: [
-      { href: "/control/blog", label: "Blog", icon: FileText },
-      { href: "/control/portfolio", label: "Portfólio", icon: Images },
-      { href: "/control/motion", label: "Biblioteca de motion", icon: Film },
-    ],
-  },
-  {
-    group: "Operações",
-    items: [
-      { href: "/control/monitoramento", label: "Monitoramento", icon: Activity },
-      { href: "/control/relatorios", label: "Relatórios", icon: FileBarChart },
-    ],
-  },
-  {
-    group: "Empresa",
-    items: [
-      { href: "/control/organizacao", label: "Organização", icon: Network },
-      { href: "/control/integracoes", label: "Integrações", icon: PlugZap },
-    ],
-  },
-];
 
 const ALL = NAV.flatMap((g) => g.items);
 const isActive = (path: string, href: string) => (href === "/control" ? path === "/control" : path === href || path.startsWith(`${href}/`));
@@ -79,6 +23,9 @@ export function ControlShell({ children }: { children: ReactNode }) {
   const session = useSession();
   const [open, setOpen] = useState(false);
   const current = ALL.find((i) => isActive(path, i.href));
+  const isClient = session?.user?.role === "client_viewer";
+  const nav = navFor(session?.user?.role);
+  const allowed = !isClient || nav.some((g) => g.items.some((i) => isActive(path, i.href)));
 
   useEffect(() => {
     if (!open) return;
@@ -115,7 +62,7 @@ export function ControlShell({ children }: { children: ReactNode }) {
           </button>
         </div>
         <nav className="flex-1 overflow-y-auto pb-6">
-          {NAV.map((g) => (
+          {nav.map((g) => (
             <div key={g.group} className="cx-side-group">
               <p className="cx-side-label">{g.group}</p>
               {g.items.map(({ href, label, icon: Icon }) => (
@@ -150,9 +97,19 @@ export function ControlShell({ children }: { children: ReactNode }) {
               <span className="text-white">{current?.label ?? "Control"}</span>
             </span>
           </div>
-          {modeBadge}
+          <div className="flex shrink-0 items-center gap-2">
+            {!isClient && (
+              <button type="button" className="cx-search-btn" onClick={() => window.dispatchEvent(new Event("control:search"))} aria-label="Buscar no Control (Ctrl+K)">
+                <Search className="size-4" />
+                <span className="hidden md:inline">Buscar</span>
+                <kbd className="hidden md:inline">Ctrl K</kbd>
+              </button>
+            )}
+            <span className="hidden sm:contents">{modeBadge}</span>
+          </div>
         </div>
-        {children}
+        {!session ? children : isClient ? (path === "/control" ? <ClientHome /> : allowed ? children : <ClientRestricted />) : children}
+        {session && !isClient && <CommandPalette />}
       </div>
     </div>
   );

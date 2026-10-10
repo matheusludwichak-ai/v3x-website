@@ -160,3 +160,36 @@
 
 /* Grid children may shrink below their content width (long names, badges): prevents horizontal scroll on phones. */
 .cx-page .grid > *, .cx-card { min-width: 0; }
+
+.cx-search-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  height: 2.25rem;
+  padding: 0 0.75rem;
+  border-radius: 0.6rem;
+  border: 1px solid rgb(255 255 255 / 8%);
+  background: rgb(255 255 255 / 3%);
+  color: #a0a0a0;
+  font-size: 13px;
+  transition: border-color 0.15s, color 0.15s;
+}
+.cx-search-btn:hover { border-color: rgb(56 130 246 / 40%); color: #fff; }
+.cx-search-btn kbd {
+  border: 1px solid rgb(255 255 255 / 10%);
+  border-radius: 0.35rem;
+  padding: 0.05rem 0.35rem;
+  font-size: 10px;
+  font-family: inherit;
+  color: #8a8a92;
+}
+
+.cx-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 12px;
+  font-weight: 500;
+  color: #9cc2ff;
+}
+.cx-link:hover { color: #fff; }
