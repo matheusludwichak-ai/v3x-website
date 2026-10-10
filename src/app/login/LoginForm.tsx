@@ -11,6 +11,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
 import { supabaseBrowser } from "@/lib/control/browser";
+import { SITE_URL } from "@/config/site";
 
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -62,8 +63,8 @@ export function LoginForm() {
     <main className="relative isolate flex min-h-svh flex-col overflow-hidden bg-background">
       <div className="pointer-events-none absolute inset-0 -z-10 opacity-50"><GridField /></div>
       <header className="flex items-center justify-between border-b border-border px-6 py-6 md:px-12">
-        <Link href="/" aria-label="Voltar ao site da V3X"><Logo className="w-[96px]" /></Link>
-        <Button render={<Link href="/" />} nativeButton={false} variant="ghost" className="text-muted-foreground"><ArrowLeft /> Site</Button>
+        <a href={SITE_URL} aria-label="Voltar ao site da V3X"><Logo className="w-[96px]" /></a>
+        <Button render={<a href={SITE_URL} />} nativeButton={false} variant="ghost" className="text-muted-foreground"><ArrowLeft /> Site</Button>
       </header>
       <div className="mx-auto grid w-full max-w-[1400px] flex-1 items-center gap-8 px-6 py-9 md:grid-cols-2 md:gap-20 md:px-12 md:py-24">
         <section className="login-enter self-center">

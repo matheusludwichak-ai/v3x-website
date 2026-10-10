@@ -59,9 +59,6 @@ export function MobileNav({ links }: { links: { href: string; label: string }[] 
               </Link>
             );
           })}
-          <Link href="/login" onClick={() => setOpen(false)} style={{ "--i": items.length } as React.CSSProperties} className="mnav-item border-b border-border py-4 text-base text-muted-foreground">
-            Control
-          </Link>
         </nav>
         <div className="mnav-item relative mt-10 space-y-5" style={{ "--i": items.length + 1 } as React.CSSProperties}>
           <Link href="/contato" onClick={() => setOpen(false)} className="btn-primary w-full justify-center">

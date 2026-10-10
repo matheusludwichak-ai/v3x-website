@@ -75,9 +75,6 @@ export function SiteHeader() {
               </Link>
             );
           })}
-          <Link href="/login" className="nav-link text-muted-foreground transition-colors hover:text-foreground">
-            Control
-          </Link>
         </nav>
 
         <Link href="/contato" data-magnetic="0.2" className="btn-primary hidden h-10 px-5 text-sm lg:inline-flex">

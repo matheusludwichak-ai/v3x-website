@@ -24,6 +24,7 @@ import {
 } from "lucide-react";
 import { Logo } from "@/components/brand/Logo";
 import { supabaseBrowser } from "@/lib/control/browser";
+import { SITE_URL } from "@/config/site";
 import { useSession } from "./lib/client";
 import { Badge } from "./ui";
 import { cn } from "@/lib/utils";
@@ -127,9 +128,9 @@ export function ControlShell({ children }: { children: ReactNode }) {
           ))}
         </nav>
         <div className="space-y-1 border-t border-white/5 p-3">
-          <Link href="/" className="cx-nav">
+          <a href={SITE_URL} className="cx-nav">
             <ArrowUpRight className="size-4" /> Ver o site
-          </Link>
+          </a>
           {session?.mode === "supabase" && session.user && (
             <button onClick={signOut} className="cx-nav w-[calc(100%-1.2rem)]">
               <LogOut className="size-4" /> Sair
