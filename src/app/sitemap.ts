@@ -5,6 +5,9 @@ import { projects } from "@/data/projects";
 
 const BASE = "https://grupov3x.com.br";
 
+/* Picks up articles published from the V3X Control. */
+export const revalidate = 300;
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const posts = await getAllPosts();
 

@@ -8,6 +8,9 @@ import { XMark } from "@/components/brand/XMark";
 import { CtaBand } from "@/components/site/cta-band";
 import { getAllPosts } from "@/lib/posts";
 
+/* Picks up articles published from the V3X Control. */
+export const revalidate = 300;
+
 export const metadata: Metadata = {
   title: "Blog",
   description: "Web design, motion design, software e produtos digitais: conteúdo da V3X.",

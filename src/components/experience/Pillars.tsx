@@ -95,7 +95,7 @@ function MotionClip({ className }: { className?: string }) {
       muted
       loop
       playsInline
-      preload="metadata"
+      preload="none"
       aria-label="Trecho do vídeo institucional da V3X: o X da marca se formando"
     />
   );

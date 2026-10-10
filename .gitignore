@@ -41,3 +41,6 @@ yarn-error.log*
 next-env.d.ts
 
 .vercel
+
+# V3X Control: local development store (never commit)
+/.data/

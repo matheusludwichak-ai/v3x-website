@@ -1,4 +1,5 @@
 import { ControlShell } from "@/components/control/Shell";
+import "./control.css";
 
 export const metadata = {
   title: "V3X Control",

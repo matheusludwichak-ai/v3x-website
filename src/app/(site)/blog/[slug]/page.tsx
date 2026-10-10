@@ -5,6 +5,14 @@ import { MDXRemote } from "next-mdx-remote/rsc";
 import { ArrowLeft } from "lucide-react";
 import { CtaBand } from "@/components/site/cta-band";
 import { getAllPosts, getPostBySlug } from "@/lib/posts";
+import { renderMarkdown } from "@/lib/markdown";
+
+/** JSON for <script> tags with "<" escaped, so content can never close the tag. */
+const safeJson = (value: unknown) => JSON.stringify(value).replace(/</g, "\\u003c");
+
+/* Articles published from the V3X Control appear without a new deploy. */
+export const dynamicParams = true;
+export const revalidate = 300;
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -20,15 +28,19 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const post = await getPostBySlug(slug);
   if (!post) return {};
 
+  const description = post.metaDescription || post.excerpt;
   return {
-    title: post.title,
-    description: post.excerpt,
+    title: post.seoTitle ? { absolute: post.seoTitle } : post.title,
+    description,
     alternates: { canonical: `https://grupov3x.com.br/blog/${slug}` },
     openGraph: {
-      title: post.title,
-      description: post.excerpt,
+      title: post.seoTitle || post.title,
+      description,
       url: `https://grupov3x.com.br/blog/${slug}`,
       type: "article",
+      publishedTime: post.date || undefined,
+      modifiedTime: post.updated || undefined,
+      ...(post.coverUrl ? { images: [{ url: post.coverUrl, alt: post.coverAlt ?? post.title }] } : {}),
     },
   };
 }
@@ -44,17 +56,25 @@ export default async function BlogPost({ params }: Props) {
     headline: post.title,
     description: post.excerpt,
     datePublished: post.date,
+    dateModified: post.updated ?? post.date,
+    mainEntityOfPage: `https://grupov3x.com.br/blog/${slug}`,
+    ...(post.coverUrl ? { image: post.coverUrl } : {}),
     author: { "@type": "Person", name: "Matheus Ludwichak" },
     publisher: { "@type": "Organization", name: "V3X" },
     url: `https://grupov3x.com.br/blog/${slug}`,
-    keywords: post.tags.join(", "),
+    keywords: [post.primaryKeyword, ...post.tags].filter(Boolean).join(", "),
   };
+
+  const faqLd = post.faq?.length
+    ? { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: post.faq.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })) }
+    : null;
 
   const date = post.date ? new Date(post.date).toLocaleDateString("pt-BR", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" }) : "";
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJson(jsonLd) }} />
+      {faqLd && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJson(faqLd) }} />}
 
       <article>
         <header className="hero-glow relative overflow-hidden border-b border-border pb-14 pt-36 md:pt-44">
@@ -75,9 +95,27 @@ export default async function BlogPost({ params }: Props) {
         </header>
 
         <div className="mx-auto max-w-[820px] px-6 py-16 md:py-20">
-          <div className="prose-v3x">
-            <MDXRemote source={post.content} />
-          </div>
+          {post.source === "mdx" ? (
+            <div className="prose-v3x">
+              <MDXRemote source={post.content} />
+            </div>
+          ) : (
+            <div className="prose-v3x" dangerouslySetInnerHTML={{ __html: renderMarkdown(post.content) }} />
+          )}
+
+          {post.faq && post.faq.length > 0 && (
+            <section aria-labelledby="faq-title" className="mt-14 border-t border-border pt-10">
+              <h2 id="faq-title" className="text-2xl font-semibold tracking-tight">Perguntas frequentes</h2>
+              <div className="mt-6 divide-y divide-border">
+                {post.faq.map((f) => (
+                  <details key={f.q} className="group py-4">
+                    <summary className="cursor-pointer list-none font-medium">{f.q}</summary>
+                    <p className="mt-3 text-[15px] leading-relaxed text-muted-foreground">{f.a}</p>
+                  </details>
+                ))}
+              </div>
+            </section>
+          )}
 
           {post.tags.length > 0 && (
             <div className="mt-14 flex flex-wrap gap-2 border-t border-border pt-8">
