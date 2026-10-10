@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
@@ -69,6 +69,35 @@ function ProductFragment() {
       </div>
       <span className="frag-caption">Da concepção ao produto em uso</span>
     </div>
+  );
+}
+
+/** Short loop from the real V3X motion piece (the X forming), shown in the Motion Design box. */
+function MotionClip({ className }: { className?: string }) {
+  const ref = useRef<HTMLVideoElement>(null);
+  useEffect(() => {
+    const video = ref.current;
+    if (!video) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const io = new IntersectionObserver(([e]) => {
+      if (e?.isIntersecting) video.play().catch(() => undefined);
+      else video.pause();
+    });
+    io.observe(video);
+    return () => io.disconnect();
+  }, []);
+  return (
+    <video
+      ref={ref}
+      className={className}
+      src="/work/areas/motion-x.mp4"
+      poster="/work/areas/motion-x.jpg"
+      muted
+      loop
+      playsInline
+      preload="metadata"
+      aria-label="Trecho do vídeo institucional da V3X: o X da marca se formando"
+    />
   );
 }
 
@@ -178,7 +207,7 @@ export function Pillars() {
 
                   {img && (
                     <div className="case-stage relative overflow-hidden lg:hidden">
-                      <div className="overflow-hidden"><Image src={img.src} alt={img.alt} width={img.width} height={img.height} sizes="100vw" className="aspect-[4/3] w-full object-cover" /></div>
+                      <div className="overflow-hidden">{slug === "motion-design" ? <MotionClip className="aspect-[4/3] w-full object-cover" /> : <Image src={img.src} alt={img.alt} width={img.width} height={img.height} sizes="100vw" className="aspect-[4/3] w-full object-cover" />}</div>
                       <div className="frag-panel"><Fragment /></div>
                     </div>
                   )}
@@ -198,7 +227,7 @@ export function Pillars() {
                   return (
                     <div key={slug} className={cn("svc-slide absolute inset-0 flex flex-col", active === i && "is-active")}>
                       <div className="relative min-h-0 flex-1 overflow-hidden">
-                        {img && <Image src={img.src} alt="" width={img.width} height={img.height} sizes="(min-width: 1024px) 460px, 0px" className="svc-slide-img h-full w-full object-cover" />}
+                        {slug === "motion-design" ? <MotionClip className="svc-slide-img h-full w-full object-cover" /> : img && <Image src={img.src} alt="" width={img.width} height={img.height} sizes="(min-width: 1024px) 460px, 0px" className="svc-slide-img h-full w-full object-cover" />}
                       </div>
                       <div className="frag-panel"><Fragment /></div>
                     </div>
