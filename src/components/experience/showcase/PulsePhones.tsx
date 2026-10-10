@@ -119,11 +119,15 @@ function AssistantScreen() {
 export function PulsePhones() {
   return (
     <div className="relative h-[640px] w-[720px]">
-      <div className="case-float absolute left-[70px] top-[28px] h-[590px] w-[290px] -rotate-[4deg]">
-        <div className="phone h-full"><div className="phone-island" /><div className="phone-screen"><HomeScreen /></div></div>
+      <div className="pulse-a absolute left-[70px] top-[28px] h-[590px] w-[290px]">
+        <div className="pulse-fan-a h-full">
+          <div className="phone h-full -rotate-[4deg]"><div className="phone-island" /><div className="phone-screen"><HomeScreen /></div></div>
+        </div>
       </div>
-      <div className="case-float-b absolute left-[370px] top-[8px] h-[590px] w-[290px] rotate-[3deg]">
-        <div className="phone h-full"><div className="phone-island" /><div className="phone-screen"><AssistantScreen /></div></div>
+      <div className="pulse-b absolute left-[370px] top-[8px] h-[590px] w-[290px]">
+        <div className="pulse-fan-b h-full">
+          <div className="phone h-full rotate-[3deg]"><div className="phone-island" /><div className="phone-screen"><AssistantScreen /></div></div>
+        </div>
       </div>
     </div>
   );

@@ -67,7 +67,7 @@ export function OrbitDashboard() {
 
         <div className="mt-5 grid grid-cols-4 gap-3">
           {kpis.map((k) => (
-            <div key={k.label} className="rounded-xl border border-white/8 bg-[#11132a] p-4">
+            <div key={k.label} className="orbit-kpi rounded-xl border border-white/8 bg-[#11132a] p-4">
               <p className="text-[11px] text-[#8a8da3]">{k.label}</p>
               <p className="mt-2 text-[21px] font-semibold tracking-tight">{k.value}</p>
               <p className={k.up ? "mt-1.5 text-[11px] font-medium text-[#7fb2ff]" : "mt-1.5 text-[11px] font-medium text-[#c4b5fd]"}>
@@ -100,10 +100,10 @@ export function OrbitDashboard() {
               {[0, 1, 2, 3].map((i) => (
                 <line key={i} x1="0" x2={W} y1={(H / 3) * i} y2={(H / 3) * i} stroke="white" strokeOpacity="0.06" />
               ))}
-              <path d={`${line(revenue)} L${W},${H} L0,${H} Z`} fill="url(#orbit-area)" />
+              <path className="orbit-area" d={`${line(revenue)} L${W},${H} L0,${H} Z`} fill="url(#orbit-area)" />
               <path d={line(previous)} fill="none" stroke="white" strokeOpacity="0.25" strokeWidth="1.5" strokeDasharray="4 5" />
-              <path d={line(revenue)} fill="none" stroke="url(#orbit-line)" strokeWidth="2.5" strokeLinecap="round" />
-              <circle cx={x(11)} cy={y(184)} r="5" fill="#8B5CF6" stroke="#0b0d1a" strokeWidth="2.5" />
+              <path className="orbit-line" pathLength={1} d={line(revenue)} fill="none" stroke="url(#orbit-line)" strokeWidth="2.5" strokeLinecap="round" />
+              <circle className="orbit-dot" cx={x(11)} cy={y(184)} r="5" fill="#8B5CF6" stroke="#0b0d1a" strokeWidth="2.5" />
               {months.map((m, i) => (
                 <text key={m} x={x(i)} y={H + 20} textAnchor="middle" fontSize="10.5" fill="#6f7290">{m}</text>
               ))}
@@ -120,7 +120,7 @@ export function OrbitDashboard() {
                     <span className="text-[#8a8da3]">{c.pct}%</span>
                   </div>
                   <div className="mt-1.5 h-[6px] rounded-full bg-white/6">
-                    <div className="h-full rounded-full" style={{ width: `${c.pct * 2.1}%`, background: `linear-gradient(90deg,#3882F6,${i % 2 ? "#8B5CF6" : "#6E74F7"})`, opacity: 1 - i * 0.15 }} />
+                    <div className="orbit-bar h-full origin-left rounded-full" style={{ width: `${c.pct * 2.1}%`, background: `linear-gradient(90deg,#3882F6,${i % 2 ? "#8B5CF6" : "#6E74F7"})`, opacity: 1 - i * 0.15 }} />
                   </div>
                 </div>
               ))}
@@ -133,7 +133,7 @@ export function OrbitDashboard() {
             <span>Cliente</span><span>Plano</span><span>Valor</span><span>Status</span>
           </div>
           {rows.map((r) => (
-            <div key={r[0]} className="grid grid-cols-[1.6fr_1fr_1fr_0.8fr] border-t border-white/6 py-2.5 text-[12px]">
+            <div key={r[0]} className="orbit-row grid grid-cols-[1.6fr_1fr_1fr_0.8fr] border-t border-white/6 py-2.5 text-[12px]">
               <span>{r[0]}</span>
               <span className="text-[#c9cbe0]">{r[1]}</span>
               <span className="text-[#c9cbe0]">{r[2]}</span>

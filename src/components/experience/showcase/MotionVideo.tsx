@@ -53,7 +53,7 @@ export function MotionVideo() {
   };
 
   return (
-    <div className="phone relative aspect-[9/16] w-full max-w-[340px]">
+    <div className="phone relative aspect-[9/16] w-full max-w-[340px]" data-cursor={failed ? undefined : playing ? "Pausar" : "Assistir"}>
       <div className="phone-screen bg-black">
         {failed ? (
           // eslint-disable-next-line @next/next/no-img-element
@@ -68,6 +68,7 @@ export function MotionVideo() {
             muted={muted}
             loop
             playsInline
+            onClick={toggle}
             onCanPlay={autoplay}
             onPlay={() => setPlaying(true)}
             onPause={() => setPlaying(false)}

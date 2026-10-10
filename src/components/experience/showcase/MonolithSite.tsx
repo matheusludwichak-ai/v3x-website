@@ -48,7 +48,7 @@ function DesktopPage() {
       <div className="mt-10 grid grid-cols-[1.15fr_1fr] gap-12">
         <div className="flex flex-col">
           <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-[#55575c]">Estúdio de arquitetura</p>
-          <h4 className="mt-5 text-[86px] font-extrabold leading-[0.92] tracking-[-0.055em]">
+          <h4 className="mono-title mt-5 text-[86px] font-extrabold leading-[0.92] tracking-[-0.055em]">
             Arquitetura
             <br />
             que permanece.
@@ -70,7 +70,9 @@ function DesktopPage() {
           </div>
         </div>
         <figure>
-          <SlabArt className="h-[470px] w-full rounded-[4px]" />
+          <div className="h-[470px] overflow-hidden rounded-[4px]">
+            <SlabArt className="mono-art h-full w-full" />
+          </div>
           <figcaption className="mt-3 flex justify-between text-[11px] text-[#55575c]">
             <span>Casa Basalto</span>
             <span>Conceito, 2026</span>
@@ -101,11 +103,11 @@ function MobilePage() {
 export function MonolithSite() {
   return (
     <div className="relative h-[760px] w-[1180px]">
-      <div className="case-float browser absolute left-0 top-0 h-[700px] w-[1040px]">
+      <div className="mono-desk browser absolute left-0 top-0 h-[700px] w-[1040px]">
         <div className="browser-bar"><i /><i /><i /><u>monolith.arq.br</u></div>
         <div className="h-[670px]"><DesktopPage /></div>
       </div>
-      <div className="case-float-b absolute bottom-0 right-0 h-[520px] w-[250px]">
+      <div className="mono-phone absolute bottom-0 right-0 h-[520px] w-[250px]">
         <div className="phone h-full"><div className="phone-island" /><div className="phone-screen"><MobilePage /></div></div>
       </div>
     </div>
