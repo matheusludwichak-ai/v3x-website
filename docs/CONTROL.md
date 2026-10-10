@@ -11,8 +11,10 @@ Ele funciona em três modos, escolhidos automaticamente pelas variáveis de ambi
 
 ## 1. Ativar o banco e o login (Supabase)
 
-1. No projeto Supabase da V3X, abra **SQL Editor** e execute `supabase/migrations/20261010000000_control_foundation.sql`
-   (ou `supabase db push` com a CLI vinculada). A migration é aditiva e pode ser executada de novo sem duplicar dados.
+1. No projeto Supabase da V3X, abra **SQL Editor**, cole o conteúdo de `supabase/setup.sql` e execute
+   (ou `npx supabase login`, `npx supabase link --project-ref <ref>` e `npx supabase db push`).
+   As migrations são aditivas e podem ser executadas de novo sem duplicar dados. Elas criam as tabelas, as políticas RLS,
+   o organograma inicial, os monitores do site e do próprio Control, a tabela de uso da IA e o bucket de mídia `control-media`.
 2. Na Vercel (projeto `v3x-website`, ambiente **Production**), defina:
    - `NEXT_PUBLIC_SUPABASE_URL`: URL do projeto (Settings → API).
    - `NEXT_PUBLIC_SUPABASE_ANON_KEY`: chave pública *anon/publishable*.
@@ -62,6 +64,14 @@ Requer o Supabase com `SUPABASE_SERVICE_ROLE_KEY`. Teste: **Integrações → Ve
 - O site lê os artigos publicados no banco (`src/lib/control/articles.ts`) junto com os arquivos MDX de `content/blog`. Slugs dos MDX ficam reservados.
 - Ao publicar, `/blog`, `/blog/<slug>` e `/sitemap.xml` são revalidados na hora; edições de artigos já publicados aparecem em até 5 minutos.
 
+## 4.1 Portfólio no site
+
+Itens aprovados em **Portfólio → Aprovar para o site** (exige situação Concluído, descrição e capa) aparecem em `/projetos`, na seção “Entregas”, lidos da view `public_portfolio`. Nome do cliente e observações internas nunca saem do Control.
+
+## 4.2 Mídia
+
+Com o Supabase ativo, os campos de capa, miniatura e vídeo ganham o botão **Enviar arquivo** (bucket `control-media`, até 50 MB, imagens e vídeos). O bucket é público por link: não envie material confidencial.
+
 ## 5. Rotina diária (preparada, não agendada)
 
 `GET /api/control/automations/daily` com `Authorization: Bearer <CRON_SECRET>` devolve tarefas atrasadas, incidentes abertos e artigos aguardando revisão. Não usa IA, não publica nada.
@@ -90,4 +100,5 @@ npm run build
 - Portfólio público exposto apenas pela view `public_portfolio` (sem notas internas nem nome do cliente).
 - Markdown dos artigos renderizado sem HTML bruto e com links limitados a http(s)/mailto/caminhos do site.
 - Webhook autenticado por segredo em tempo constante e idempotente pelo id da mensagem.
-- Monitor bloqueia endereços internos (proteção básica contra SSRF por nome de host).
+- Monitor bloqueia endereços internos pelo nome, pelo IP resolvido no DNS e em cada redirecionamento (proteção contra SSRF).
+- Limite diário de IA compartilhado entre todas as instâncias (tabela `ai_usage`, sem guardar conteúdo).

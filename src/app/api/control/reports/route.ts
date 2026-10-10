@@ -3,6 +3,7 @@ import { guard, isResponse, sameOrigin } from "@/lib/control/guard";
 import { getStore } from "@/lib/control/store";
 import { createEntity, errorResponse } from "@/lib/control/service";
 import { aiErrorResponse } from "@/lib/control/ai/gemini";
+import { enforceAIQuota } from "@/lib/control/ai/usage";
 import { writeReport } from "@/lib/control/ai/actions";
 import { REPORT_TYPES } from "@/lib/control/schema";
 
@@ -44,6 +45,7 @@ export async function POST(request: Request) {
   if (input.audience === "client" && !input.client_id) return Response.json({ error: "Relatórios para cliente precisam de um cliente selecionado, para não misturar dados." }, { status: 400 });
 
   try {
+    await enforceAIQuota(session, `report.${input.type}`);
     const store = await getStore();
     let projects = await store.list("projects");
     if (input.client_id) projects = projects.filter((p) => p.client_id === input.client_id);

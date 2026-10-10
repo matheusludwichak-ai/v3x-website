@@ -6,7 +6,7 @@ import { articleSchema, slugify, taskSchema, monitorSchema } from "@/lib/control
 import { seoChecklist, blockingIssues } from "@/lib/control/seo";
 import { renderMarkdown } from "@/lib/markdown";
 import { normalizeNumber, parseWebhook, verifyWebhook } from "@/lib/control/evolution";
-import { assertPublicUrl, incidentFrom } from "@/lib/control/monitor";
+import { assertPublicUrl, incidentFrom, isPrivateIp } from "@/lib/control/monitor";
 import { enforceEntityRules } from "@/lib/control/rules";
 import { FileStore } from "@/lib/control/store/memory";
 
@@ -104,6 +104,10 @@ describe("monitoring", () => {
     }
     expect(assertPublicUrl("https://grupov3x.com.br").hostname).toBe("grupov3x.com.br");
   });
+  it("classifies resolved IPs (DNS pointing inside is refused)", () => {
+    for (const ip of ["127.0.0.1", "10.1.2.3", "172.20.0.1", "192.168.0.10", "169.254.169.254", "100.64.0.1", "0.0.0.0", "::1", "fd00::1", "fe80::1", "::ffff:10.0.0.1"]) expect(isPrivateIp(ip), ip).toBe(true);
+    for (const ip of ["76.76.21.21", "8.8.8.8", "2606:4700::1111"]) expect(isPrivateIp(ip), ip).toBe(false);
+  });
   it("reports signals with confidence, never certainty from one failure", () => {
     const down = incidentFrom({ ok: false, status: "down", httpStatus: null, latencyMs: null, tlsExpiresAt: null, error: "Falha", checkedAt: "" }, "up");
     expect(down).toMatchObject({ severity: "high", confidence: "medium" });
@@ -131,7 +135,9 @@ describe("FileStore (local development store)", () => {
     const store = new FileStore(path.join(dir, "c.json"));
     const people = await store.list("org_members");
     expect(people.map((p) => p.name).sort()).toEqual(["Emmanuelle Assanté", "Isabella Christina", "Matheus Ludwichak"]);
-    expect((await store.list("monitors"))[0]).toMatchObject({ url: "https://grupov3x.com.br", last_status: "unknown" });
+    const monitors = await store.list("monitors");
+    expect(monitors.map((m) => m.url).sort()).toEqual(["https://grupov3x.com.br", "https://grupov3x.com.br/login"]);
+    expect(monitors.every((m) => m.last_status === "unknown")).toBe(true);
   });
   it("supports CRUD and enforces unique slugs", async () => {
     const store = new FileStore(path.join(dir, "c.json"));

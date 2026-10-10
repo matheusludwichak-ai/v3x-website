@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { guard, isResponse, sameOrigin } from "@/lib/control/guard";
 import { aiErrorResponse } from "@/lib/control/ai/gemini";
+import { enforceAIQuota } from "@/lib/control/ai/usage";
 import { assistConversation, checklistFor, generateArticle, projectBrief, rewriteSection, runTextAction, suggestTasks, suggestTopics, TEXT_ACTIONS, type TextAction } from "@/lib/control/ai/actions";
 import { errorResponse } from "@/lib/control/service";
 
@@ -37,6 +38,7 @@ export async function POST(req: Request) {
   if (!parsed.success) return Response.json({ error: "Pedido inválido para a IA." }, { status: 400 });
   const input = parsed.data;
   try {
+    await enforceAIQuota(session, input.action);
     switch (input.action) {
       case "text":
         return Response.json(await runTextAction(input.op, input.text, input.context));

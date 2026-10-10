@@ -1,5 +1,7 @@
 import "server-only";
 import tls from "node:tls";
+import { lookup } from "node:dns/promises";
+import { isIP } from "node:net";
 
 export type CheckResult = {
   ok: boolean;
@@ -19,6 +21,42 @@ export function assertPublicUrl(raw: string) {
   if (url.protocol !== "https:" && url.protocol !== "http:") throw new Error("Use uma URL http(s).");
   if (PRIVATE_HOST.test(url.hostname)) throw new Error("Endereços internos não podem ser monitorados.");
   return url;
+}
+
+/** True for loopback, private, link-local, CGNAT, multicast and reserved IPv4/IPv6 addresses. */
+export function isPrivateIp(ip: string) {
+  if (isIP(ip) === 4) {
+    const [a, b] = ip.split(".").map(Number) as [number, number];
+    return a === 0 || a === 10 || a === 127 || (a === 100 && b >= 64 && b <= 127) || (a === 169 && b === 254) || (a === 172 && b >= 16 && b <= 31) || (a === 192 && b === 168) || (a === 198 && (b === 18 || b === 19)) || a >= 224;
+  }
+  const v6 = ip.toLowerCase();
+  if (v6.startsWith("::ffff:")) return isPrivateIp(v6.slice(7));
+  return v6 === "::" || v6 === "::1" || v6.startsWith("fc") || v6.startsWith("fd") || v6.startsWith("fe8") || v6.startsWith("fe9") || v6.startsWith("fea") || v6.startsWith("feb") || v6.startsWith("ff");
+}
+
+/** Resolves the host and refuses it when any address is internal (protects against DNS pointing inside). */
+async function assertPublicHost(url: URL) {
+  assertPublicUrl(url.toString());
+  const host = url.hostname.replace(/^\[|\]$/g, "");
+  const addresses = isIP(host) ? [{ address: host }] : await lookup(host, { all: true });
+  if (!addresses.length || addresses.some((a) => isPrivateIp(a.address))) throw new Error("O endereço aponta para uma rede interna e não pode ser monitorado.");
+}
+
+/** Follows up to 5 redirects manually, validating every hop. */
+async function safeFetch(url: URL) {
+  let current = url;
+  for (let hop = 0; hop <= 5; hop++) {
+    await assertPublicHost(current);
+    const res = await fetch(current, { method: "GET", redirect: "manual", signal: AbortSignal.timeout(15000), headers: { "user-agent": "V3X-Control-Monitor/1.0" }, cache: "no-store" });
+    const location = res.headers.get("location");
+    if (res.status >= 300 && res.status < 400 && location) {
+      await res.body?.cancel().catch(() => undefined);
+      current = new URL(location, current);
+      continue;
+    }
+    return { res, finalUrl: current };
+  }
+  throw new Error("Redirecionamentos demais.");
 }
 
 function tlsExpiry(host: string, port = 443): Promise<string | null> {
@@ -49,17 +87,24 @@ export async function checkUrl(raw: string): Promise<CheckResult> {
   } catch (e) {
     return { ok: false, status: "unknown", httpStatus: null, latencyMs: null, tlsExpiresAt: null, error: (e as Error).message, checkedAt };
   }
+  try {
+    await assertPublicHost(url);
+  } catch (e) {
+    return { ok: false, status: "unknown", httpStatus: null, latencyMs: null, tlsExpiresAt: null, error: (e as Error).message, checkedAt };
+  }
   const started = performance.now();
   try {
-    const res = await fetch(url, { method: "GET", redirect: "follow", signal: AbortSignal.timeout(15000), headers: { "user-agent": "V3X-Control-Monitor/1.0" }, cache: "no-store" });
+    const { res, finalUrl } = await safeFetch(url);
     const latencyMs = Math.round(performance.now() - started);
     await res.body?.cancel().catch(() => undefined);
-    const tlsExpiresAt = url.protocol === "https:" ? await tlsExpiry(url.hostname) : null;
+    const tlsExpiresAt = finalUrl.protocol === "https:" ? await tlsExpiry(finalUrl.hostname) : null;
     const status = res.status >= 500 ? "down" : res.status >= 400 ? "degraded" : latencyMs > 3000 ? "degraded" : "up";
     return { ok: status === "up", status, httpStatus: res.status, latencyMs, tlsExpiresAt, error: null, checkedAt };
   } catch (e) {
     const latencyMs = Math.round(performance.now() - started);
     const timeout = (e as Error).name === "TimeoutError";
+    const blocked = /rede interna|Redirecionamentos/.test((e as Error).message);
+    if (blocked) return { ok: false, status: "unknown", httpStatus: null, latencyMs: null, tlsExpiresAt: null, error: (e as Error).message, checkedAt };
     return { ok: false, status: "down", httpStatus: null, latencyMs: timeout ? latencyMs : null, tlsExpiresAt: null, error: timeout ? "Sem resposta em 15 segundos." : "Falha de conexão (DNS, rede ou certificado).", checkedAt };
   }
 }

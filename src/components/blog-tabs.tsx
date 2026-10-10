@@ -11,6 +11,8 @@ export function BlogTabs({ posts }: { posts: Post[] }) {
   }, [posts]);
 
   const [active, setActive] = useState("Todos");
+  /* Progressive loading: 12 at a time (every article is also listed in the sitemap). */
+  const [limit, setLimit] = useState(12);
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const [indicator, setIndicator] = useState({ left: 0, width: 0 });
 
@@ -34,7 +36,10 @@ export function BlogTabs({ posts }: { posts: Post[] }) {
               tabRefs.current[i] = el;
             }}
             type="button"
-            onClick={() => setActive(cat)}
+            onClick={() => {
+              setActive(cat);
+              setLimit(12);
+            }}
             aria-pressed={active === cat}
             className={`relative px-4 py-3 text-sm transition-colors ${
               active === cat ? "text-foreground" : "text-muted-foreground hover:text-foreground"
@@ -57,7 +62,7 @@ export function BlogTabs({ posts }: { posts: Post[] }) {
         <p className="mt-14 text-muted-foreground">Nenhum artigo nessa categoria ainda.</p>
       ) : (
         <div className="mt-12 grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
-          {filtered.map((post) => (
+          {filtered.slice(0, limit).map((post) => (
             <Link
               key={post.slug}
               href={`/blog/${post.slug}`}
@@ -74,6 +79,13 @@ export function BlogTabs({ posts }: { posts: Post[] }) {
               </p>
             </Link>
           ))}
+        </div>
+      )}
+      {filtered.length > limit && (
+        <div className="mt-10 flex justify-center">
+          <button type="button" onClick={() => setLimit((l) => l + 12)} className="btn-outline">
+            Carregar mais artigos ({filtered.length - limit})
+          </button>
         </div>
       )}
     </div>

@@ -1,3 +1,4 @@
+import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { guard, isResponse, sameOrigin } from "@/lib/control/guard";
 import { getStore } from "@/lib/control/store";
@@ -28,6 +29,7 @@ export async function POST(request: Request, { params }: Ctx) {
       if (missing.length) return Response.json({ error: `Para aprovar a exibição pública, confirme antes: ${missing.join(", ")}.` }, { status: 422 });
     }
     const updated = await store.update("portfolio_items", id, { public_approved: parsed.data.public });
+    revalidatePath("/projetos");
     await logActivity("portfolio_items", id, parsed.data.public ? "public" : "private", `${item.name} ${parsed.data.public ? "aprovado para o portfólio público" : "retirado do portfólio público"}`, session);
     return Response.json({ data: updated });
   } catch (error) {

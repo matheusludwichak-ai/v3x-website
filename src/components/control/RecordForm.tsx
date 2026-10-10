@@ -3,7 +3,7 @@
 import { useState, type ReactNode } from "react";
 import { toast } from "sonner";
 import { Trash2 } from "lucide-react";
-import { ApiError } from "./lib/client";
+import { ApiError, uploadMedia, useSession } from "./lib/client";
 import { Btn, Confirm, Drawer, Field, Select, TextArea, TextInput } from "./ui";
 
 export type FieldDef = {
@@ -17,6 +17,8 @@ export type FieldDef = {
   /** Shown only in the "more details" step, to keep creation short. */
   advanced?: boolean;
   half?: boolean;
+  /** Offers a file upload (Supabase Storage) next to a URL field. */
+  upload?: "image" | "video";
 };
 
 type Values = Record<string, unknown>;
@@ -85,6 +87,9 @@ function RecordFormBody({
   const [saving, setSaving] = useState(false);
   const [more, setMore] = useState(editing);
   const [confirm, setConfirm] = useState(false);
+  const [uploading, setUploading] = useState<string | null>(null);
+  const session = useSession();
+  const canUpload = session?.mode === "supabase" && session.canWrite;
 
 
   const submit = async () => {
@@ -164,6 +169,33 @@ function RecordFormBody({
                 <TextArea value={String(v ?? "")} onChange={(e) => set(e.target.value)} placeholder={f.placeholder} invalid={!!err} />
               ) : f.type === "select" ? (
                 <Select value={String(v ?? "")} onChange={(e) => set(e.target.value)} options={f.options ?? []} placeholder={f.required ? undefined : "Não definido"} />
+              ) : f.upload && canUpload ? (
+                <div className="flex gap-2">
+                  <TextInput type="url" value={String(v ?? "")} onChange={(e) => set(e.target.value)} placeholder="https:// ou envie um arquivo" invalid={!!err} />
+                  <label className="cx-btn cx-btn-secondary cx-btn-sm shrink-0 cursor-pointer self-center">
+                    {uploading === f.name ? "Enviando…" : "Enviar arquivo"}
+                    <input
+                      type="file"
+                      hidden
+                      accept={f.upload === "image" ? "image/*" : "video/*"}
+                      disabled={uploading !== null}
+                      onChange={async (e) => {
+                        const file = e.target.files?.[0];
+                        e.target.value = "";
+                        if (!file) return;
+                        setUploading(f.name);
+                        try {
+                          set(await uploadMedia(file, f.upload!, f.name));
+                          toast.success("Arquivo enviado");
+                        } catch (er) {
+                          toast.error((er as Error).message);
+                        } finally {
+                          setUploading(null);
+                        }
+                      }}
+                    />
+                  </label>
+                </div>
               ) : (
                 <TextInput
                   type={f.type === "date" ? "date" : f.type === "number" || f.type === "money" ? "text" : f.type === "url" ? "url" : f.type === "email" ? "email" : "text"}

@@ -40,6 +40,25 @@ export function realSeed(now: string) {
       last_error: null,
       ...base,
     },
+    {
+      id: "mon-control",
+      name: "V3X Control (login)",
+      url: "https://grupov3x.com.br/login",
+      client_id: null,
+      project_id: null,
+      environment: "production",
+      hosting: "Vercel",
+      repository: "github.com/matheusludwichak-ai/v3x-website",
+      owner_id: ceo ? `org-${ceo.slug}` : null,
+      enabled: true,
+      last_status: "unknown",
+      last_http_status: null,
+      last_latency_ms: null,
+      tls_expires_at: null,
+      last_checked_at: null,
+      last_error: null,
+      ...base,
+    },
   ];
   return { org_members: org, monitors };
 }

@@ -7,6 +7,12 @@ import { Reveal } from "@/components/reveal";
 import { StatusBadge } from "@/components/status-badge";
 import { CtaBand } from "@/components/site/cta-band";
 import { projects } from "@/data/projects";
+import { getPublicPortfolio } from "@/lib/control/portfolio";
+
+/* Picks up portfolio items approved in the V3X Control. */
+export const revalidate = 300;
+
+const CATEGORY: Record<string, string> = { site: "Site", system: "Sistema", app: "Aplicativo", saas: "SaaS", motion: "Motion", other: "Projeto" };
 
 export const metadata: Metadata = {
   title: "Projetos",
@@ -21,7 +27,8 @@ const concepts = [
   { title: "Monolith Site", kind: "Web design", text: "Site editorial para um estúdio de arquitetura." },
 ];
 
-export default function ProjetosPage() {
+export default async function ProjetosPage() {
+  const delivered = await getPublicPortfolio();
   return (
     <>
       <PageHero
@@ -61,6 +68,40 @@ export default function ProjetosPage() {
           </Reveal>
         ))}
       </section>
+
+      {delivered.length > 0 && (
+        <section className="container-v3x section-y border-t border-border">
+          <Reveal>
+            <p className="eyebrow">Entregas</p>
+            <h2 className="mt-6 max-w-[22ch] text-3xl font-semibold tracking-[-0.03em] md:text-5xl">Projetos entregues pela V3X.</h2>
+          </Reveal>
+          <div className="mt-12 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+            {delivered.map((item, i) => (
+              <Reveal key={item.id} delay={i * 60}>
+                <article className="group flex h-full flex-col overflow-hidden rounded-[24px] border border-white/10 bg-[#07080f]">
+                  {item.cover_url && (
+                    <div className="aspect-[16/10] overflow-hidden">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={item.cover_url} alt={`${item.name}, projeto da V3X`} loading="lazy" className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]" />
+                    </div>
+                  )}
+                  <div className="flex flex-1 flex-col p-6">
+                    <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#7fb2ff]">{CATEGORY[item.category] ?? "Projeto"}</p>
+                    <h3 className="mt-3 text-xl font-semibold">{item.name}</h3>
+                    {item.description && <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{item.description}</p>}
+                    {item.technologies.length > 0 && <p className="mt-4 text-xs text-muted-foreground">{item.technologies.join(" · ")}</p>}
+                    {item.public_url && (
+                      <a href={item.public_url} target="_blank" rel="noopener noreferrer" className="link-underline mt-auto inline-flex w-fit items-center gap-2 pt-6 text-sm font-medium">
+                        Ver o projeto <ArrowUpRight className="size-4" />
+                      </a>
+                    )}
+                  </div>
+                </article>
+              </Reveal>
+            ))}
+          </div>
+        </section>
+      )}
 
       <section className="border-t border-border bg-[#07080f] py-24 md:py-28">
         <div className="container-v3x">

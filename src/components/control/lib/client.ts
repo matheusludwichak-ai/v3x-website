@@ -175,3 +175,22 @@ export const relative = (iso?: string | null) => {
   if (diff < 86400 * 30) return `há ${Math.floor(diff / 86400)} d`;
   return fmtDate(iso);
 };
+
+const MEDIA_TYPES = { image: ["image/jpeg", "image/png", "image/webp", "image/avif", "image/gif"], video: ["video/mp4", "video/webm", "video/quicktime"] } as const;
+
+/**
+ * Uploads a file to the Supabase Storage bucket "control-media" with the signed-in
+ * user's session (storage policies only allow Control members) and returns its public URL.
+ */
+export async function uploadMedia(file: File, kind: "image" | "video", folder: string) {
+  if (!(MEDIA_TYPES[kind] as readonly string[]).includes(file.type)) throw new Error(kind === "image" ? "Use JPG, PNG, WebP, AVIF ou GIF." : "Use MP4, WebM ou MOV.");
+  if (file.size > 50 * 1024 * 1024) throw new Error("O arquivo passa de 50 MB.");
+  const { supabaseBrowser } = await import("@/lib/control/browser");
+  const sb = supabaseBrowser();
+  if (!sb) throw new Error("Envio de arquivos disponível quando o Supabase estiver conectado.");
+  const ext = file.name.split(".").pop()?.toLowerCase().replace(/[^a-z0-9]/g, "") || "bin";
+  const path = `${folder}/${new Date().toISOString().slice(0, 10)}/${crypto.randomUUID()}.${ext}`;
+  const { error } = await sb.storage.from("control-media").upload(path, file, { contentType: file.type, upsert: false });
+  if (error) throw new Error("Não foi possível enviar o arquivo. Verifique se a migration de mídia foi aplicada.");
+  return sb.storage.from("control-media").getPublicUrl(path).data.publicUrl;
+}
