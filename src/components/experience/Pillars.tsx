@@ -37,7 +37,7 @@ function MotionFragment() {
         <u />
       </div>
       <div className="frag-motion-curve">
-        <svg viewBox="0 0 200 40" preserveAspectRatio="none"><path pathLength={1} d="M0 36 C 60 36, 70 4, 200 4" /></svg>
+        <svg viewBox="0 0 400 44"><path pathLength={1} d="M4 40 C 130 40, 150 4, 396 4" /></svg>
       </div>
       <span className="frag-caption">Keyframes, curvas e ritmo</span>
     </div>
@@ -178,7 +178,7 @@ export function Pillars() {
 
                   {img && (
                     <div className="case-stage relative overflow-hidden lg:hidden">
-                      <Image src={img.src} alt={img.alt} width={img.width} height={img.height} sizes="100vw" className="aspect-[4/3] w-full object-cover" />
+                      <div className="overflow-hidden"><Image src={img.src} alt={img.alt} width={img.width} height={img.height} sizes="100vw" className="aspect-[4/3] w-full object-cover" /></div>
                       <div className="frag-panel"><Fragment /></div>
                     </div>
                   )}
@@ -191,13 +191,15 @@ export function Pillars() {
         <div aria-hidden className="relative hidden lg:col-span-5 lg:block">
           <div className="sticky top-24">
             <div className="svc-stage-wrap" data-tilt="4">
-              <div className="svc-stage case-stage relative aspect-square overflow-hidden">
+              <div className="svc-stage case-stage relative aspect-[4/5] overflow-hidden">
                 {pillars.map(({ slug }, i) => {
                   const img = areaImages[slug];
                   const Fragment = FRAGMENTS[slug];
                   return (
-                    <div key={slug} className={cn("svc-slide absolute inset-0", active === i && "is-active")}>
-                      {img && <Image src={img.src} alt="" width={img.width} height={img.height} sizes="(min-width: 1024px) 460px, 0px" className="svc-slide-img h-full w-full object-cover" />}
+                    <div key={slug} className={cn("svc-slide absolute inset-0 flex flex-col", active === i && "is-active")}>
+                      <div className="relative min-h-0 flex-1 overflow-hidden">
+                        {img && <Image src={img.src} alt="" width={img.width} height={img.height} sizes="(min-width: 1024px) 460px, 0px" className="svc-slide-img h-full w-full object-cover" />}
+                      </div>
                       <div className="frag-panel"><Fragment /></div>
                     </div>
                   );
