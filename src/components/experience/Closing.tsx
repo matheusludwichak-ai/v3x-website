@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight, Check } from "lucide-react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -42,13 +43,13 @@ export function Founders() {
         <Reveal mask className="lg:col-span-7">
           <figure className="relative ml-auto max-w-[760px]">
             <div className="overflow-hidden rounded-[28px] border border-white/12 shadow-[0_40px_90px_-40px_rgba(56,130,246,0.45)]">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
+              <Image
                 src="/work/v3x-team.jpg"
                 alt="Isabella Christina (CTO), Matheus Ludwichak (CEO) e Emmanuelle Assanté (CFO), fundadores da V3X"
-                width={1536}
-                height={1024}
-                loading="lazy"
+                width={3072}
+                height={2048}
+                sizes="(min-width: 1024px) 760px, 100vw"
+                quality={90}
                 className="h-auto w-full transition-transform duration-[1200ms] ease-out hover:scale-[1.025]"
               />
             </div>

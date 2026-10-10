@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
@@ -21,8 +22,7 @@ export function TeamView() {
       <span className="label-mono">O ESTÚDIO / PESSOAS</span>
       <h1 className="my-3 text-3xl">Equipe</h1>
       <p className="mb-8 text-xs text-muted-foreground">As pessoas por trás da V3X.</p>
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src="/work/v3x-team.jpg" alt="Fundadores da V3X" className="concept-image max-h-[420px] w-full rounded-md object-cover object-top" />
+      <Image src="/work/v3x-team.jpg" alt="Fundadores da V3X" width={3072} height={2048} sizes="(min-width: 1024px) 1100px, 100vw" quality={90} className="max-h-[420px] w-full rounded-md object-cover object-top" />
       <div className="mt-8 grid gap-6 lg:grid-cols-3">
         {members.map(m => (
           <div key={m.name} className="border-t border-border pt-5">
