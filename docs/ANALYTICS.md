@@ -92,10 +92,17 @@ Links de WhatsApp, `mailto:` e `tel:` já viram `contact_click` automaticamente.
 
 Venda ou lead qualificado não são medidos no site. Para isso seria preciso registrar no Control/CRM a origem de cada contato e importar ao GA4 (Measurement Protocol ou importação de dados), o que ainda não existe.
 
-## Configuração no GA4 (feita/pendente)
+## Configuração no GA4
 
-- Eventos principais (conversões): `generate_lead` e `contact_click`.
-- Dimensões personalizadas (escopo evento): cta_name, cta_location, contact_method, content_type, content_id, form_name, error_type, nav_location, page_type, filter_value, last_field, service_interest. Sem elas os parâmetros não aparecem nos relatórios padrão (aparecem no DebugView e nas explorações só depois de registradas).
+- **Feito (10/10/2026):** 13 dimensões personalizadas de escopo evento: cta_name, cta_location, contact_method, content_type, content_id, form_name, error_type, nav_location, nav_item, page_type, last_field, service_interest, filter_value. Os valores aparecem nos relatórios a partir do registro (não retroativo).
+- **Pendente:** marcar `generate_lead` e `contact_click` como eventos principais (estrela em Administrador > Eventos). O GA4 só lista um evento depois que ele chega com dados reais, normalmente até 24 h após o primeiro visitante que aceitar os cookies.
+- Medição otimizada: já estava ligada (inclui page_view por histórico, rolagem, cliques de saída, downloads e formulários).
+
+## Validação realizada (10/10/2026)
+
+- Build de produção local e produção (`grupov3x.com.br`) com Chrome automatizado, bloqueando toda requisição ao Google e à Vercel e simulando a API de contato (nenhum lead nem visita falsa foi registrado): 45/46 verificações; a única "falha" foi o console registrar o 503 simulado e a página 404 testada de propósito.
+- Payload real do GA4 lido antes de sair (requisições `/g/collect` respondidas localmente, nada chegou ao Google): um `page_view` por página, inclusive na navegação interna; cada evento uma vez; parâmetros corretos; nenhum dado digitado.
+- **Não validado:** chegada dos eventos na propriedade (DebugView/Tempo real), porque isso exige aceitar os cookies num navegador real. Para conferir: abrir `https://grupov3x.com.br/?analytics_debug=1`, aceitar, clicar em "Começar um projeto" e ver em GA4 > Administrador > DebugView.
 
 ## Se for adotar o GTM
 
