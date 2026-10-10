@@ -11,9 +11,9 @@ create table if not exists public.control_invites (
 alter table public.control_invites enable row level security;
 
 drop policy if exists "admins manage invites" on public.control_invites;
-create policy "admins manage invites" on public.control_invites for all to authenticated using (public.is_control_admin()) with check (public.is_control_admin());
+create policy "admins manage invites" on public.control_invites for all to authenticated using (private.is_control_admin()) with check (private.is_control_admin());
 
-create or replace function public.accept_control_invite() returns trigger
+create or replace function private.accept_control_invite() returns trigger
 language plpgsql security definer set search_path = public as $$
 declare inv public.control_invites%rowtype;
 begin
@@ -28,7 +28,8 @@ end $$;
 
 drop trigger if exists on_auth_user_created_control on auth.users;
 create trigger on_auth_user_created_control after insert on auth.users
-  for each row execute function public.accept_control_invite();
+  for each row execute function private.accept_control_invite();
+revoke all on function private.accept_control_invite() from public, anon, authenticated;
 
 -- Accounts that already exist when an invite is added later are linked here too.
 insert into public.control_users (user_id, role, client_id)

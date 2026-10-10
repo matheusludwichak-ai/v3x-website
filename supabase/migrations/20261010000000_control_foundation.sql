@@ -12,7 +12,7 @@ create extension if not exists pgcrypto;
 -- Helpers
 -- ---------------------------------------------------------------------------
 create or replace function public.set_updated_at() returns trigger
-language plpgsql as $$
+language plpgsql set search_path = '' as $$
 begin
   new.updated_at = now();
   return new;
@@ -29,27 +29,32 @@ create table if not exists public.control_users (
   updated_at timestamptz not null default now()
 );
 
-create or replace function public.is_control_member() returns boolean
+-- Helper functions used by the RLS policies live in a private schema that the
+-- Data API does not expose, so they cannot be called over HTTP.
+create schema if not exists private;
+grant usage on schema private to authenticated;
+
+create or replace function private.is_control_member() returns boolean
 language sql stable security definer set search_path = public as $$
   select exists (select 1 from public.control_users u where u.user_id = auth.uid() and u.active and u.role in ('admin', 'member'));
 $$;
 
-create or replace function public.is_control_admin() returns boolean
+create or replace function private.is_control_admin() returns boolean
 language sql stable security definer set search_path = public as $$
   select exists (select 1 from public.control_users u where u.user_id = auth.uid() and u.active and u.role = 'admin');
 $$;
 
-create or replace function public.viewer_client_id() returns uuid
+create or replace function private.viewer_client_id() returns uuid
 language sql stable security definer set search_path = public as $$
   select u.client_id from public.control_users u where u.user_id = auth.uid() and u.active and u.role = 'client_viewer';
 $$;
 
-revoke all on function public.is_control_member() from public;
-revoke all on function public.is_control_admin() from public;
-revoke all on function public.viewer_client_id() from public;
-grant execute on function public.is_control_member() to authenticated;
-grant execute on function public.is_control_admin() to authenticated;
-grant execute on function public.viewer_client_id() to authenticated;
+revoke all on function private.is_control_member() from public, anon;
+revoke all on function private.is_control_admin() from public, anon;
+revoke all on function private.viewer_client_id() from public, anon;
+grant execute on function private.is_control_member() to authenticated;
+grant execute on function private.is_control_admin() to authenticated;
+grant execute on function private.viewer_client_id() to authenticated;
 
 -- ---------------------------------------------------------------------------
 -- Organization (org chart)
@@ -354,29 +359,29 @@ begin
   foreach t in array array['org_members','clients','projects','tasks','leads','articles','portfolio_items','motion_items','reports','monitors','incidents','conversations','messages']
   loop
     execute format('drop policy if exists "members manage %1$s" on public.%1$I', t);
-    execute format('create policy "members manage %1$s" on public.%1$I for all to authenticated using (public.is_control_member()) with check (public.is_control_member())', t);
+    execute format('create policy "members manage %1$s" on public.%1$I for all to authenticated using (private.is_control_member()) with check (private.is_control_member())', t);
   end loop;
 end $$;
 
 -- History: members can read and append, never edit or delete.
 drop policy if exists "members read activity" on public.activity_log;
-create policy "members read activity" on public.activity_log for select to authenticated using (public.is_control_member());
+create policy "members read activity" on public.activity_log for select to authenticated using (private.is_control_member());
 drop policy if exists "members append activity" on public.activity_log;
-create policy "members append activity" on public.activity_log for insert to authenticated with check (public.is_control_member());
+create policy "members append activity" on public.activity_log for insert to authenticated with check (private.is_control_member());
 
 -- Control users: everyone reads only their own row; admins manage all.
 drop policy if exists "read own control user" on public.control_users;
-create policy "read own control user" on public.control_users for select to authenticated using (user_id = auth.uid() or public.is_control_admin());
+create policy "read own control user" on public.control_users for select to authenticated using (user_id = auth.uid() or private.is_control_admin());
 drop policy if exists "admins manage control users" on public.control_users;
-create policy "admins manage control users" on public.control_users for all to authenticated using (public.is_control_admin()) with check (public.is_control_admin());
+create policy "admins manage control users" on public.control_users for all to authenticated using (private.is_control_admin()) with check (private.is_control_admin());
 
 -- Client viewers (future client area): read only their own client's data.
 drop policy if exists "client viewers read projects" on public.projects;
-create policy "client viewers read projects" on public.projects for select to authenticated using (client_id is not null and client_id = public.viewer_client_id());
+create policy "client viewers read projects" on public.projects for select to authenticated using (client_id is not null and client_id = private.viewer_client_id());
 drop policy if exists "client viewers read reports" on public.reports;
-create policy "client viewers read reports" on public.reports for select to authenticated using (audience = 'client' and client_id = public.viewer_client_id());
+create policy "client viewers read reports" on public.reports for select to authenticated using (audience = 'client' and client_id = private.viewer_client_id());
 drop policy if exists "client viewers read monitors" on public.monitors;
-create policy "client viewers read monitors" on public.monitors for select to authenticated using (client_id is not null and client_id = public.viewer_client_id());
+create policy "client viewers read monitors" on public.monitors for select to authenticated using (client_id is not null and client_id = private.viewer_client_id());
 
 -- Public site: anyone can read published articles.
 drop policy if exists "public reads published articles" on public.articles;

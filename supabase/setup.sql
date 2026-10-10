@@ -16,7 +16,7 @@ create extension if not exists pgcrypto;
 -- Helpers
 -- ---------------------------------------------------------------------------
 create or replace function public.set_updated_at() returns trigger
-language plpgsql as $$
+language plpgsql set search_path = '' as $$
 begin
   new.updated_at = now();
   return new;
@@ -33,27 +33,32 @@ create table if not exists public.control_users (
   updated_at timestamptz not null default now()
 );
 
-create or replace function public.is_control_member() returns boolean
+-- Helper functions used by the RLS policies live in a private schema that the
+-- Data API does not expose, so they cannot be called over HTTP.
+create schema if not exists private;
+grant usage on schema private to authenticated;
+
+create or replace function private.is_control_member() returns boolean
 language sql stable security definer set search_path = public as $$
   select exists (select 1 from public.control_users u where u.user_id = auth.uid() and u.active and u.role in ('admin', 'member'));
 $$;
 
-create or replace function public.is_control_admin() returns boolean
+create or replace function private.is_control_admin() returns boolean
 language sql stable security definer set search_path = public as $$
   select exists (select 1 from public.control_users u where u.user_id = auth.uid() and u.active and u.role = 'admin');
 $$;
 
-create or replace function public.viewer_client_id() returns uuid
+create or replace function private.viewer_client_id() returns uuid
 language sql stable security definer set search_path = public as $$
   select u.client_id from public.control_users u where u.user_id = auth.uid() and u.active and u.role = 'client_viewer';
 $$;
 
-revoke all on function public.is_control_member() from public;
-revoke all on function public.is_control_admin() from public;
-revoke all on function public.viewer_client_id() from public;
-grant execute on function public.is_control_member() to authenticated;
-grant execute on function public.is_control_admin() to authenticated;
-grant execute on function public.viewer_client_id() to authenticated;
+revoke all on function private.is_control_member() from public, anon;
+revoke all on function private.is_control_admin() from public, anon;
+revoke all on function private.viewer_client_id() from public, anon;
+grant execute on function private.is_control_member() to authenticated;
+grant execute on function private.is_control_admin() to authenticated;
+grant execute on function private.viewer_client_id() to authenticated;
 
 -- ---------------------------------------------------------------------------
 -- Organization (org chart)
@@ -358,29 +363,29 @@ begin
   foreach t in array array['org_members','clients','projects','tasks','leads','articles','portfolio_items','motion_items','reports','monitors','incidents','conversations','messages']
   loop
     execute format('drop policy if exists "members manage %1$s" on public.%1$I', t);
-    execute format('create policy "members manage %1$s" on public.%1$I for all to authenticated using (public.is_control_member()) with check (public.is_control_member())', t);
+    execute format('create policy "members manage %1$s" on public.%1$I for all to authenticated using (private.is_control_member()) with check (private.is_control_member())', t);
   end loop;
 end $$;
 
 -- History: members can read and append, never edit or delete.
 drop policy if exists "members read activity" on public.activity_log;
-create policy "members read activity" on public.activity_log for select to authenticated using (public.is_control_member());
+create policy "members read activity" on public.activity_log for select to authenticated using (private.is_control_member());
 drop policy if exists "members append activity" on public.activity_log;
-create policy "members append activity" on public.activity_log for insert to authenticated with check (public.is_control_member());
+create policy "members append activity" on public.activity_log for insert to authenticated with check (private.is_control_member());
 
 -- Control users: everyone reads only their own row; admins manage all.
 drop policy if exists "read own control user" on public.control_users;
-create policy "read own control user" on public.control_users for select to authenticated using (user_id = auth.uid() or public.is_control_admin());
+create policy "read own control user" on public.control_users for select to authenticated using (user_id = auth.uid() or private.is_control_admin());
 drop policy if exists "admins manage control users" on public.control_users;
-create policy "admins manage control users" on public.control_users for all to authenticated using (public.is_control_admin()) with check (public.is_control_admin());
+create policy "admins manage control users" on public.control_users for all to authenticated using (private.is_control_admin()) with check (private.is_control_admin());
 
 -- Client viewers (future client area): read only their own client's data.
 drop policy if exists "client viewers read projects" on public.projects;
-create policy "client viewers read projects" on public.projects for select to authenticated using (client_id is not null and client_id = public.viewer_client_id());
+create policy "client viewers read projects" on public.projects for select to authenticated using (client_id is not null and client_id = private.viewer_client_id());
 drop policy if exists "client viewers read reports" on public.reports;
-create policy "client viewers read reports" on public.reports for select to authenticated using (audience = 'client' and client_id = public.viewer_client_id());
+create policy "client viewers read reports" on public.reports for select to authenticated using (audience = 'client' and client_id = private.viewer_client_id());
 drop policy if exists "client viewers read monitors" on public.monitors;
-create policy "client viewers read monitors" on public.monitors for select to authenticated using (client_id is not null and client_id = public.viewer_client_id());
+create policy "client viewers read monitors" on public.monitors for select to authenticated using (client_id is not null and client_id = private.viewer_client_id());
 
 -- Public site: anyone can read published articles.
 drop policy if exists "public reads published articles" on public.articles;
@@ -432,16 +437,17 @@ create index if not exists ai_usage_created_idx on public.ai_usage (created_at d
 alter table public.ai_usage enable row level security;
 
 drop policy if exists "members record ai usage" on public.ai_usage;
-create policy "members record ai usage" on public.ai_usage for insert to authenticated with check (public.is_control_member() and user_id = auth.uid());
+create policy "members record ai usage" on public.ai_usage for insert to authenticated with check (private.is_control_member() and user_id = auth.uid());
 drop policy if exists "members read ai usage" on public.ai_usage;
-create policy "members read ai usage" on public.ai_usage for select to authenticated using (public.is_control_member());
+create policy "members read ai usage" on public.ai_usage for select to authenticated using (private.is_control_member());
 
--- Count of AI calls today (UTC) for the whole workspace, callable by members.
+-- Count of AI calls today (UTC) for the whole workspace. Runs with the caller's
+-- rights: members see every row (policy above), anyone else counts nothing.
 create or replace function public.ai_usage_today() returns integer
-language sql stable security definer set search_path = public as $$
+language sql stable security invoker set search_path = public as $$
   select count(*)::int from public.ai_usage where created_at >= date_trunc('day', now() at time zone 'utc') at time zone 'utc';
 $$;
-revoke all on function public.ai_usage_today() from public;
+revoke all on function public.ai_usage_today() from public, anon;
 grant execute on function public.ai_usage_today() to authenticated;
 
 -- ---------------------------------------------------------------------------
@@ -458,13 +464,13 @@ begin
     on conflict (id) do update set public = excluded.public, file_size_limit = excluded.file_size_limit, allowed_mime_types = excluded.allowed_mime_types;
 
     execute 'drop policy if exists "members read control media" on storage.objects';
-    execute 'create policy "members read control media" on storage.objects for select to authenticated using (bucket_id = ''control-media'' and public.is_control_member())';
+    execute 'create policy "members read control media" on storage.objects for select to authenticated using (bucket_id = ''control-media'' and private.is_control_member())';
     execute 'drop policy if exists "members upload control media" on storage.objects';
-    execute 'create policy "members upload control media" on storage.objects for insert to authenticated with check (bucket_id = ''control-media'' and public.is_control_member())';
+    execute 'create policy "members upload control media" on storage.objects for insert to authenticated with check (bucket_id = ''control-media'' and private.is_control_member())';
     execute 'drop policy if exists "members update control media" on storage.objects';
-    execute 'create policy "members update control media" on storage.objects for update to authenticated using (bucket_id = ''control-media'' and public.is_control_member())';
+    execute 'create policy "members update control media" on storage.objects for update to authenticated using (bucket_id = ''control-media'' and private.is_control_member())';
     execute 'drop policy if exists "members delete control media" on storage.objects';
-    execute 'create policy "members delete control media" on storage.objects for delete to authenticated using (bucket_id = ''control-media'' and public.is_control_member())';
+    execute 'create policy "members delete control media" on storage.objects for delete to authenticated using (bucket_id = ''control-media'' and private.is_control_member())';
   end if;
 end $$;
 
@@ -487,9 +493,9 @@ create table if not exists public.control_invites (
 alter table public.control_invites enable row level security;
 
 drop policy if exists "admins manage invites" on public.control_invites;
-create policy "admins manage invites" on public.control_invites for all to authenticated using (public.is_control_admin()) with check (public.is_control_admin());
+create policy "admins manage invites" on public.control_invites for all to authenticated using (private.is_control_admin()) with check (private.is_control_admin());
 
-create or replace function public.accept_control_invite() returns trigger
+create or replace function private.accept_control_invite() returns trigger
 language plpgsql security definer set search_path = public as $$
 declare inv public.control_invites%rowtype;
 begin
@@ -504,10 +510,44 @@ end $$;
 
 drop trigger if exists on_auth_user_created_control on auth.users;
 create trigger on_auth_user_created_control after insert on auth.users
-  for each row execute function public.accept_control_invite();
+  for each row execute function private.accept_control_invite();
+revoke all on function private.accept_control_invite() from public, anon, authenticated;
 
 -- Accounts that already exist when an invite is added later are linked here too.
 insert into public.control_users (user_id, role, client_id)
 select u.id, i.role, i.client_id from auth.users u join public.control_invites i on i.email = lower(u.email)
 on conflict (user_id) do nothing;
+
+-- ===== supabase/migrations/20261010030000_public_portfolio_invoker.sql =====
+-- V3X Control: public portfolio without SECURITY DEFINER (Supabase advisor 0010).
+-- The view now runs with the caller's permissions. Anonymous visitors can read
+-- only approved + concluded rows (RLS) and only the safe columns (column grants):
+-- client name and internal notes stay unreadable for them even on the base table.
+
+-- Anonymous: no blanket table access, only the public columns.
+revoke all on public.portfolio_items from anon;
+grant select (id, name, category, description, public_url, demo_url, cover_url, gallery, technologies, services, period_start, period_end, featured, updated_at, public_approved, status)
+  on public.portfolio_items to anon;
+
+drop policy if exists "public reads approved portfolio" on public.portfolio_items;
+create policy "public reads approved portfolio" on public.portfolio_items
+  for select to anon
+  using (public_approved = true and status = 'done');
+
+create or replace view public.public_portfolio with (security_invoker = true) as
+  select id, name, category, description, public_url, demo_url, cover_url, gallery, technologies, services, period_start, period_end, featured, updated_at
+  from public.portfolio_items
+  where public_approved = true and status = 'done';
+
+revoke all on public.public_portfolio from anon, authenticated;
+grant select on public.public_portfolio to anon, authenticated;
+
+-- ===== supabase/migrations/20261010040000_private_helpers_cleanup.sql =====
+-- V3X Control: remove the old public copies of the RLS helper functions after the
+-- policies were recreated on the private.* versions (Supabase security advisor 0028/0029).
+-- Safe to run more than once.
+drop function if exists public.accept_control_invite();
+drop function if exists public.is_control_member();
+drop function if exists public.is_control_admin();
+drop function if exists public.viewer_client_id();
 

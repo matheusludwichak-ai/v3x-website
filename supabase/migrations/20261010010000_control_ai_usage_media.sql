@@ -15,16 +15,17 @@ create index if not exists ai_usage_created_idx on public.ai_usage (created_at d
 alter table public.ai_usage enable row level security;
 
 drop policy if exists "members record ai usage" on public.ai_usage;
-create policy "members record ai usage" on public.ai_usage for insert to authenticated with check (public.is_control_member() and user_id = auth.uid());
+create policy "members record ai usage" on public.ai_usage for insert to authenticated with check (private.is_control_member() and user_id = auth.uid());
 drop policy if exists "members read ai usage" on public.ai_usage;
-create policy "members read ai usage" on public.ai_usage for select to authenticated using (public.is_control_member());
+create policy "members read ai usage" on public.ai_usage for select to authenticated using (private.is_control_member());
 
--- Count of AI calls today (UTC) for the whole workspace, callable by members.
+-- Count of AI calls today (UTC) for the whole workspace. Runs with the caller's
+-- rights: members see every row (policy above), anyone else counts nothing.
 create or replace function public.ai_usage_today() returns integer
-language sql stable security definer set search_path = public as $$
+language sql stable security invoker set search_path = public as $$
   select count(*)::int from public.ai_usage where created_at >= date_trunc('day', now() at time zone 'utc') at time zone 'utc';
 $$;
-revoke all on function public.ai_usage_today() from public;
+revoke all on function public.ai_usage_today() from public, anon;
 grant execute on function public.ai_usage_today() to authenticated;
 
 -- ---------------------------------------------------------------------------
@@ -41,13 +42,13 @@ begin
     on conflict (id) do update set public = excluded.public, file_size_limit = excluded.file_size_limit, allowed_mime_types = excluded.allowed_mime_types;
 
     execute 'drop policy if exists "members read control media" on storage.objects';
-    execute 'create policy "members read control media" on storage.objects for select to authenticated using (bucket_id = ''control-media'' and public.is_control_member())';
+    execute 'create policy "members read control media" on storage.objects for select to authenticated using (bucket_id = ''control-media'' and private.is_control_member())';
     execute 'drop policy if exists "members upload control media" on storage.objects';
-    execute 'create policy "members upload control media" on storage.objects for insert to authenticated with check (bucket_id = ''control-media'' and public.is_control_member())';
+    execute 'create policy "members upload control media" on storage.objects for insert to authenticated with check (bucket_id = ''control-media'' and private.is_control_member())';
     execute 'drop policy if exists "members update control media" on storage.objects';
-    execute 'create policy "members update control media" on storage.objects for update to authenticated using (bucket_id = ''control-media'' and public.is_control_member())';
+    execute 'create policy "members update control media" on storage.objects for update to authenticated using (bucket_id = ''control-media'' and private.is_control_member())';
     execute 'drop policy if exists "members delete control media" on storage.objects';
-    execute 'create policy "members delete control media" on storage.objects for delete to authenticated using (bucket_id = ''control-media'' and public.is_control_member())';
+    execute 'create policy "members delete control media" on storage.objects for delete to authenticated using (bucket_id = ''control-media'' and private.is_control_member())';
   end if;
 end $$;
 
