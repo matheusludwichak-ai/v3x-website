@@ -230,6 +230,7 @@ export function BlogEditor({ id }: { id: string }) {
             {row.ai_generated && <Badge tone="violet">Criado com IA{row.ai_model ? ` · ${row.ai_model}` : ""}</Badge>}
             <span className="text-xs text-[#a0a0a0]">{words} palavras</span>
           </div>
+          <h1 className="sr-only">Editar artigo: {draft.title || "sem título"}</h1>
           <TextArea value={draft.title} onChange={(e) => set("title", e.target.value.replace(/\s*\n\s*/g, " "))} rows={2} aria-label="Título do artigo" className="!min-h-0 resize-none !border-transparent !bg-transparent !px-0 text-2xl font-semibold leading-tight tracking-tight md:text-3xl" invalid={!!fieldErrors.title} />
           {fieldErrors.title && <p className="cx-field-error">{fieldErrors.title}</p>}
 

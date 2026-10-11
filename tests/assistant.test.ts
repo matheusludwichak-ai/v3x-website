@@ -143,3 +143,20 @@ describe("WhatsApp assistant", () => {
     expect(kb).not.toContain("NAO-USAR");
   });
 });
+
+describe("backup", () => {
+  it("exports every Control table and round-trips as JSON", async () => {
+    vi.doMock("@/lib/control/supabase", () => ({ supabaseAdmin: () => null }));
+    const { exportControlData } = await import("@/lib/control/backup");
+    const { ENTITIES } = await import("@/lib/control/schema");
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), "v3x-backup-"));
+    const store = new FileStore(path.join(dir, "c.json"));
+    await store.insert("tasks", { title: "Tarefa para o backup", status: "todo", priority: "medium" });
+    const data = JSON.parse(JSON.stringify(await exportControlData(store)));
+    expect(Object.keys(data.tables).sort()).toEqual(Object.keys(ENTITIES).sort());
+    expect(data.counts.tasks).toBe(1);
+    expect(data.tables.tasks[0].title).toBe("Tarefa para o backup");
+    expect(data.counts.org_members).toBe(3);
+    fs.rmSync(dir, { recursive: true, force: true });
+  });
+});

@@ -23,7 +23,18 @@ Escopo: site público, Control (control.grupov3x.com.br), APIs, banco (Supabase)
 - Monitoramento: proteção contra SSRF por DNS e a cada redirecionamento.
 - Assistente de WhatsApp: mensagens do cliente tratadas como conteúdo não confiável (proteção contra prompt injection), sem ferramentas/ações além de responder, resposta validada (tamanho, só links do grupov3x.com.br), limite por conversa e limite diário global de IA, nunca se passa por humano, pausa quando a equipe assume.
 
+## Auditoria final (10/10/2026, noite)
+| Item | Resultado |
+|---|---|
+| Teste de permissões no banco de produção (5 perfis, transação desfeita) | Visitante e usuário sem acesso: 0 registros, escrita negada. Cliente A: vê só o projeto e o relatório do cliente A (0 do cliente B, 0 internos), não edita nem vira admin. Membro: trabalha nos dados, não altera configurações de admin, não vê convites, não vira admin. Admin: acesso total |
+| Histórico de auditoria | Era possível forjar o autor de um registro; agora o banco grava sempre o e-mail do usuário logado (trigger, testado). O histórico continua só de inclusão (membros não apagam nem editam) |
+| Índices | 14 chaves estrangeiras sem índice receberam índice |
+| Backups | Plano Free do Supabase não tem backup. Criado backup lógico diário (JSON) em bucket privado, 14 dias, e botão "Baixar backup" para admins |
+| Limites de login | Supabase: 30 tentativas de login por 5 min por IP; recuperação de senha limitada pelo envio de e-mails do Supabase |
+| Verificação por e-mail em novo dispositivo | Não implementada (não existe no projeto). Alternativa recomendada: MFA (TOTP) do Supabase para admins |
+
 ## Pendências recomendadas (dependem de você)
+0. **Backups:** o plano Free não tem backup do Supabase. Considerar o plano Pro (backups diários de 7 dias) e baixar periodicamente o JSON em Control > Monitoramento > Baixar backup.
 1. Supabase > Authentication > Attack Protection: ativar **proteção contra senhas vazadas** (único aviso do Security Advisor; pode exigir plano pago).
 2. Ativar **MFA** para as contas de administrador.
 3. Definir `CRON_SECRET` na Vercel (valor longo e aleatório) para a rotina diária exigir o segredo.

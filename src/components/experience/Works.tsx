@@ -227,7 +227,7 @@ export function Works() {
               Ver o projeto <ArrowUpRight className="size-4" />
             </Link>
           </div>
-          <Link href="/projetos/veredito" data-cursor="Ver projeto" aria-label="Ver o projeto Veredito" className="block lg:col-span-8">
+          <Link href="/projetos/veredito" data-cursor="Ver projeto" className="block lg:col-span-8">
             <Stage outer="vd-scroll" className="vd-stage px-5 pb-10 pt-6 sm:px-8 md:px-12 md:pt-12" tag="Demonstração">
               <div className="vd-a">
                 <div className="vd-a-inner browser">

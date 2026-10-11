@@ -43,7 +43,7 @@ export function realSeed(now: string) {
     {
       id: "mon-control",
       name: "V3X Control (login)",
-      url: "https://grupov3x.com.br/login",
+      url: "https://control.grupov3x.com.br/login",
       client_id: null,
       project_id: null,
       environment: "production",

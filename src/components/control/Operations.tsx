@@ -255,7 +255,7 @@ function printReport(r: Report) {
 }
 
 
-type DailySummary = { date: string; monitors: { checked: number; down: number; degraded: number }; overdueTasks: number; openIncidents: number; articlesAwaitingReview: number; conversationsWaiting: number; newLeads24h: number };
+type DailySummary = { date: string; monitors: { checked: number; down: number; degraded: number }; overdueTasks: number; openIncidents: number; articlesAwaitingReview: number; conversationsWaiting: number; newLeads24h: number; backup?: { ok: boolean; bytes?: number; error?: string } };
 
 /** Last run of the daily routine (Vercel Cron) and a manual trigger for administrators. */
 function DailyRoutine({ session, onDone }: { session: ReturnType<typeof useSession>; onDone: () => void }) {
@@ -280,7 +280,18 @@ function DailyRoutine({ session, onDone }: { session: ReturnType<typeof useSessi
   };
 
   return (
-    <Card title="Rotina diária" className="mb-6" action={isAdmin && <Btn size="sm" icon={<RefreshCw className="size-3.5" />} loading={running} onClick={run}>Executar agora</Btn>}>
+    <Card
+      title="Rotina diária"
+      className="mb-6"
+      action={
+        isAdmin && (
+          <div className="flex flex-wrap gap-2">
+            <a href="/api/control/backup" download className="cx-btn cx-btn-ghost cx-btn-sm" title="Cópia em JSON de todos os dados do Control, para guardar fora do Supabase">Baixar backup</a>
+            <Btn size="sm" icon={<RefreshCw className="size-3.5" />} loading={running} onClick={run}>Executar agora</Btn>
+          </div>
+        )
+      }
+    >
       {runs.loading ? (
         <Skeleton rows={1} />
       ) : !last || !sum ? (
@@ -295,6 +306,7 @@ function DailyRoutine({ session, onDone }: { session: ReturnType<typeof useSessi
             <Badge tone="neutral">{sum.articlesAwaitingReview} artigo(s) para revisar</Badge>
             <Badge tone={sum.conversationsWaiting ? "warning" : "neutral"}>{sum.conversationsWaiting} conversa(s) esperando</Badge>
             <Badge tone={sum.newLeads24h ? "blue" : "neutral"}>{sum.newLeads24h} lead(s) em 24 h</Badge>
+            {sum.backup && <Badge tone={sum.backup.ok ? "success" : "warning"}>{sum.backup.ok ? `Backup salvo (${Math.max(1, Math.round((sum.backup.bytes ?? 0) / 1024))} KB)` : "Backup automático indisponível"}</Badge>}
           </div>
         </div>
       )}

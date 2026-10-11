@@ -57,7 +57,7 @@ export function OrbitDashboard() {
         <div className="flex items-end justify-between">
           <div>
             <p className="text-[11px] uppercase tracking-[0.18em] text-[#8a8da3]">Painel financeiro</p>
-            <h4 className="mt-1.5 text-[22px] font-semibold tracking-tight">Visão geral</h4>
+            <p className="mt-1.5 text-[22px] font-semibold tracking-tight">Visão geral</p>
           </div>
           <div className="flex gap-2 text-[11.5px]">
             <span className="rounded-lg border border-white/10 px-3 py-1.5 text-[#c9cbe0]">Últimos 12 meses</span>

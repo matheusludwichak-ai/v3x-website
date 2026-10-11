@@ -2,13 +2,15 @@ import { timingSafeEqual } from "node:crypto";
 import { getSystemStore } from "@/lib/control/store";
 import { guard, isResponse, sameOrigin } from "@/lib/control/guard";
 import { runMonitorCheck } from "@/lib/control/monitor";
+import { saveDailyBackup } from "@/lib/control/backup";
 import type { ControlStore } from "@/lib/control/store/types";
 import type { Monitor } from "@/lib/control/schema";
 
 /**
  * Daily routine (Vercel Cron, 08:00 in São Paulo, see vercel.json):
  *  1. checks every enabled monitored site and opens/resolves incidents;
- *  2. records a digest (overdue tasks, open incidents, articles in review, conversations
+ *  2. saves a JSON backup of the Control data (private bucket, 14 days);
+ *  3. records a digest (overdue tasks, open incidents, articles in review, conversations
  *     waiting for a person, new leads) in automation_runs, shown in the Control.
  * Sends no message, publishes nothing and uses no AI.
  *
@@ -66,6 +68,7 @@ async function runDaily(store: ControlStore, trigger: "cron" | "manual", actor: 
     articlesAwaitingReview: articles.filter((a) => a.status === "review" || a.status === "approved").length,
     conversationsWaiting: conversations.filter((c) => c.status === "pending" && c.last_message_at && now - Date.parse(c.last_message_at) > 2 * HOURS).length,
     newLeads24h: leads.filter((l) => now - Date.parse(l.created_at) < 24 * HOURS).length,
+    backup: await saveDailyBackup(store),
   };
   await store.insert("automation_runs", { job: "daily", trigger, summary });
   await store.insert("activity_log", {

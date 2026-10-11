@@ -44,13 +44,20 @@ function readMdx(file: string): Post {
   };
 }
 
+/** Calendar date in Brasília (an article published at 21:13 on the 10th belongs to the 10th, not the 11th UTC). */
+function dateInBrazil(iso?: string | null) {
+  if (!iso) return "";
+  const d = new Date(iso);
+  return Number.isNaN(d.getTime()) ? iso.slice(0, 10) : new Intl.DateTimeFormat("en-CA", { timeZone: "America/Sao_Paulo" }).format(d);
+}
+
 function fromArticle(a: Article): Post {
   const stats = readingTime(a.content_md ?? "");
   return {
     slug: a.slug,
     title: a.title,
     excerpt: a.excerpt ?? a.meta_description ?? "",
-    date: (a.published_at ?? a.updated_at ?? "").slice(0, 10),
+    date: dateInBrazil(a.published_at ?? a.updated_at),
     updated: a.updated_at,
     category: a.category ?? "Artigo",
     readingTime: `${Math.max(1, Math.ceil(stats.minutes))} min de leitura`,

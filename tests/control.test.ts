@@ -136,7 +136,7 @@ describe("FileStore (local development store)", () => {
     const people = await store.list("org_members");
     expect(people.map((p) => p.name).sort()).toEqual(["Emmanuelle Assanté", "Isabella Christina", "Matheus Ludwichak"]);
     const monitors = await store.list("monitors");
-    expect(monitors.map((m) => m.url).sort()).toEqual(["https://grupov3x.com.br", "https://grupov3x.com.br/login"]);
+    expect(monitors.map((m) => m.url).sort()).toEqual(["https://control.grupov3x.com.br/login", "https://grupov3x.com.br"]);
     expect(monitors.every((m) => m.last_status === "unknown")).toBe(true);
   });
   it("supports CRUD and enforces unique slugs", async () => {

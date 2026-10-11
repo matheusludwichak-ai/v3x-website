@@ -625,3 +625,42 @@ alter table public.conversations add column if not exists lead_id uuid reference
 -- Leads can also come from WhatsApp.
 alter table public.leads drop constraint if exists leads_origin_check;
 alter table public.leads add constraint leads_origin_check check (origin in ('manual', 'site_form', 'whatsapp'));
+
+-- 20261010070000_activity_actor_integrity.sql
+-- V3X Control: audit trail integrity. When a signed-in user writes to activity_log, the
+-- author ("actor") is always that user's own e-mail, whatever the request sent. Server jobs
+-- running with the service role (no auth.uid()) keep their label ("Site", "Rotina automática").
+-- The table already accepts only inserts from members (no update/delete): history is append-only.
+-- Additive and re-runnable.
+
+create or replace function private.stamp_activity_actor() returns trigger
+language plpgsql security definer set search_path = '' as $$
+begin
+  if auth.uid() is not null then
+    new.actor := coalesce((select u.email from auth.users u where u.id = auth.uid()), auth.uid()::text);
+  end if;
+  return new;
+end $$;
+revoke all on function private.stamp_activity_actor() from public, anon, authenticated;
+
+drop trigger if exists activity_log_actor on public.activity_log;
+create trigger activity_log_actor before insert on public.activity_log
+  for each row execute function private.stamp_activity_actor();
+
+-- 20261010080000_fk_indexes.sql
+-- V3X Control: indexes for foreign keys that had none (found by the audit of 10/10/2026).
+-- Keeps joins, filters and ON DELETE checks fast as data grows. Additive and re-runnable.
+create index if not exists ai_usage_user_idx on public.ai_usage (user_id);
+create index if not exists control_invites_client_idx on public.control_invites (client_id);
+create index if not exists control_users_client_idx on public.control_users (client_id);
+create index if not exists conversations_assignee_idx on public.conversations (assignee_id);
+create index if not exists conversations_lead_idx on public.conversations (lead_id);
+create index if not exists leads_owner_idx on public.leads (owner_id);
+create index if not exists monitors_client_idx on public.monitors (client_id);
+create index if not exists monitors_owner_idx on public.monitors (owner_id);
+create index if not exists monitors_project_idx on public.monitors (project_id);
+create index if not exists org_members_manager_idx on public.org_members (manager_id);
+create index if not exists projects_owner_idx on public.projects (owner_id);
+create index if not exists reports_client_idx on public.reports (client_id);
+create index if not exists reports_project_idx on public.reports (project_id);
+create index if not exists tasks_assignee_idx on public.tasks (assignee_id);

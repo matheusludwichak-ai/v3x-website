@@ -8,6 +8,9 @@ const MOVED: Record<string, string> = {
   portfolio: "/control/portfolio",
   "motion-library": "/control/motion",
   team: "/control/organizacao",
+  equipe: "/control/organizacao",
+  time: "/control/organizacao",
+  configuracoes: "/control/integracoes",
   settings: "/control/integracoes",
 };
 
