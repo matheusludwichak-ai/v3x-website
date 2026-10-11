@@ -37,7 +37,7 @@ const md = new Marked({
       const label = this.parser.parseInline(tokens);
       const url = safeHref(href);
       if (!url) return label;
-      const external = /^https?:/i.test(url) && !url.includes("grupov3x.com.br");
+      const external = /^https?:/i.test(url) && !/(^|\.)grupov3x\.com\.br$/i.test(new URL(url).hostname);
       return `<a href="${escapeHtml(url)}"${title ? ` title="${escapeHtml(title)}"` : ""}${external ? ' target="_blank" rel="noopener nofollow"' : ""}>${label}</a>`;
     },
     image({ href, text }: Tokens.Image) {

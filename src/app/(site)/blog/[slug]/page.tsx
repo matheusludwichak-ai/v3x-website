@@ -5,10 +5,10 @@ import { MDXRemote } from "next-mdx-remote/rsc";
 import { ArrowLeft } from "lucide-react";
 import { CtaBand } from "@/components/site/cta-band";
 import { getAllPosts, getPostBySlug } from "@/lib/posts";
+import { safeJson } from "@/lib/json-ld";
 import { renderMarkdown } from "@/lib/markdown";
 
 /** JSON for <script> tags with "<" escaped, so content can never close the tag. */
-const safeJson = (value: unknown) => JSON.stringify(value).replace(/</g, "\\u003c");
 
 /* Articles published from the V3X Control appear without a new deploy. */
 export const dynamicParams = true;

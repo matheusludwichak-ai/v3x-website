@@ -126,3 +126,29 @@ export function incidentFrom(result: CheckResult, previousStatus: string) {
   }
   return null;
 }
+
+/** One real check of a monitor: stores the result and opens/resolves its incident. */
+export async function runMonitorCheck(
+  store: import("./store/types").ControlStore,
+  monitor: import("./schema").Monitor,
+  onIncident?: (title: string) => Promise<void>,
+) {
+  const result = await checkUrl(monitor.url);
+  const updated = await store.update("monitors", monitor.id, {
+    last_status: result.status,
+    last_http_status: result.httpStatus,
+    last_latency_ms: result.latencyMs,
+    tls_expires_at: result.tlsExpiresAt,
+    last_checked_at: result.checkedAt,
+    last_error: result.error,
+  });
+  const signal = incidentFrom(result, monitor.last_status);
+  const open = (await store.list("incidents", { where: { monitor_id: monitor.id, status: "open" } }))[0];
+  if (signal && !open) {
+    await store.insert("incidents", { monitor_id: monitor.id, ...signal, status: "open", opened_at: result.checkedAt, resolved_at: null });
+    await onIncident?.(signal.title);
+  } else if (!signal && open) {
+    await store.update("incidents", open.id, { status: "resolved", resolved_at: result.checkedAt });
+  }
+  return { updated, result, incident: signal?.title ?? null };
+}

@@ -48,3 +48,19 @@ describe("analytics: campaigns", () => {
     expect(campaignFromSearch("?gclid=abc")).toEqual({});
   });
 });
+
+describe("security helpers", () => {
+  it("JSON-LD can never close the script tag", async () => {
+    const { safeJson } = await import("@/lib/json-ld");
+    const out = safeJson({ headline: "</script><script>alert(1)</script>" });
+    expect(out).not.toContain("<");
+    expect(JSON.parse(out).headline).toBe("</script><script>alert(1)</script>");
+  });
+  it("markdown escapes raw HTML and drops javascript: links", async () => {
+    const { renderMarkdown } = await import("@/lib/markdown");
+    const html = renderMarkdown('<img src=x onerror=alert(1)> [x](javascript:alert(1)) [y](https://evil.example/?grupov3x.com.br)');
+    expect(html).not.toContain("<img src=x");
+    expect(html).not.toContain("javascript:");
+    expect(html).toContain('rel="noopener nofollow"');
+  });
+});

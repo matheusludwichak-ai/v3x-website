@@ -81,6 +81,21 @@ Validação feita sem credenciais: testes automatizados no formato da documenta�
 
 Requer o Supabase com `SUPABASE_SERVICE_ROLE_KEY`. Teste: **Integrações → Verificar agora** (consulta o estado da instância) e uma mensagem enviada do seu próprio celular para o número conectado deve aparecer em **Atendimento**. O Control nunca responde sozinho: a IA só sugere respostas.
 
+## 3.1 Assistente de WhatsApp (Gemini)
+
+Control → **Assistente IA**. Desligado por padrão; só administradores ligam.
+- Responde com base no conteúdo real do site (serviços, processo, FAQs, projetos, fundadores) + a **Base de conhecimento** da equipe (horários, prazos médios, como funciona o orçamento, políticas). Tudo na base pode ser dito ao cliente.
+- Tom natural de WhatsApp, mensagens curtas, mostra "digitando..." antes de enviar e espera alguns segundos para responder uma única vez quando o cliente manda várias mensagens.
+- Nunca inventa preço, prazo ou condição; nunca diz que é humano (se perguntarem, confirma que é o assistente virtual).
+- Passa para uma pessoa (pausa a IA na conversa e marca como pendente) quando o cliente pede, em reclamação, financeiro, contrato, negociação, dúvida fora da base ou orçamento com as informações reunidas. Cria a oportunidade no Pipeline com origem WhatsApp.
+- Para sozinho quando alguém da equipe responde (pelo Control ou pelo celular) e respeita o limite de respostas por hora. Em Atendimento, cada conversa tem "Pausar IA / Retomar IA".
+- "Testar o assistente" simula a resposta sem enviar nada.
+- Requer Evolution API e Gemini configurados; sem eles nada é enviado.
+
+## 3.2 Rotina diária
+
+Vercel Cron às 08:00 (Brasília), `vercel.json`: verifica todos os sites monitorados (abre/fecha incidentes) e registra um resumo (tarefas atrasadas, incidentes, artigos para revisar, conversas esperando, leads novos), visível em Monitoramento. Não envia mensagens nem usa IA. Recomendado definir `CRON_SECRET` na Vercel.
+
 ## 4. Blog: do Control para o site
 
 - Fluxo: Rascunho → Em revisão → Aprovado → **Publicar** (com confirmação) → Publicado. Despublicar e arquivar também pedem ação explícita.

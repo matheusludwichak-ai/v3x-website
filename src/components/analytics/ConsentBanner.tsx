@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { isPrivatePath } from "@/lib/analytics/config";
+import { MARKETING_TOOLS, isPrivatePath } from "@/lib/analytics/config";
 import { OPEN_PREFERENCES_EVENT, readConsent, saveConsent } from "@/lib/analytics/consent";
 import { cn } from "@/lib/utils";
 
@@ -73,8 +73,8 @@ export function ConsentBanner() {
     >
       <p id="consent-title" className="text-base font-semibold">Cookies e privacidade</p>
       <p id="consent-text" className="mt-2 text-sm leading-relaxed text-muted-foreground">
-        Usamos cookies de análise (Google Analytics) para entender como o site é usado e melhorá-lo, apenas se você permitir. Os essenciais mantêm o site funcionando.{" "}
-        <Link href="/privacidade" className="text-foreground underline underline-offset-4">Política de privacidade</Link>
+        A V3X usa cookies de análise do Google Analytics para entender como o site é usado e melhorá-lo, somente se você permitir. Os essenciais mantêm o site funcionando. Você pode mudar sua escolha quando quiser em “Preferências de cookies”, no rodapé.{" "}
+        <Link href="/privacidade" className="text-foreground underline underline-offset-4">Política de privacidade e cookies</Link>
       </p>
 
       {custom && (
@@ -84,25 +84,25 @@ export function ConsentBanner() {
             <Toggle id="consent-essential" checked disabled label="Cookies essenciais, sempre ativos" />
           </li>
           <li className="flex items-start justify-between gap-4">
-            <span><span className="font-medium">Análise</span><span className="mt-1 block text-xs text-muted-foreground">Google Analytics: páginas visitadas, origem do acesso e cliques. Sem nome, e-mail ou mensagens.</span></span>
+            <span><span className="font-medium">Análise</span><span className="mt-1 block text-xs text-muted-foreground">Google Analytics: páginas visitadas, origem do acesso e cliques, de forma pseudonimizada. Sem nome, e-mail ou mensagens. Os dados são tratados pelo Google e podem ser processados fora do Brasil.</span></span>
             <Toggle id="consent-analytics" checked={analytics} onChange={setAnalytics} label="Cookies de análise" />
           </li>
-          <li className="flex items-start justify-between gap-4">
+          {MARKETING_TOOLS && <li className="flex items-start justify-between gap-4">
             <span><span className="font-medium">Marketing</span><span className="mt-1 block text-xs text-muted-foreground">Medição de anúncios. Hoje o site não usa nenhuma ferramenta de publicidade.</span></span>
             <Toggle id="consent-marketing" checked={marketing} onChange={setMarketing} label="Cookies de marketing" />
-          </li>
+          </li>}
         </ul>
       )}
 
       <div className="mt-5 flex flex-wrap gap-2">
         {custom ? (
           <>
-            <button type="button" className="consent-btn consent-btn-primary" onClick={() => choose({ analytics, marketing })}>Salvar preferências</button>
-            <button type="button" className="consent-btn" onClick={() => choose({ analytics: true, marketing: true })}>Aceitar todos</button>
+            <button type="button" className="consent-btn consent-btn-primary" onClick={() => choose({ analytics, marketing: MARKETING_TOOLS && marketing })}>Salvar preferências</button>
+            <button type="button" className="consent-btn" onClick={() => choose({ analytics: true, marketing: MARKETING_TOOLS })}>Aceitar todos</button>
           </>
         ) : (
           <>
-            <button type="button" className="consent-btn consent-btn-primary" onClick={() => choose({ analytics: true, marketing: true })}>Aceitar</button>
+            <button type="button" className="consent-btn consent-btn-primary" onClick={() => choose({ analytics: true, marketing: MARKETING_TOOLS })}>Aceitar</button>
             <button type="button" className="consent-btn" onClick={() => choose({ analytics: false, marketing: false })}>Recusar</button>
             <button type="button" className="consent-btn consent-btn-ghost" onClick={() => setCustom(true)}>Personalizar</button>
           </>

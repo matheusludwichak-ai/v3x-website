@@ -6,6 +6,7 @@ import { Reveal } from "@/components/reveal";
 import { BlogTabs } from "@/components/blog-tabs";
 import { XMark } from "@/components/brand/XMark";
 import { CtaBand } from "@/components/site/cta-band";
+import { safeJson } from "@/lib/json-ld";
 import { getAllPosts } from "@/lib/posts";
 
 /* Picks up articles published from the V3X Control. */
@@ -32,7 +33,7 @@ export default async function BlogPage() {
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJson(jsonLd) }} />
 
       <PageHero
         eyebrow="Blog V3X"

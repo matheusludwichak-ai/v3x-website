@@ -20,6 +20,12 @@ export const GTM_ID = GTM_PATTERN.test(rawGtm) ? rawGtm : "";
 /** "gtm": container manages every tag. "gtag": GA4 loaded directly. "off": no IDs. */
 export const ANALYTICS_MODE: "gtm" | "gtag" | "off" = GTM_ID ? "gtm" : GA_ID ? "gtag" : "off";
 
+/**
+ * No advertising tool is installed. While false, the banner has no "Marketing" option and
+ * Consent Mode keeps ad_storage / ad_user_data / ad_personalization denied for everyone.
+ */
+export const MARKETING_TOOLS = false;
+
 export const PRIVATE_PATHS = ["/control", "/login"];
 export const isPrivatePath = (path: string) => PRIVATE_PATHS.some((p) => path === p || path.startsWith(`${p}/`));
 

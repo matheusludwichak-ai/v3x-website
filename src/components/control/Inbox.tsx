@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
-import { Check, CheckCheck, Clock, MessageCircle, PlugZap, Search, Send, Sparkles, TriangleAlert } from "lucide-react";
+import { Bot, Check, CheckCheck, Clock, MessageCircle, PlugZap, Search, Send, Sparkles, TriangleAlert } from "lucide-react";
 import type { Conversation, Message } from "@/lib/control/schema";
 import { AIBtn, Avatar, Badge, Btn, Empty, ModeBanner, Page, PageHeader, Select, Skeleton, Tabs, TextArea, TextInput, useDebounced } from "./ui";
 import { ai, api, relative, useCollection, useSession } from "./lib/client";
@@ -14,8 +14,8 @@ import { cn } from "@/lib/utils";
 /* Visual-only examples, shown on request while the integration is not configured. Never stored, never sent. */
 const now = Date.now();
 const DEMO_CONVERSATIONS: (Conversation & { demo: true })[] = [
-  { id: "demo-1", demo: true, remote_jid: "demo", contact_name: "Exemplo: Ana (demonstração)", phone: null, status: "pending", assignee_id: null, last_message_at: new Date(now - 6 * 60000).toISOString(), last_message_preview: "Vocês fazem site com área do cliente?", unread_count: 2, summary: null, created_at: "", updated_at: "" },
-  { id: "demo-2", demo: true, remote_jid: "demo", contact_name: "Exemplo: Bruno (demonstração)", phone: null, status: "open", assignee_id: null, last_message_at: new Date(now - 3 * 3600000).toISOString(), last_message_preview: "Perfeito, aguardo a proposta.", unread_count: 0, summary: null, created_at: "", updated_at: "" },
+  { id: "demo-1", demo: true, remote_jid: "demo", contact_name: "Exemplo: Ana (demonstração)", phone: null, status: "pending", assignee_id: null, last_message_at: new Date(now - 6 * 60000).toISOString(), last_message_preview: "Vocês fazem site com área do cliente?", unread_count: 2, summary: null, ai_paused: false, created_at: "", updated_at: "" },
+  { id: "demo-2", demo: true, remote_jid: "demo", contact_name: "Exemplo: Bruno (demonstração)", phone: null, status: "open", assignee_id: null, last_message_at: new Date(now - 3 * 3600000).toISOString(), last_message_preview: "Perfeito, aguardo a proposta.", unread_count: 0, summary: null, ai_paused: false, created_at: "", updated_at: "" },
 ];
 const DEMO_MESSAGES: Record<string, Pick<Message, "id" | "direction" | "body" | "status" | "created_at">[]> = {
   "demo-1": [
@@ -198,15 +198,31 @@ export function Inbox() {
                     <>
                       <Select aria-label="Status da conversa" value={current.status} onChange={(e) => conversations.update(current.id, { status: e.target.value }).catch((er) => toast.error(er.message))} options={Object.entries(CONVERSATION_STATUS_LABEL).map(([value, l]) => ({ value, label: l }))} className="!w-auto !py-1.5 text-xs" />
                       <Select aria-label="Responsável" value={current.assignee_id ?? ""} onChange={(e) => conversations.update(current.id, { assignee_id: e.target.value || null }).catch((er) => toast.error(er.message))} options={look.peopleOptions} placeholder="Sem responsável" className="!w-auto !py-1.5 text-xs" />
+                      <Btn
+                        size="sm"
+                        variant="ghost"
+                        icon={<Bot className="size-3.5" />}
+                        disabled={conversations.readonly}
+                        title={current.ai_paused ? "O assistente volta a responder nesta conversa" : "O assistente deixa de responder nesta conversa"}
+                        onClick={() => conversations.update(current.id, { ai_paused: !current.ai_paused, ai_note: null }).then(() => toast.success(current.ai_paused ? "Assistente retomado nesta conversa" : "Assistente pausado nesta conversa"), (er) => toast.error(er.message))}
+                      >
+                        {current.ai_paused ? "Retomar IA" : "Pausar IA"}
+                      </Btn>
                     </>
                   )}
                 </header>
+                {!demo && current.ai_paused && current.ai_note && (
+                  <p className="flex items-center gap-2 border-b border-white/8 bg-[rgb(240_180_80/7%)] px-4 py-2 text-xs text-[#f3cf8b]">
+                    <Bot className="size-3.5 shrink-0" /> {current.ai_note}
+                  </p>
+                )}
                 <div className="flex-1 space-y-2 overflow-y-auto p-4" data-lenis-prevent>
                   {loadingMessages ? <Skeleton rows={4} /> : messages.map((m) => (
                     <div key={m.id} className={cn("flex", m.direction === "out" ? "justify-end" : "justify-start")}>
                       <div className={cn("max-w-[78%] rounded-2xl px-3.5 py-2 text-sm leading-relaxed", m.direction === "out" ? "rounded-br-md bg-[linear-gradient(135deg,#2f6fd6,#7449b8)] text-white" : "rounded-bl-md bg-white/[0.06]")}>
                         <p className="whitespace-pre-wrap">{m.body}</p>
                         <p className="mt-1 flex items-center justify-end gap-1 text-[10px] opacity-70">
+                          {"sent_by" in m && m.sent_by === "Assistente V3X (IA)" && <span className="mr-1 rounded bg-white/15 px-1 font-semibold">IA</span>}
                           {new Date(m.created_at).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })}
                           {m.direction === "out" && <StatusIcon status={m.status} />}
                           {m.status === "failed" && <span>{MESSAGE_STATUS_LABEL.failed}</span>}

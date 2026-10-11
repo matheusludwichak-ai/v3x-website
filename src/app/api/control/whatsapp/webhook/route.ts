@@ -1,13 +1,16 @@
+import { after } from "next/server";
 import { getSystemStore } from "@/lib/control/store";
+import { autoReply } from "@/lib/control/assistant";
 import { parseWebhook, verifyWebhook } from "@/lib/control/evolution";
 import { StoreError } from "@/lib/control/store/types";
 
 /**
  * Receives Evolution API events. Authenticated by EVOLUTION_WEBHOOK_SECRET
- * (header x-webhook-secret or ?token=), idempotent by message id, and it never
- * replies automatically: inbound messages only land in the inbox for a person.
- * Logs carry event types and counts, never message content or phone numbers.
+ * (header x-webhook-secret only), idempotent by message id. Inbound messages land in
+ * the inbox; when the WhatsApp assistant is enabled (Atendimento), it answers after the
+ * response is sent (see lib/control/assistant.ts). Logs carry counts, never content or numbers.
  */
+export const maxDuration = 60;
 export async function POST(request: Request) {
   if (!verifyWebhook(request)) return Response.json({ error: "Não autorizado." }, { status: 401 });
   const store = getSystemStore();
@@ -17,6 +20,7 @@ export async function POST(request: Request) {
   if (!payload) return Response.json({ error: "Payload inválido." }, { status: 400 });
   const events = parseWebhook(payload);
   const summary = { stored: 0, duplicates: 0, statuses: 0, ignored: 0 };
+  const toAnswer = new Map<string, string>(); // conversation id -> latest inbound message id
 
   for (const event of events) {
     if (event.kind === "ignored") {
@@ -47,6 +51,16 @@ export async function POST(request: Request) {
         last_message_at: event.at,
       });
     }
+    if (event.fromMe) {
+      // Echo of a message the Control itself just sent (stored before the external id arrived).
+      const recent = await store.list("messages", { where: { conversation_id: conversation.id, direction: "out" }, limit: 20 });
+      const echo = recent.find((m) => !m.external_id && m.body === event.body && Date.now() - Date.parse(m.created_at) < 120_000);
+      if (echo) {
+        await store.update("messages", echo.id, { external_id: event.externalId });
+        summary.duplicates++;
+        continue;
+      }
+    }
     try {
       await store.insert("messages", { conversation_id: conversation.id, external_id: event.externalId, direction: event.fromMe ? "out" : "in", body: event.body, status: event.fromMe ? "sent" : "received", sent_by: event.fromMe ? "WhatsApp" : null });
     } catch (error) {
@@ -64,6 +78,14 @@ export async function POST(request: Request) {
       ...(event.name && !conversation.contact_name ? { contact_name: event.name } : {}),
     });
     summary.stored++;
+    if (!event.fromMe) toAnswer.set(conversation.id, event.externalId);
+  }
+
+  for (const [conversationId, externalId] of toAnswer) {
+    after(async () => {
+      const outcome = await autoReply(store, conversationId, externalId).catch(() => "failed");
+      if (outcome !== "disabled") console.info("[assistant]", outcome);
+    });
   }
 
   console.info("[whatsapp] webhook", summary);

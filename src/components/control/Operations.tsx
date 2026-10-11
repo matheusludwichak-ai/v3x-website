@@ -69,8 +69,9 @@ export function Monitoring() {
       />
       <div className="cx-banner mb-6 flex gap-2">
         <Info className="mt-0.5 size-4 shrink-0" />
-        <span>A verificação externa mede resposta HTTP, tempo de resposta e validade do certificado TLS. Builds, logs e erros internos exigem integração com o provedor de hospedagem e ainda não são coletados. As verificações são feitas sob demanda (sem rotina automática).</span>
+        <span>A verificação externa mede resposta HTTP, tempo de resposta e validade do certificado TLS. Builds, logs e erros internos exigem integração com o provedor de hospedagem e ainda não são coletados. Todos os sites ativos são verificados automaticamente uma vez por dia (08:00) e também sob demanda.</span>
       </div>
+      <DailyRoutine session={session} onDone={() => { monitors.reload(); incidents.reload(); }} />
 
       {monitors.error && <ErrorBox message={monitors.error} onRetry={monitors.reload} />}
       {monitors.loading ? (
@@ -253,3 +254,50 @@ function printReport(r: Report) {
   win.document.close();
 }
 
+
+type DailySummary = { date: string; monitors: { checked: number; down: number; degraded: number }; overdueTasks: number; openIncidents: number; articlesAwaitingReview: number; conversationsWaiting: number; newLeads24h: number };
+
+/** Last run of the daily routine (Vercel Cron) and a manual trigger for administrators. */
+function DailyRoutine({ session, onDone }: { session: ReturnType<typeof useSession>; onDone: () => void }) {
+  const runs = useCollection("automation_runs", { job: "daily" });
+  const [running, setRunning] = useState(false);
+  const last = [...runs.rows].sort((a, b) => b.created_at.localeCompare(a.created_at))[0];
+  const sum = last?.summary as DailySummary | undefined;
+  const isAdmin = session?.mode === "local" || session?.user?.role === "admin";
+
+  const run = async () => {
+    setRunning(true);
+    try {
+      await api("/api/control/automations/daily", { method: "POST", body: "{}" });
+      toast.success("Rotina diária executada");
+      runs.reload();
+      onDone();
+    } catch (e) {
+      toast.error((e as Error).message);
+    } finally {
+      setRunning(false);
+    }
+  };
+
+  return (
+    <Card title="Rotina diária" className="mb-6" action={isAdmin && <Btn size="sm" icon={<RefreshCw className="size-3.5" />} loading={running} onClick={run}>Executar agora</Btn>}>
+      {runs.loading ? (
+        <Skeleton rows={1} />
+      ) : !last || !sum ? (
+        <p className="text-sm text-[#a0a0a0]">Ainda não executada. Roda todo dia às 08:00 (horário de Brasília) depois do próximo deploy.</p>
+      ) : (
+        <div className="space-y-2 text-sm">
+          <p className="text-xs text-[#a0a0a0]">Última execução: {fmtDateTime(last.created_at)} ({last.trigger === "cron" ? "automática" : "manual"})</p>
+          <div className="flex flex-wrap gap-2">
+            <Badge tone={sum.monitors.down ? "danger" : sum.monitors.degraded ? "warning" : "success"}>{sum.monitors.checked} site(s) verificado(s){sum.monitors.down ? `, ${sum.monitors.down} fora do ar` : ""}</Badge>
+            <Badge tone={sum.openIncidents ? "warning" : "neutral"}>{sum.openIncidents} incidente(s) aberto(s)</Badge>
+            <Badge tone={sum.overdueTasks ? "warning" : "neutral"}>{sum.overdueTasks} tarefa(s) atrasada(s)</Badge>
+            <Badge tone="neutral">{sum.articlesAwaitingReview} artigo(s) para revisar</Badge>
+            <Badge tone={sum.conversationsWaiting ? "warning" : "neutral"}>{sum.conversationsWaiting} conversa(s) esperando</Badge>
+            <Badge tone={sum.newLeads24h ? "blue" : "neutral"}>{sum.newLeads24h} lead(s) em 24 h</Badge>
+          </div>
+        </div>
+      )}
+    </Card>
+  );
+}

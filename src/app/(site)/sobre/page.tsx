@@ -3,6 +3,7 @@ import Image from "next/image";
 import { PageHero } from "@/components/page-hero";
 import { Reveal } from "@/components/reveal";
 import { CtaBand } from "@/components/site/cta-band";
+import { safeJson } from "@/lib/json-ld";
 import { team } from "@/data/team";
 
 export const metadata: Metadata = {
@@ -52,7 +53,7 @@ const photoSize: Record<string, [number, number]> = {
 export default function SobrePage() {
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJson(jsonLd) }} />
 
       <PageHero
         eyebrow="Quem somos"

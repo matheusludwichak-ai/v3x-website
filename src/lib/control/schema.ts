@@ -71,7 +71,7 @@ export const leadSchema = z.object({
   next_action: optionalText(300),
   next_action_date: optionalDate,
   notes: optionalText(4000),
-  origin: z.enum(["manual", "site_form"]).default("manual"),
+  origin: z.enum(["manual", "site_form", "whatsapp"]).default("manual"),
   email: z.string().trim().max(200).email("Informe um e-mail válido.").optional().nullable().or(z.literal("").transform(() => null)),
   attribution: z.record(z.string(), z.string().max(300)).optional().nullable(),
 });
@@ -208,6 +208,29 @@ export const conversationSchema = z.object({
   last_message_preview: optionalText(300),
   unread_count: z.number().int().min(0).default(0),
   summary: optionalText(3000),
+  ai_paused: z.boolean().default(false),
+  ai_note: optionalText(300),
+  lead_id: z.string().optional().nullable(),
+});
+
+export const automationSettingSchema = z.object({
+  key: z.string().regex(/^[a-z_]{2,40}$/),
+  value: z.record(z.string(), z.unknown()).default({}),
+  updated_by: optionalText(200),
+});
+
+export const automationRunSchema = z.object({
+  job: z.string().max(40),
+  trigger: z.enum(["cron", "manual"]).default("cron"),
+  summary: z.record(z.string(), z.unknown()).default({}),
+});
+
+export const KNOWLEDGE_CATEGORY = ["servicos", "processo", "prazos", "precos", "horarios", "politicas", "outros"] as const;
+export const knowledgeSchema = z.object({
+  title: z.string().trim().min(2, "Dê um título.").max(160),
+  category: z.enum(KNOWLEDGE_CATEGORY).default("outros"),
+  content: z.string().trim().min(2, "Escreva o conteúdo.").max(4000),
+  active: z.boolean().default(true),
 });
 
 export const messageSchema = z.object({
@@ -241,6 +264,9 @@ export const ENTITIES = {
   monitors: monitorSchema,
   incidents: incidentSchema,
   conversations: conversationSchema,
+  knowledge_items: knowledgeSchema,
+  automation_settings: automationSettingSchema,
+  automation_runs: automationRunSchema,
   messages: messageSchema,
   activity_log: activitySchema,
 } as const;
@@ -263,9 +289,11 @@ export type Incident = Entity<"incidents">;
 export type Conversation = Entity<"conversations">;
 export type Message = Entity<"messages">;
 export type Activity = Entity<"activity_log">;
+export type KnowledgeItem = Entity<"knowledge_items">;
+export type AutomationRun = Entity<"automation_runs">;
 
 /** Entities the browser may write through the generic API (others are written by server flows only). */
-export const WRITABLE: EntityKey[] = ["tasks", "projects", "clients", "leads", "articles", "portfolio_items", "motion_items", "org_members", "reports", "monitors", "conversations"];
+export const WRITABLE: EntityKey[] = ["tasks", "projects", "clients", "leads", "articles", "portfolio_items", "motion_items", "org_members", "reports", "monitors", "conversations", "knowledge_items"];
 
 export const isEntityKey = (value: string): value is EntityKey => value in ENTITIES;
 

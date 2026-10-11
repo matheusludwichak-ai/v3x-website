@@ -53,13 +53,13 @@ export async function connectionState(): Promise<{ state: string; ok: boolean }>
   }
 }
 
-export async function sendText(number: string, text: string): Promise<{ externalId: string | null }> {
+export async function sendText(number: string, text: string, opts: { delay?: number } = {}): Promise<{ externalId: string | null }> {
   const c = cfg();
   const res = await fetch(`${c.baseUrl}${path("EVOLUTION_PATH_SEND", "/message/sendText/{instance}", c.instance)}`, {
     method: "POST",
     headers: { apikey: c.apiKey, "Content-Type": "application/json" },
     // v2 reads "text"; the published spec also lists "textMessage.text". Both are sent.
-    body: JSON.stringify({ number: normalizeNumber(number), text, textMessage: { text } }),
+    body: JSON.stringify({ number: normalizeNumber(number), text, textMessage: { text }, ...(opts.delay ? { delay: Math.round(opts.delay) } : {}) }),
     signal: AbortSignal.timeout(20000),
   }).catch(() => {
     throw new EvolutionError("Não foi possível falar com a Evolution.", 502, "unreachable");
@@ -70,12 +70,14 @@ export async function sendText(number: string, text: string): Promise<{ external
   return { externalId: json.key?.id ?? null };
 }
 
-/** Constant-time comparison of the webhook secret. Without a configured secret, every event is refused. */
+/**
+ * Constant-time comparison of the webhook secret, sent ONLY in the x-webhook-secret header
+ * (a secret in the URL would end up in access logs). Without a configured secret, every event is refused.
+ */
 export function verifyWebhook(request: Request) {
   const secret = evolutionConfig().webhookSecret;
   if (!secret) return false;
-  const url = new URL(request.url);
-  const given = request.headers.get("x-webhook-secret") ?? url.searchParams.get("token") ?? "";
+  const given = request.headers.get("x-webhook-secret") ?? "";
   const a = Buffer.from(given);
   const b = Buffer.from(secret);
   return a.length === b.length && timingSafeEqual(a, b);

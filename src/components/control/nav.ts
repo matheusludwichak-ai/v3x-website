@@ -12,6 +12,7 @@ import {
   FileBarChart,
   Network,
   PlugZap,
+  Bot,
 } from "lucide-react";
 
 /** Control navigation. Client accounts see only the items marked forClients. */
@@ -22,6 +23,7 @@ export const NAV: { group: string; items: { href: string; label: string; icon: t
       { href: "/control", label: "Visão geral", icon: LayoutDashboard, forClients: true },
       { href: "/control/tarefas", label: "Tarefas", icon: CheckSquare },
       { href: "/control/atendimento", label: "Atendimento", icon: MessageCircle },
+      { href: "/control/assistente", label: "Assistente IA", icon: Bot },
     ],
   },
   {

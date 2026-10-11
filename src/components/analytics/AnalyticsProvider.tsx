@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { usePathname } from "next/navigation";
-import { ANALYTICS_MODE, GA_ID, GTM_ID, contentFromPath, isPrivatePath } from "@/lib/analytics/config";
+import { ANALYTICS_MODE, GA_ID, GTM_ID, MARKETING_TOOLS, contentFromPath, isPrivatePath } from "@/lib/analytics/config";
 import { CONSENT_EVENT, readConsent, type ConsentChoice } from "@/lib/analytics/consent";
 import { pendingCampaign, rememberLanding, rememberLandingCampaign } from "@/lib/analytics/campaign";
 import { describeClick } from "@/lib/analytics/clicks";
@@ -35,7 +35,8 @@ function loadTags(debug: boolean) {
     w.gtag!("js", new Date());
     // The config hit is the page_view of the current page; later navigations are measured by
     // GA4 enhanced measurement (browser history), so no page_view is sent manually.
-    w.gtag!("config", GA_ID, { ...campaign, ...(debug ? { debug_mode: true } : {}) });
+    // Advertising features stay off (Google signals, ads personalization): analytics only.
+    w.gtag!("config", GA_ID, { ...campaign, allow_google_signals: false, allow_ad_personalization_signals: false, ...(debug ? { debug_mode: true } : {}) });
     inject(`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`);
   }
 }
@@ -104,7 +105,7 @@ export function AnalyticsProvider() {
 
     const apply = (c: ConsentChoice | null) => {
       const analytics = !!c?.analytics;
-      const marketing = !!c?.marketing;
+      const marketing = MARKETING_TOOLS && !!c?.marketing;
       if (c) {
         w.gtag!("consent", "update", {
           analytics_storage: analytics ? "granted" : "denied",

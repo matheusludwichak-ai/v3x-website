@@ -73,10 +73,10 @@ describe("Evolution webhook", () => {
     delete process.env.EVOLUTION_WEBHOOK_SECRET;
     expect(verifyWebhook(new Request("https://x/api", { method: "POST", headers: { "x-webhook-secret": "abc" } }))).toBe(false);
   });
-  it("accepts the right secret via header or token and rejects others", () => {
+  it("accepts the right secret only via header and rejects others", () => {
     process.env.EVOLUTION_WEBHOOK_SECRET = "s3cr3t-value";
     expect(verifyWebhook(new Request("https://x/api", { headers: { "x-webhook-secret": "s3cr3t-value" } }))).toBe(true);
-    expect(verifyWebhook(new Request("https://x/api?token=s3cr3t-value"))).toBe(true);
+    expect(verifyWebhook(new Request("https://x/api?token=s3cr3t-value"))).toBe(false);
     expect(verifyWebhook(new Request("https://x/api", { headers: { "x-webhook-secret": "s3cr3t-valuf" } }))).toBe(false);
   });
   it("parses inbound messages, ignores groups and maps delivery status", () => {
