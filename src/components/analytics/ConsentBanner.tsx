@@ -69,7 +69,7 @@ export function ConsentBanner() {
       aria-labelledby="consent-title"
       aria-describedby="consent-text"
       data-lenis-prevent
-      className="consent-panel fixed inset-x-3 bottom-3 z-[60] max-h-[85svh] overflow-y-auto rounded-2xl border border-white/12 bg-[#0b0d1a]/95 p-5 shadow-[0_30px_80px_-30px_rgb(0_0_0/0.9)] backdrop-blur-md sm:inset-x-auto sm:bottom-5 sm:left-5 sm:w-[min(440px,calc(100vw-2.5rem))] sm:p-6"
+      className="consent-panel fixed inset-x-3 bottom-3 z-[60] max-h-[85svh] overflow-y-auto rounded-2xl border border-white/12 bg-[#0b0d1a]/95 p-5 shadow-[0_30px_80px_-30px_rgb(0_0_0/0.9)] backdrop-blur-md sm:inset-x-auto sm:bottom-[5.5rem] sm:right-5 sm:w-[min(400px,calc(100vw-2.5rem))] sm:p-6"
     >
       <p id="consent-title" className="text-base font-semibold">Cookies e privacidade</p>
       <p id="consent-text" className="mt-2 text-sm leading-relaxed text-muted-foreground">
