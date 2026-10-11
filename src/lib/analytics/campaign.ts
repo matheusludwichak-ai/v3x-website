@@ -41,3 +41,41 @@ export function pendingCampaign(currentSearch: string): Campaign {
     return {};
   }
 }
+
+const LANDING_KEY = "v3x-landing";
+
+/**
+ * First page of the visit and the site that sent the visitor (domain only). Kept for the
+ * session and sent ONLY together with a contact form the visitor chooses to submit, so the
+ * Control can show which channels bring leads. Not shared with third parties.
+ */
+export function rememberLanding(path: string, referrer: string) {
+  try {
+    if (window.sessionStorage.getItem(LANDING_KEY)) return;
+    let ref = "";
+    try {
+      const host = referrer ? new URL(referrer).hostname : "";
+      ref = host && host !== window.location.hostname ? host : "";
+    } catch {
+      ref = "";
+    }
+    window.sessionStorage.setItem(LANDING_KEY, JSON.stringify({ landing_page: path.slice(0, 200), referrer: ref }));
+  } catch {
+    // Storage blocked: the lead is saved without attribution.
+  }
+}
+
+/** Attribution sent with the lead form: landing page, referrer domain and landing UTMs. */
+export function leadAttribution(): Record<string, string> {
+  const out: Record<string, string> = {};
+  try {
+    Object.assign(out, JSON.parse(window.sessionStorage.getItem(LANDING_KEY) ?? "{}"));
+    const utm = JSON.parse(window.sessionStorage.getItem(KEY) ?? "{}") as Campaign;
+    const back: Record<string, string> = { campaign_source: "utm_source", campaign_medium: "utm_medium", campaign_name: "utm_campaign", campaign_term: "utm_term", campaign_content: "utm_content", campaign_id: "utm_id" };
+    for (const [field, value] of Object.entries(utm)) if (value && back[field]) out[back[field]] = value;
+  } catch {
+    // No attribution available.
+  }
+  for (const k of Object.keys(out)) if (!out[k]) delete out[k];
+  return out;
+}

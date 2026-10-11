@@ -3,6 +3,7 @@
 import { useState, type FormEvent } from "react";
 import { services } from "@/data/services";
 import { useLeadFormTracking, type LeadFormError } from "@/lib/analytics/forms";
+import { leadAttribution } from "@/lib/analytics/campaign";
 
 type Status = "idle" | "submitting" | "success" | "error";
 
@@ -42,7 +43,7 @@ export function ContactForm() {
       const res = await fetch("/api/contato", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+        body: JSON.stringify({ ...data, formulario: "contato_pagina", atribuicao: leadAttribution() }),
       });
       const json = await res.json();
 
@@ -73,6 +74,7 @@ export function ContactForm() {
 
   return (
     <form onSubmit={handleSubmit} onFocusCapture={lead.onFocusCapture} className="flex flex-col gap-6" noValidate>
+      <Honeypot />
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
         <Field label="Nome" htmlFor="nome">
           <input
@@ -155,6 +157,16 @@ function Field({
         {label} {optional && <span className="font-normal text-muted-foreground">(opcional)</span>}
       </label>
       {children}
+    </div>
+  );
+}
+
+/** Invisible field: people never fill it, spam bots usually do. */
+export function Honeypot() {
+  return (
+    <div aria-hidden="true" className="absolute -left-[9999px] h-px w-px overflow-hidden">
+      <label htmlFor="hp-website">Não preencha este campo</label>
+      <input id="hp-website" name="website" type="text" tabIndex={-1} autoComplete="off" defaultValue="" />
     </div>
   );
 }

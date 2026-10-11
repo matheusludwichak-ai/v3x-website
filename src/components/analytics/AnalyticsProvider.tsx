@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { ANALYTICS_MODE, GA_ID, GTM_ID, contentFromPath, isPrivatePath } from "@/lib/analytics/config";
 import { CONSENT_EVENT, readConsent, type ConsentChoice } from "@/lib/analytics/consent";
-import { pendingCampaign, rememberLandingCampaign } from "@/lib/analytics/campaign";
+import { pendingCampaign, rememberLanding, rememberLandingCampaign } from "@/lib/analytics/campaign";
 import { describeClick } from "@/lib/analytics/clicks";
 import { setTrackingDebug, setTrackingEnabled, track, trackingEnabled } from "@/lib/analytics/track";
 
@@ -82,6 +82,7 @@ export function AnalyticsProvider() {
     }
     setTrackingDebug(debug || process.env.NODE_ENV !== "production");
     rememberLandingCampaign(window.location.search);
+    rememberLanding(window.location.pathname, document.referrer);
 
     w.dataLayer ??= [];
     w.gtag ??= function gtag() {

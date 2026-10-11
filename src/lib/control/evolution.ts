@@ -3,11 +3,14 @@ import { timingSafeEqual } from "node:crypto";
 import { evolutionConfig } from "./env";
 
 /**
- * Evolution API (WhatsApp) service. Written for Evolution API v2 conventions:
- *   POST {EVOLUTION_API_URL}/message/sendText/{EVOLUTION_INSTANCE}   header "apikey"   body { number, text }
- *   GET  {EVOLUTION_API_URL}/instance/connectionState/{EVOLUTION_INSTANCE}
- * Paths can be overridden with EVOLUTION_PATH_SEND / EVOLUTION_PATH_STATE if the
- * installed version differs. All calls run on the server; the key never reaches the browser.
+ * Evolution API (WhatsApp) service, following docs.evolutionfoundation.com.br (API 2.3.x):
+ *   GET    /instance/connectionState/{instance}   -> { instance: { instanceName, state: open|close|connecting } }
+ *   GET    /instance/connect/{instance}           -> { pairingCode, code, base64 (QR image), count }
+ *   DELETE /instance/logout/{instance}
+ *   POST   /message/sendText/{instance}           body { number, text } (+ textMessage.text, older format)
+ *   POST   /webhook/set/{instance}                body { enabled, url, events, headers, base64 }
+ * Header "apikey" on every call. Paths can be overridden with EVOLUTION_PATH_* if the installed
+ * version differs. All calls run on the server; the key never reaches the browser.
  */
 
 export class EvolutionError extends Error {
@@ -55,7 +58,8 @@ export async function sendText(number: string, text: string): Promise<{ external
   const res = await fetch(`${c.baseUrl}${path("EVOLUTION_PATH_SEND", "/message/sendText/{instance}", c.instance)}`, {
     method: "POST",
     headers: { apikey: c.apiKey, "Content-Type": "application/json" },
-    body: JSON.stringify({ number: normalizeNumber(number), text }),
+    // v2 reads "text"; the published spec also lists "textMessage.text". Both are sent.
+    body: JSON.stringify({ number: normalizeNumber(number), text, textMessage: { text } }),
     signal: AbortSignal.timeout(20000),
   }).catch(() => {
     throw new EvolutionError("Não foi possível falar com a Evolution.", 502, "unreachable");
@@ -113,4 +117,47 @@ export function parseWebhook(payload: unknown): InboundEvent[] {
     });
   }
   return [{ kind: "ignored", reason: `evento ${event || "vazio"}` }];
+}
+
+async function call(method: "GET" | "POST" | "DELETE", envName: string, fallback: string, body?: unknown) {
+  const c = cfg();
+  const res = await fetch(`${c.baseUrl}${path(envName, fallback, c.instance)}`, {
+    method,
+    headers: { apikey: c.apiKey, ...(body ? { "Content-Type": "application/json" } : {}) },
+    body: body ? JSON.stringify(body) : undefined,
+    signal: AbortSignal.timeout(20000),
+    cache: "no-store",
+  }).catch(() => {
+    throw new EvolutionError("Sem resposta da instância da Evolution.", 502, "unreachable");
+  });
+  if (res.status === 401 || res.status === 403) throw new EvolutionError("A Evolution recusou a chave configurada.", 503, "unauthorized");
+  if (res.status === 404) throw new EvolutionError(`Instância "${c.instance}" não encontrada na Evolution.`, 404, "instance_not_found");
+  const json = (await res.json().catch(() => ({}))) as Record<string, unknown>;
+  if (!res.ok) {
+    const msg = (json.error as { message?: string } | undefined)?.message ?? (typeof json.message === "string" ? json.message : null);
+    throw new EvolutionError(msg ? `Evolution: ${msg}` : `A Evolution respondeu ${res.status}.`, 502);
+  }
+  return json;
+}
+
+/** Starts (or resumes) pairing: returns the QR image and/or pairing code to show to an admin. */
+export async function connectInstance(): Promise<{ qr: string | null; pairingCode: string | null; state: string | null }> {
+  const json = await call("GET", "EVOLUTION_PATH_CONNECT", "/instance/connect/{instance}");
+  const base64 = typeof json.base64 === "string" && json.base64.startsWith("data:image/") ? json.base64 : null;
+  const state = (json.instance as { state?: string } | undefined)?.state ?? null;
+  return { qr: base64, pairingCode: typeof json.pairingCode === "string" ? json.pairingCode : null, state };
+}
+
+/** Disconnects the WhatsApp number from the instance (the instance itself is kept). */
+export async function logoutInstance() {
+  await call("DELETE", "EVOLUTION_PATH_LOGOUT", "/instance/logout/{instance}");
+}
+
+export const WEBHOOK_EVENTS = ["MESSAGES_UPSERT", "MESSAGES_UPDATE"];
+
+/** Points the instance webhook to the Control. The secret travels in a header, never in the URL. */
+export async function setWebhook(url: string, secret: string) {
+  const config = { enabled: true, url, events: WEBHOOK_EVENTS, headers: { "x-webhook-secret": secret }, base64: false, byEvents: false };
+  // Flat body as in the published spec; some v2 releases expect it under "webhook".
+  await call("POST", "EVOLUTION_PATH_WEBHOOK", "/webhook/set/{instance}", { ...config, webhook: config });
 }

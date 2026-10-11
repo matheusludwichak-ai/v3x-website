@@ -12,6 +12,11 @@ import { useLookups } from "./lib/lookups";
 import { LEAD_STAGE_LABEL } from "./lib/labels";
 
 const STAGES = Object.keys(LEAD_STAGE_LABEL) as Lead["stage"][];
+/** Where a site lead came from: campaign, referring site or direct. */
+const originOf = (l: Lead) => {
+  const a = l.attribution ?? {};
+  return a.utm_source ? `${a.utm_source}${a.utm_medium ? ` / ${a.utm_medium}` : ""}` : a.referrer || "acesso direto";
+};
 const money = (cents?: number | null) => (typeof cents === "number" ? (cents / 100).toLocaleString("pt-BR", { style: "currency", currency: "BRL", maximumFractionDigits: 0 }) : null);
 
 export function Pipeline() {
@@ -26,6 +31,7 @@ export function Pipeline() {
     { name: "stage", label: "Etapa", type: "select", options: optionsOf(LEAD_STAGE_LABEL), required: true, half: true },
     { name: "service", label: "Serviço de interesse", half: true, placeholder: "Ex.: site institucional" },
     { name: "contact", label: "Pessoa de contato", half: true, advanced: true },
+    { name: "email", label: "E-mail", half: true, advanced: true },
     { name: "value_cents", label: "Valor estimado (R$)", type: "money", half: true, advanced: true, hint: "Informado por você; não é calculado." },
     { name: "owner_id", label: "Responsável", type: "select", options: look.peopleOptions, half: true, advanced: true },
     { name: "next_action_date", label: "Data da próxima ação", type: "date", half: true, advanced: true },
@@ -72,7 +78,11 @@ export function Pipeline() {
                   const late = l.next_action_date && l.next_action_date < today() && !["won", "lost"].includes(l.stage);
                   return (
                     <button key={l.id} className="cx-tile w-full" draggable={!leads.readonly} onDragStart={(e) => e.dataTransfer.setData("text/plain", l.id)} onClick={() => setEditing(l)}>
-                      <p className="text-sm font-semibold">{l.company}</p>
+                      <div className="flex items-start justify-between gap-2">
+                        <p className="text-sm font-semibold">{l.company}</p>
+                        {l.origin === "site_form" && <Badge tone="blue">Site</Badge>}
+                      </div>
+                      {l.origin === "site_form" && <p className="mt-0.5 truncate text-[11px] text-[#9cc2ff]" title={l.attribution?.landing_page ? `Entrou por ${l.attribution.landing_page}` : undefined}>Origem: {originOf(l)}</p>}
                       {l.service && <p className="mt-0.5 text-xs text-[#a0a0a0]">{l.service}</p>}
                       {l.next_action && <p className={late ? "mt-2 text-xs font-medium text-[#f6a3af]" : "mt-2 text-xs text-[#d6d6da]"}>→ {l.next_action} · {fmtDate(l.next_action_date)}</p>}
                       <div className="mt-3 flex items-center justify-between">

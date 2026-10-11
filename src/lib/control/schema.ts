@@ -71,6 +71,9 @@ export const leadSchema = z.object({
   next_action: optionalText(300),
   next_action_date: optionalDate,
   notes: optionalText(4000),
+  origin: z.enum(["manual", "site_form"]).default("manual"),
+  email: z.string().trim().max(200).email("Informe um e-mail válido.").optional().nullable().or(z.literal("").transform(() => null)),
+  attribution: z.record(z.string(), z.string().max(300)).optional().nullable(),
 });
 
 export const faqItem = z.object({ q: z.string().trim().min(1).max(300), a: z.string().trim().min(1).max(2000) });

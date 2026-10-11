@@ -67,12 +67,17 @@ Variáveis (Vercel, Production):
 | `EVOLUTION_API_KEY` | Chave de API da instância |
 | `EVOLUTION_INSTANCE` | Nome da instância |
 | `EVOLUTION_WEBHOOK_SECRET` | Segredo longo e aleatório gerado por você |
-| `EVOLUTION_PATH_SEND` / `EVOLUTION_PATH_STATE` | Opcional, se a sua versão usar caminhos diferentes de `/message/sendText/{instance}` e `/instance/connectionState/{instance}` |
+| `EVOLUTION_PATH_SEND`, `_STATE`, `_CONNECT`, `_LOGOUT`, `_WEBHOOK` | Opcional, se a sua versão usar caminhos diferentes dos documentados |
 
-Na Evolution, cadastre o webhook:
-- URL: `https://grupov3x.com.br/api/control/whatsapp/webhook`
-- Eventos: `MESSAGES_UPSERT` e `MESSAGES_UPDATE`
-- Autenticação: header `x-webhook-secret: <EVOLUTION_WEBHOOK_SECRET>` (ou `?token=<segredo>` na URL, se a versão não aceitar headers).
+Endpoints usados (docs.evolutionfoundation.com.br, API 2.3.x, header `apikey`):
+`GET /instance/connectionState/{instance}`, `GET /instance/connect/{instance}` (QR Code / código de pareamento), `DELETE /instance/logout/{instance}`, `POST /message/sendText/{instance}` e `POST /webhook/set/{instance}`.
+
+Passo a passo depois de definir as variáveis e fazer o redeploy (somente administradores):
+1. **Integrações → Evolution API → Cadastrar webhook.** O Control aponta a instância para `https://grupov3x.com.br/api/control/whatsapp/webhook`, eventos `MESSAGES_UPSERT` e `MESSAGES_UPDATE`, com o segredo no header `x-webhook-secret` (nunca na URL).
+2. **Conectar WhatsApp.** Aparece o QR Code (e o código de pareamento, quando a Evolution fornece). No celular: WhatsApp → Aparelhos conectados → Conectar um aparelho. O estado muda para "Conectado" sozinho.
+3. **Desconectar** pede confirmação e só desliga o número da instância; as conversas salvas continuam.
+
+Validação feita sem credenciais: testes automatizados no formato da documentação e um servidor simulado (QR, conexão, webhook, mensagem recebida, resposta enviada e desconexão). Com a instância real, conferir a primeira mensagem de ponta a ponta.
 
 Requer o Supabase com `SUPABASE_SERVICE_ROLE_KEY`. Teste: **Integrações → Verificar agora** (consulta o estado da instância) e uma mensagem enviada do seu próprio celular para o número conectado deve aparecer em **Atendimento**. O Control nunca responde sozinho: a IA só sugere respostas.
 

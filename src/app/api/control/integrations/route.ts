@@ -88,7 +88,7 @@ export async function GET(request: Request) {
       { label: "EVOLUTION_WEBHOOK_SECRET", value: maskPresence(ev.webhookSecret) },
       { label: "Webhook a cadastrar na Evolution", value: `${SITE_URL}/api/control/whatsapp/webhook` },
     ],
-    setup: ev.configured ? undefined : ["Definir EVOLUTION_API_URL, EVOLUTION_API_KEY e EVOLUTION_INSTANCE na Vercel.", "Gerar um segredo longo e definir EVOLUTION_WEBHOOK_SECRET.", "Na Evolution, cadastrar o webhook com os eventos MESSAGES_UPSERT e MESSAGES_UPDATE, enviando o segredo no header x-webhook-secret (ou ?token=).", "Supabase configurado com SUPABASE_SERVICE_ROLE_KEY para gravar mensagens recebidas."],
+    setup: ev.configured ? undefined : ["Definir EVOLUTION_API_URL, EVOLUTION_API_KEY e EVOLUTION_INSTANCE na Vercel.", "Gerar um segredo longo e definir EVOLUTION_WEBHOOK_SECRET.", "Depois de definir as variáveis, usar \"Cadastrar webhook\" e \"Conectar WhatsApp\" (QR Code) aqui mesmo.", "Supabase configurado com SUPABASE_SERVICE_ROLE_KEY para gravar mensagens recebidas."],
   });
 
   // Public site

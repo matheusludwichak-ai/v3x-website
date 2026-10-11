@@ -6,6 +6,7 @@ import { AlertTriangle, CheckCircle2, CircleDashed, HelpCircle, Network, Plus, R
 import type { OrgMember } from "@/lib/control/schema";
 import { Avatar, Badge, Btn, Card, Empty, ErrorBox, ModeBanner, Page, PageHeader, Skeleton } from "./ui";
 import { RecordForm, type FieldDef } from "./RecordForm";
+import { WhatsAppConnect } from "./WhatsAppConnect";
 import { api, useCollection, useSession } from "./lib/client";
 import { cn } from "@/lib/utils";
 
@@ -187,6 +188,7 @@ export function Integrations() {
                     <ol className="list-decimal space-y-1 pl-4 text-xs text-[#e7e7ea]">{it.setup.map((s) => <li key={s}>{s}</li>)}</ol>
                   </div>
                 )}
+                {it.id === "evolution" && <WhatsAppConnect session={session} />}
               </Card>
             );
           })}

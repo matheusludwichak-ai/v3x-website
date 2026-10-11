@@ -83,7 +83,10 @@ export function Inbox() {
     setAiNote(null);
   };
 
-  useEffect(() => bottom.current?.scrollIntoView({ block: "end" }), [messages]);
+  // Braces matter: scrollIntoView returns a Promise in current browsers, and an effect must not return one.
+  useEffect(() => {
+    bottom.current?.scrollIntoView({ block: "end" });
+  }, [messages]);
 
   const markRead = conversations.update;
   const currentId = current?.id;

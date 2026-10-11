@@ -11,6 +11,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { WhatsAppIcon } from "@/components/site/whatsapp-icon";
 import { CONTACT_EMAIL, CONTACT_EMAIL_HREF, whatsappHref } from "@/config/contact";
 import { useLeadFormTracking } from "@/lib/analytics/forms";
+import { leadAttribution } from "@/lib/analytics/campaign";
+import { Honeypot } from "@/components/contact-form";
 import { SplitReveal } from "./Reveal";
 import { gsap, useGSAP, EASE, MOTION_OK, lockScroll } from "@/lib/motion";
 
@@ -102,7 +104,7 @@ export function ContactDialog({ open, onOpenChange }: { open: boolean; onOpenCha
     setStatus("sending");
     setError("");
     try {
-      const res = await fetch("/api/contato", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) });
+      const res = await fetch("/api/contato", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ...data, formulario: "contato_modal", atribuicao: leadAttribution() }) });
       const json = (await res.json()) as { ok?: boolean; error?: string };
       if (!res.ok || !json.ok) {
         setStatus("error");
@@ -133,7 +135,8 @@ export function ContactDialog({ open, onOpenChange }: { open: boolean; onOpenCha
             <p className="text-muted-foreground">Recebemos sua mensagem. Vamos responder no e-mail informado.</p>
           </div>
         ) : (
-          <form onSubmit={submit} onFocusCapture={lead.onFocusCapture} onInvalidCapture={lead.invalid} className="space-y-4">
+          <form onSubmit={submit} onFocusCapture={lead.onFocusCapture} onInvalidCapture={lead.invalid} className="relative space-y-4">
+            <Honeypot />
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="space-y-2"><Label htmlFor="c-nome">Nome</Label><Input id="c-nome" name="nome" autoComplete="name" required /></div>
               <div className="space-y-2"><Label htmlFor="c-empresa">Empresa <span className="text-muted-foreground">(opcional)</span></Label><Input id="c-empresa" name="empresa" autoComplete="organization" /></div>

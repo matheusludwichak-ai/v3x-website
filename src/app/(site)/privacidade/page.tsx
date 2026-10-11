@@ -24,7 +24,10 @@ export default function PrivacidadePage() {
             <h2>2. Uso dos dados</h2>
             <p>
               Os dados enviados pelo formulário de contato são usados exclusivamente para avaliar e
-              responder à sua solicitação de projeto. Não usamos esses dados para nenhuma outra
+              responder à sua solicitação de projeto. Eles ficam guardados no nosso sistema interno
+              de atendimento, com acesso restrito à equipe. Junto da mensagem registramos a página
+              por onde você entrou no site e a origem da visita (por exemplo, busca ou campanha),
+              para entender quais canais trazem contatos. Não usamos esses dados para nenhuma outra
               finalidade.
             </p>
             <h2>3. Compartilhamento</h2>

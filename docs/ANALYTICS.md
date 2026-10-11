@@ -90,7 +90,7 @@ Links de WhatsApp, `mailto:` e `tel:` já viram `contact_click` automaticamente.
 5. `contact_click` OU `lead_form_start` (abriu um canal de contato)
 6. `generate_lead` (lead confirmado)
 
-Venda ou lead qualificado não são medidos no site. Para isso seria preciso registrar no Control/CRM a origem de cada contato e importar ao GA4 (Measurement Protocol ou importação de dados), o que ainda não existe.
+Venda ou lead qualificado não são medidos no site. Desde 10/10/2026 cada lead do formulário entra no **Pipeline do Control** com a origem (página de entrada, site de referência e UTMs da visita), então a qualificação e o fechamento podem ser acompanhados por canal lá. Enviar essas etapas de volta ao GA4 (Measurement Protocol) ainda não foi feito.
 
 ## Configuração no GA4
 
